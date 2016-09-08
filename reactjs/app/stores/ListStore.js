@@ -16,7 +16,7 @@ var ListStore = assign({}, EventEmitter.prototype, {
 		this.emit('change');
 	},
 
-	addChangelistener: function(callback) {
+	addChangeListener: function(callback) {
 		this.on('change', callback);
 	},
 

@@ -1,6 +1,6 @@
 var React = require('react');
 var ListStore = require('./stores/ListStore');
-var ButtonAction = require('./actions/ButtonActions');
+var ButtonActions = require('./actions/ButtonActions');
 var MyButton = require('./Button.react');
 
 var MyButtonController = React.createClass({

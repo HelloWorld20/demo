@@ -1,17 +1,17 @@
 var React = require('react');
 
 var MyButton = React.createClass({
-	getInitialState: function() {
+	
+	render: function() {
 		var items = this.props.items;
 		console.log(this.props)
 	 	var itemHtml = items.map(function (listItem, i) {
 	    	return <li key={i}>{listItem}</li>;
 	  	});
-	},
-	render: function() {
 		return <div>
+			<h1>MyButton</h1>
 		    <ul>{itemHtml}</ul>
-		    <button onClick={props.onClick}>New Item</button>
+		    <button onClick={this.props.onClick}>New Item</button>
 		</div>;
 	}
 })

@@ -1,8 +1,6 @@
 //
 var React = require('react');
 var reactDOM = require('react-dom');
-var MiddleCollect = require('./MiddleCollect.react');
-var MiddleDisplay = require('./middleDisplay.react');
 var CollectionController = require('./CollectionController.react');
 
 var HelloMessage = React.createClass({
@@ -33,15 +31,12 @@ var HelloMessage = React.createClass({
 			return <div>
 				{buttonElement}
 				{headerElement}
-				<MiddleCollect setMessage={this.setMessage}/>
-				<MiddleDisplay getFatherMessage={this.getMessage} />
 				<CollectionController />
 			</div>
 		}
 		return <div>
 			{buttonElement}
 			{headerElement}
-			<MiddleDisplay getFatherMessage={this.getMessage} />
 			<CollectionController />
 		</div>
 	}
