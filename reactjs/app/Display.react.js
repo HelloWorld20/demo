@@ -1,6 +1,5 @@
 //用于展示内容的组件
-var React = require('react');
-var reactDOM = require('react-dom');
+// var React = require('react');
 
 var Display = React.createClass({
 

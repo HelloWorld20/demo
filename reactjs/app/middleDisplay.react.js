@@ -1,5 +1,4 @@
-var React = require('react');
-var reactDOM = require('react-dom');
+// var React = require('react');
 var Display = require('./Display.react')
 
 var Middle = React.createClass({

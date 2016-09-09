@@ -1,5 +1,4 @@
-var React = require('react');
-var reactDOM = require('react-dom');
+// var React = require('react');
 var Collection = require('./collection.react');
 
 var MiddleCollect = React.createClass({

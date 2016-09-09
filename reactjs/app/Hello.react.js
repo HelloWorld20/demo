@@ -1,6 +1,5 @@
 //
-var React = require('react');
-var reactDOM = require('react-dom');
+// var React = require('react');
 var CollectionController = require('./CollectionController.react');
 
 var HelloMessage = React.createClass({

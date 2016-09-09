@@ -1,5 +1,5 @@
-var React = require('react');
-var reactDOM = require('react-dom');
+// var React = require('react');
+var reactDOM = require('../plugs/react-dom');
 
 var HelloMessage = require('./Hello.react');
 

@@ -1,4 +1,4 @@
-var React = require('react');
+// var React = require('react');
 var ListStore = require('./stores/ListStore');
 var ButtonActions = require('./actions/ButtonActions');
 var MyButton = require('./Button.react');
