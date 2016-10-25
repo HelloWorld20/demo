@@ -48,7 +48,3 @@ app.on("activate",function(){
         createWindow();
     }
 });
-
-core.get(function(event, res) {
-    console.log('message from frontEnd: ' + res);
-}, 'reply from main.js')

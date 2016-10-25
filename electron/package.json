@@ -1,5 +1,20 @@
 {
-  "name"    : "your-app",
-  "version" : "0.1.0",
-  "main"    : "main.js"
+  "name": "electron",
+  "version": "1.0.0",
+  "description": "my electron demo for delivery platform of 139 e-mail",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "electron",
+    "delivery",
+    "platform",
+    "139"
+  ],
+  "author": "weijianghong",
+  "license": "ISC",
+  "devDependencies": {
+    "md5": "^2.2.1"
+  }
 }
