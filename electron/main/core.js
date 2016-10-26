@@ -8,7 +8,7 @@ module.exports = {
 	get: (handleRes, reply) => {
 		ipcMain.on('main', (event, res) => {
 		    handleRes(event, res);
-		    event.sender.send('main-reply', reply);
+		    if(reply) event.sender.send('main-reply', reply);
 		})
 	}
 }

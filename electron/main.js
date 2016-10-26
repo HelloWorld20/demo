@@ -4,13 +4,56 @@ const electron=require("electron");
 const app=electron.app;
 // 创建一个浏览器窗口，主要用来加载HTML页面
 const BrowserWindow=electron.BrowserWindow;
-const ipcMain = electron.ipcMain
+const ipcMain = electron.ipcMain;
+const dialog = electron.dialog;
 // 声明一个BrowserWindow对象实例
 
 const core = require('./main/core.js');
 const config = require('./main/config.js');
 
 let mainWindow;
+
+function init() {
+    //挂载main传输事件，接收method，进行处理
+    core.get(function(event, res) {
+        let method = res.method;
+        // switch(method) {
+        //     case 'dialog': () => {
+        //             console.log('case dialog');
+        //             dialog.showOpenDialog(mainWindow, { 
+        //                 properties: [ 'openDirectory' ],
+        //                 defaultPath: __dirname
+        //             }, function(path) {
+        //                 console.log(path);
+        //                 if(path) {
+        //                     event.sender.send('path', path);
+        //                 } else {
+        //                     throw new Error('No return Path')
+        //                 }
+        //             })
+        //         };
+        //         break;
+        //     default: () => {
+        //         console.log('case method default function');
+        //     };
+        // }
+        if(method === 'dialog') {
+            dialog.showOpenDialog(mainWindow, { 
+                properties: [ 'openDirectory' ],
+                defaultPath: __dirname
+            }, function(path) {
+                if(path) {
+                    event.sender.send('path', path);
+                } else {
+                    event.sender.send('path', 'please select a path')
+                }
+            })
+        } else if(method === '') {
+
+        }
+
+    })
+}
 
 // 定义一个创建浏览器窗口的方法
 function createWindow(){
@@ -28,6 +71,10 @@ function createWindow(){
     mainWindow.on("closed",function(){
         mainWindow = null;
     });
+
+    init();
+
+    // console.log(dialog.showOpenDialog(mainWindow, { properties: [ 'openFile', 'openDirectory', 'multiSelections' ]}));
 }
 
 // 监听应用程序对象是否初始化完成，初始化完成之后即可创建浏览器窗口
@@ -48,3 +95,5 @@ app.on("activate",function(){
         createWindow();
     }
 });
+
+

@@ -6,14 +6,22 @@ module.exports = {
 	//webContent发送main消息到main Process。callback是处理main Process返回消息的方法
 	send: (message, callback) => {
 		ipcRenderer.send('main', message);
-		ipcRenderer.once('main-reply', callback);
+		if(callback) ipcRenderer.once('main-reply', callback);
 	},
 
 	mainListener: (callback) => {
-	    ipcMain.on('main', callback);
+	    ipcRenderer.on('main', callback);
 	},
 
 	removeMainListener: (callback) => {
-	    ipcMain.removeListener('main', callback);
+	    ipcRenderer.removeListener('main', callback);
+	},
+
+	initListener: (name, callback) => {
+		ipcRenderer.on(name, callback);
+	},
+
+	removeListener: (name, callback) => {
+		ipcRenderer.removeListener(name, callback);
 	}
 }

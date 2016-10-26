@@ -3,22 +3,32 @@
 const core = require('./js/core.web.js');
 const config = require('./js/config.web.js');
 const electron = require('electron');
-const ipcRenderer = electron.ipcRenderer
+const ipcRenderer = electron.ipcRenderer;
+
 const dom = require('./js/dom.web.js');
 const $ = dom.$;
 
-let htmlFile = $('#uploadHtml')[0];
-let qvgaFile = $("#uploadQvga")[0];
-let reader = new FileReader();
 
-htmlFile.addEventListener('change', readFileText, false)
-qvgaFile.addEventListener('change', readFileText, false)
+dom.initFileReader('#uploadHtml', (e) => {
+	console.log(e.target.result);
+})
 
-function readFileText() {
-	let file = this.files[0];
-		
-	reader.readAsText(file);
-	reader.onload = function(e) {
-		console.log(e.target.result);
+dom.initFileReader('#uploadQvga', (e) => {
+	console.log(e.target.result);
+})
+
+
+
+
+function initEvent() {
+	core.initListener('path', (event, res) => {
+		$("#path")[0].innerText = res;
+	});
+
+	$("#selectPath")[0].onclick = () => {
+		console.log('click')
+		core.send({method: 'dialog'});
 	}
 }
+
+initEvent();
