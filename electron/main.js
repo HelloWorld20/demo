@@ -10,6 +10,9 @@ const dialog = electron.dialog;
 
 const core = require('./main/core.js');
 const config = require('./main/config.js');
+const spider = require('./main/spider.js');
+const testConfig = require('./main/js/config.js');
+const initFiles = require('./main/init.js');
 
 let mainWindow;
 
@@ -48,11 +51,14 @@ function init() {
                     event.sender.send('path', 'please select a path')
                 }
             })
+        } else if(method === 'init') {
+            initFiles(testConfig);
         } else if(method === '') {
 
         }
 
     })
+    
 }
 
 // 定义一个创建浏览器窗口的方法
@@ -74,7 +80,6 @@ function createWindow(){
 
     init();
 
-    // console.log(dialog.showOpenDialog(mainWindow, { properties: [ 'openFile', 'openDirectory', 'multiSelections' ]}));
 }
 
 // 监听应用程序对象是否初始化完成，初始化完成之后即可创建浏览器窗口

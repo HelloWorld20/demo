@@ -1,22 +1,97 @@
 <!DOCTYPE html>
 <html>
-  	<head>
-  		<meta charset="UTF-8">
-    	<title>Hello World!</title>
-  	</head>
-  	<body>
-    	<h1>Hello World!</h1>
-    	We are using io.js <script>document.write(process.version)</script>
-    	and Electron <script>document.write(process.versions['electron'])</script>.
-    	<br>
-		<label>上传html模板：</label>
-    	<input id="uploadHtml" type="file" name="html">
-    	<label>上传qvga模板：</label>
-    	<input id="uploadQvga" type="file" name="qvga">
-  	</body>
+<head>
+	<meta charset="UTF-8">
+    <title>Hello World!</title>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    We are using io.js <script>document.write(process.version)</script>
+    and Electron <script>document.write(process.versions['electron'])</script>.
+    <br>
+    <label>上传html模板：</label>
+    <input id="uploadHtml" type="file" name="html">
+    <label>上传qvga模板：</label>
+    <input id="uploadQvga" type="file" name="qvga">
     <br>
     <button id="selectPath">选择生成路径：</button>
     <span id="path"></span>
+    <form>
+        <table id="config">
+            <thead>
+                <th>名称</th>
+                <th>内容</th>
+                <th>说明</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>业务全称：</td>
+                    <td>
+                        <input type="text" name="fullName">
+                    </td>
+                    <td>
+                        <p>必须。</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>业务简称：</td>
+                    <td>
+                        <input type="text" name="shortName">
+                    </td>
+                    <td><p>必须。</p></td>
+                </tr>
+                <tr>
+                    <td>web模板地址：</td>
+                    <td>
+                        <input type="text" name="webUrl">
+                    </td>
+                    <td>
+                        <p>必须。</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>wap模板地址：</td>
+                    <td>
+                        <input type="text" name="wapUrl">
+                    </td>
+                    <td>
+                        <p>必须。</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>邮件模板ID：</td>
+                    <td>
+                        <input type="text" name="yjmbID">
+                    </td>
+                    <td>
+                        <p>非必须。</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>封装资源ID：</td>
+                    <td>
+                        <input type="text" name="yjfzzyID">
+                    </td>
+                    <td>
+                        <p>非必须。</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>接口类型</td>
+                    <td>
+                        <input type="text" name="apiType">
+                    </td>
+                    <td>
+                        <p>必须。</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="save">保存结果</button>
+        <input type="reset" value="清空表格">
+    </form>
+    <button id="init">一键生成关键配置文件</button>
+</body>
 <script type="text/javascript" src="js/lib/index.web.js"></script>
 <script type="text/javascript">
 
