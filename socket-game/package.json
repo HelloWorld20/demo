@@ -1,0 +1,19 @@
+{
+  "name": "socket-game",
+  "version": "1.0.0",
+  "description": "This is a simple socket demo by using Node.js and Socket.IO.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "socket.io"
+  ],
+  "author": "weijianghong",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.5.1"
+  }
+}

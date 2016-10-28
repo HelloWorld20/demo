@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>socket画板</title>
+<link rel="stylesheet" type="text/css" href="./css/style.css">
+<script type="text/javascript">
+var ip = 'ws://192.168.22.161:3001',	//socket服务器地址。一般是自己电脑本地IP。不能用localhost和127.0.0.1；
+	lineWidth = 3;	//画笔宽度。	
+</script>
+</head>
+<body>
+	
+<h1 id="msg">test page</h1>
+
+<!-- <div id="one" class="box"></div>
+<div id="two" class="box"></div> -->
+
+<canvas id="can" width="700" height="400"></canvas>
+
+<script type="text/javascript" src='./lib/jquery-1.12.1.js'></script>
+<script type="text/javascript" src='./lib/socket.io.js'></script>
+
+<script type="text/javascript" src='./js/canvas.js'></script>
+<script type="text/javascript" src='./js/socket-client.js'></script>
+<script type="text/javascript">
+
+function run(can,soc) {
+	var socket = soc.init();
+	can.init(socket);
+}
+
+run(canvasjs, socketclientjs);
+
+</script>
+</body>
+</html>
