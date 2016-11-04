@@ -11,31 +11,30 @@ var iconv = require('iconv-lite');
 var rimraf = require('rimraf');
 var superagent = require('superagent');
 
-var spider = require('./spider.js');
+const mkdir = require('../mkdir/mkdir.js');
 
-let core = require('./core.js');
+let core = require('./js/core.js');
+let localConfig = require('./js/config.js');
 
 
+var createFiles = function (conf) {
+	return function () {
+		let config = core.extend( conf, localConfig );
+		let deliveryTplId = config.yjmbID;
+		var converted = {}
+		for(var i in config) {
+			//都转成了二进制了。
+			converted[i] = iconv.encode(config[i], 'gb2312')
+		}
 
-function createFiles(config) {
-	let deliveryTplId = config.yjmbID;
-	var converted = {}
-	for(var i in config) {
-		//都转成了二进制了。
-		converted[i] = iconv.encode(config[i], 'gb2312')
-	}
+		createConfigFiles(converted.fullName, config);
 
-	createConfigFiles(converted.fullName, config);
+		createTemplateStorageFile(config.webUrl, config.wapUrl, config.fullName, config.sourceFileMap);
 
-	createTemplateStorageFile(config.webUrl, config.wapUrl, config.fullName, config.sourceFileMap);
-
-	if(deliveryTplId && typeof(deliveryTplId) == 'number' && deliveryTplId > 0 && deliveryTplId < 99999) {
-		spider(core, config);
-	} else {
 		createTempleteFiles(config.fullName, config);
 	}
-	
 }
+
 
 
 //生成配置文件ParseConfig.xml和ResourcePackageConfig.xml
@@ -77,13 +76,13 @@ function createTempleteFiles(fullName, config) {
 	//爬取静态模板内容然后填充
 	superagent.get(config.webUrl)
 		.end(function(err, res) {
-			core.handleError(err, 'get webTemplate error');
+			core.handleError(err, '获取web模板错误，请检查wap模板地址是否有误');
 			fs.writeFileSync('./'+fullName+'/'+ fullName +'.html', iconv.encode(res.text, 'gb2312'))
 		})
 
 	superagent.get(config.wapUrl)
 		.end(function(err, res) {
-			core.handleError(err, 'get wapTemplate error');		
+			core.handleError(err, '获取wap模板错误，请检查wap模板地址是否有误');		
 			fs.writeFileSync('./'+fullName+'/'+ fullName +'.qvga', iconv.encode(res.text, 'gb2312'))
 		})
 	return;	
@@ -124,32 +123,7 @@ function createTemplateStorageFile(webUrl, wapUrl, fullName, sourceFileMap) {
 
 module.exports = (config) => {
 
-let fullName = config.fullName;
-//非异步版本有毛病。
-fs.stat('./'+fullName, function(err, stat){
-    if(stat) {
-    	fs.stat('./'+ fullName + '_oldVersion', function(err, stat) {
-    		if(stat) {
-    			//强制删除非空文件夹。
-				rimraf('./'+ fullName + '_oldVersion', function(err) {
-					fs.renameSync('./'+fullName, './'+ fullName + '_oldVersion');
-	    			fs.mkdirSync('./'+ fullName);
-	    			createFiles(config);
-				})
-    		} else {
-    			//没有oldVersion的情况
-    			fs.renameSync('./'+fullName, './'+ fullName + '_oldVersion');
-    			fs.mkdirSync('./'+ fullName);
-    			createFiles(config);
-    		}
-    	})
-    } else {
-    	//第一次新建时
-    	fs.mkdirSync('./'+ fullName);
-    	createFiles(config);
-    }
-    
-});
+	mkdir( config.fullName, createFiles( config ) );
 
 }
 

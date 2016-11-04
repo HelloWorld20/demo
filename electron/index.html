@@ -35,6 +35,17 @@ input[type="file"] {
 	border-bottom: 2px solid #eee;
 }
 </style>
+<script type="text/javascript">
+//重命名require,exports,module并且删除掉这些对象，解决jquery不能使用的问题。
+window.myRequire = window.require;
+window.exports = window.myExports;
+window.module = window.myModule;
+
+delete window.require;
+delete window.exports;
+delete window.module;
+
+</script>
 </head>
 <body>
     <h1>Hello World!</h1>
@@ -44,8 +55,8 @@ input[type="file"] {
 
     <ul id="nav" class="nav nav-tabs">
     	<li><a data-href="#loginPage">登陆</a></li>
-    	<li class="active"><a data-href="#configPage">配置</a></li>
-    	<li><a data-href="#initPage">一键生成</a></li>
+    	<li class="active"><a data-href="#configPage">生成原始文件配置</a></li>
+    	<li><a data-href="#spiderPage">爬取生产线配置</a></li>
     </ul>
 
     <br>
@@ -65,9 +76,9 @@ input[type="file"] {
 		    </label>    
 		    <hr>
 		    <button class="btn btn-large btn-primary" id="selectPath">选择生成路径</button>
-		    <span id="path">file://C:/Users/Bobo/Desktop/source/jquery.js</span>
-		    <form>
-		        <table id="config" class="table">
+		    <span id="path">empty</span>
+		    <form name="default">
+		        <table id="defaultConf" class="table">
 		            <thead>
 		                <th width="15%">名称</th>
 		                <th width="60%">内容</th>
@@ -77,7 +88,7 @@ input[type="file"] {
 		                <tr>
 		                    <td>业务全称：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="fullName">
+		                        <input class="form-control" type="text" name="fullName" required="required" placeholder="广东集团客户明细账单" value="广东集团客户明细账单">
 		                    </td>
 		                    <td>
 		                        <p>必须。</p>
@@ -86,14 +97,14 @@ input[type="file"] {
 		                <tr>
 		                    <td>业务简称：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="shortName">
+		                        <input class="form-control" type="text" name="shortName" required="required" placeholder="gdjtmx" value="gdjtmx">
 		                    </td>
 		                    <td><p>必须。</p></td>
 		                </tr>
 		                <tr>
 		                    <td>web模板地址：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="webUrl">
+		                        <input class="form-control" type="text" name="webUrl" required="required" placeholder="http://fun.mail.10086.cn/10086/ah/351011/ah0001.html" value="http://fun.mail.10086.cn/10086/ah/351011/ah0001.html">
 		                    </td>
 		                    <td>
 		                        <p>必须。</p>
@@ -102,16 +113,57 @@ input[type="file"] {
 		                <tr>
 		                    <td>wap模板地址：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="wapUrl">
+		                        <input class="form-control" type="text" name="wapUrl" required="required" placeholder="http://fun.mail.10086.cn/10086/ah/351011/ah0001_wap.html" value="http://fun.mail.10086.cn/10086/ah/351011/ah0001_wap.html">
 		                    </td>
 		                    <td>
 		                        <p>必须。</p>
 		                    </td>
 		                </tr>
 		                <tr>
+		                    <td>接口类型：</td>
+		                    <td>
+		                        <input class="form-control" type="text" name="apiType" required="required" placeholder="bill" value="bill">
+		                    </td>
+		                    <td>
+		                        <p>必须。</p>
+		                    </td>
+		                </tr>
+		            </tbody>
+		        </table>
+		        <button class="btn btn-large btn-primary" id="init">一键生成文件</button>
+		        <input class="btn btn-large btn-primary" type="reset" value="清空表格">
+		    </form>
+    	</div>
+
+    	<div id="spiderPage" class="tab-pane hide">
+    		<form name="spider">
+		        <table id="spiderConf" class="table">
+		            <thead>
+		                <th width="15%">名称</th>
+		                <th width="60%">内容</th>
+		                <th width="25%">说明</th>
+		            </thead>
+		            <tbody>
+		                <tr>
+		                    <td>业务全称：</td>
+		                    <td>
+		                        <input class="form-control" type="text" name="fullName" required="required" placeholder="广东集团客户明细账单" value="广东集团客户明细账单">
+		                    </td>
+		                    <td>
+		                        <p>必须。</p>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>业务简称：</td>
+		                    <td>
+		                        <input class="form-control" type="text" name="shortName" required="required" placeholder="gdjtmx" value="gdjtmx">
+		                    </td>
+		                    <td><p>必须。</p></td>
+		                </tr>
+		                <tr>
 		                    <td>邮件模板ID：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="yjmbID">
+		                        <input class="form-control" type="text" name="yjmbID" required="required"  placeholder="21639" value="21639">
 		                    </td>
 		                    <td>
 		                        <p>非必须。</p>
@@ -120,41 +172,30 @@ input[type="file"] {
 		                <tr>
 		                    <td>封装资源ID：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="yjfzzyID">
+		                        <input class="form-control" type="text" name="yjfzzyID" required="required" placeholder="13968" value="13968">
 		                    </td>
 		                    <td>
 		                        <p>非必须。</p>
 		                    </td>
 		                </tr>
-		                <tr>
-		                    <td>接口类型：</td>
-		                    <td>
-		                        <input class="form-control" type="text" name="apiType">
-		                    </td>
-		                    <td>
-		                        <p>必须。</p>
-		                    </td>
-		                </tr>
+		               
 		            </tbody>
 		        </table>
-		        <button class="btn btn-large btn-primary" id="save">保存结果</button>
+		        <button id="spider" class="btn btn-large btn-primary">一键爬取文件</button>
 		        <input class="btn btn-large btn-primary" type="reset" value="清空表格">
 		    </form>
-    	</div>
-
-    	<div id="initPage" class="tab-pane hide">
-    		一键生成关键配置文件
-			<button id="init" class="btn btn-large btn-primary">一键生成关键配置文件</button>
+			
     	</div>
 
 
     </div> 
     
 </body>
-<script type="text/javascript" src="js/lib/index.web.js"></script>
-<script src="file://C:/Users/Bobo/Desktop/source/jquery.js"></script>
+<script type="text/javascript" src="./js/maven/index.web.js"></script>
+<script type="text/javascript" src="./js/lib/jquery-3.1.0.js"></script>
 <script type="text/javascript">
 
+//初始化tab切换
 function initTabs() {
 	var nav = document.querySelectorAll('#nav');
 
@@ -165,10 +206,10 @@ function initTabs() {
 
 		var panes = document.querySelectorAll('.tab-pane');
 		var tabs = document.querySelectorAll('#nav li');
-		tabs.forEach(function(item) {
+		tabs.forEach(function( item ) {
 			jQuery(item).removeClass('active');
 		})
-		panes.forEach(function(item) {
+		panes.forEach(function( item ) {
 			jQuery(item).addClass('hide');
 		})
 
@@ -183,93 +224,6 @@ function initTabs() {
 initTabs();
 
 
-function extend() {
-	var options, name, src, copy, copyIsArray, clone,
-		target = arguments[0] || {},
-		i = 1,
-		length = arguments.length,
-		deep = false;
-
-	// Handle a deep copy situation
-	if ( typeof target === "boolean" ) {
-		deep = target;
-
-		// Skip the boolean and the target
-		target = arguments[ i ] || {};
-		i++;
-	}
-
-	// Handle case when target is a string or something (possible in deep copy)
-	if ( typeof target !== "object" && !isFunction(target) ) {
-		target = {};
-	}
-
-	// Extend jQuery itself if only one argument is passed
-	// if ( i === length ) {
-	// 	target = this;
-	// 	i--;
-	// }
-
-	for ( ; i < length; i++ ) {
-		// Only deal with non-null/undefined values
-		if ( (options = arguments[ i ]) != null ) {
-			// Extend the base object
-			for ( name in options ) {
-				src = target[ name ];
-				copy = options[ name ];
-
-				// Prevent never-ending loop
-				if ( target === copy ) {
-					continue;
-				}
-
-				// Recurse if we're merging plain objects or arrays
-				if ( deep && copy && ( jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
-					if ( copyIsArray ) {
-						copyIsArray = false;
-						clone = src && jQuery.isArray(src) ? src : [];
-
-					} else {
-						clone = src && jQuery.isPlainObject(src) ? src : {};
-					}
-
-					// Never move original objects, clone them
-					target[ name ] = jQuery.extend( deep, clone, copy );
-
-				// Don't bring in undefined values
-				} else if ( copy !== undefined ) {
-					target[ name ] = copy;
-				}
-			}
-		}
-	}
-
-	// Return the modified object
-	return target;
-}
-
-var rclass = /[\t\r\n\f]/g;
-function hasClass(targets, selector) {
-	
-	var className = " " + selector + " ",
-		i = 0,
-		l = targets.length;
-	for ( ; i < l; i++ ) {
-		if ( targets[i].nodeType === 1 && (" " + targets[i].className + " ").replace(rclass, " ").indexOf( className ) >= 0 ) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-function parent() {
-
-}
-
-function isFunction(obj) {
-	return Object.prototype.toString.call(obj) === '[object Function]';
-}
 
 </script>
 </html>

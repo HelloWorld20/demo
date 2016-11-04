@@ -1,3 +1,7 @@
+/**
+ * 渲染线程核心函数
+ */
+
 "use strict"
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
@@ -23,5 +27,9 @@ module.exports = {
 
 	removeListener: (name, callback) => {
 		ipcRenderer.removeListener(name, callback);
-	}
+	},
+
+	isFunction: obj => {
+		return Object.prototype.toString.call(obj) === '[object Function]';
+	},
 }

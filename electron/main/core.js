@@ -1,3 +1,7 @@
+/**
+ * main线程核心函数
+ */
+
 "use strict"
 
 const electron = require('electron');
@@ -50,10 +54,51 @@ module.exports = {
 		})
 	},
 
+
 	handleError: (err, msg) => {
 		if(err) {
 			console.error(err);
 			throw new Error('[Custom isError: ' + msg + ']')
 		}
-	}
+	},
+
+	extend: function( target, options ) {
+	    var result = new Object();  //return一个新对象，隔断引用
+
+	    for( var property in target ) {
+
+	        if( this.isObject( target[ property ] || this.isArray( target[ property ] ) ) ) {
+	            //如果属性是对象和对象则递归调用，防止直接赋值引用。
+	            result[ property ] = this.extend( {}, target[ property ] );  
+	        } else {
+	            result[ property ] = target[ property ];
+	        }
+	        
+	    }
+
+	    for( var property in options ) {
+
+	        if( this.isObject( options[ property ] || this.isArray( target[ property ] ) ) ) {
+	            //如果属性是对象和对象则递归调用，防止直接赋值引用。
+	            result[ property ] = this.extend( {}, options[ property ] );
+	        } else {
+	            result[ property ] = options[ property ];
+	        }
+	        
+	    }
+
+	    return result;
+	},
+
+	isArray: obj => {
+    return Object.prototype.toString.call( obj ) === '[object Array]'
+	},
+
+	isFunction: obj => {
+	    return Object.prototype.toString.call( obj ) === '[object Function]';
+	},
+
+	isObject: obj => {
+	    return Object.prototype.toString.call( obj ) === '[object Object]';
+	},
 }

@@ -1,18 +1,17 @@
 // 载入electron模块
-const electron=require("electron");
+const {app,BrowserWindow,ipcMain,dialog}=require("electron");
 // 创建应用程序对象
-const app=electron.app;
-// 创建一个浏览器窗口，主要用来加载HTML页面
-const BrowserWindow=electron.BrowserWindow;
-const ipcMain = electron.ipcMain;
-const dialog = electron.dialog;
+// const app=electron.app;
+// // 创建一个浏览器窗口，主要用来加载HTML页面
+// const BrowserWindow=electron.BrowserWindow;
+// const ipcMain = electron.ipcMain;
+// const dialog = electron.dialog;
 // 声明一个BrowserWindow对象实例
 
 const core = require('./main/core.js');
-const config = require('./main/config.js');
-const spider = require('./main/spider.js');
-const testConfig = require('./main/js/config.js');
-const initFiles = require('./main/init.js');
+const spider = require('./main/module/spider/spider.js');
+const initDefalt = require('./main/module/init/init.js');
+
 
 let mainWindow;
 
@@ -20,27 +19,9 @@ function init() {
     //挂载main传输事件，接收method，进行处理
     core.get(function(event, res) {
         let method = res.method;
-        // switch(method) {
-        //     case 'dialog': () => {
-        //             console.log('case dialog');
-        //             dialog.showOpenDialog(mainWindow, { 
-        //                 properties: [ 'openDirectory' ],
-        //                 defaultPath: __dirname
-        //             }, function(path) {
-        //                 console.log(path);
-        //                 if(path) {
-        //                     event.sender.send('path', path);
-        //                 } else {
-        //                     throw new Error('No return Path')
-        //                 }
-        //             })
-        //         };
-        //         break;
-        //     default: () => {
-        //         console.log('case method default function');
-        //     };
-        // }
-        if(method === 'dialog') {
+        let value = res.value;
+
+        if(method === 'dialog') {   //打开选择文件夹对话框
             dialog.showOpenDialog(mainWindow, { 
                 properties: [ 'openDirectory' ],
                 defaultPath: __dirname
@@ -51,14 +32,32 @@ function init() {
                     event.sender.send('path', 'please select a path')
                 }
             })
-        } else if(method === 'init') {
-            initFiles(testConfig);
+        } else if(method === 'init') {  //初始化原始文件
+
+            initFiles( value );
+
+        } else if(method === 'spider') {    //投递平台爬取文件
+
+            initSpider( value );
+
         } else if(method === '') {
 
         }
 
     })
     
+}
+
+//构造spider 需要的参数，然后调用。
+function initSpider( value ) {
+
+    spider( value );
+}
+
+//构造生成原始文件需要的参数，然后调用。
+function initFiles( value ) {
+
+    initDefalt( value )
 }
 
 // 定义一个创建浏览器窗口的方法
@@ -78,6 +77,7 @@ function createWindow(){
         mainWindow = null;
     });
 
+    //自己写的方法流程入口；
     init();
 
 }
