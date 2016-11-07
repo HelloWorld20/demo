@@ -6,60 +6,21 @@ const {app,BrowserWindow,ipcMain,dialog}=require("electron");
 
 // 声明一个BrowserWindow对象实例
 
-const core = require('./main/core.js');
-const spider = require('./main/module/spider/spider.js');
-const initDefalt = require('./main/module/init/init.js');
-const server = require('./main/module/server/server.js');
 
+const server = require('./modules/server/server.js');
 
 let mainWindow;
 
 function init() {
     server.start();
+
+
     return;
-    //挂载main传输事件，接收method，进行处理
-    core.get(function(event, res) {
-        let method = res.method;
-        let value = res.value;
-
-        if(method === 'dialog') {   //打开选择文件夹对话框
-            dialog.showOpenDialog(mainWindow, { 
-                properties: [ 'openDirectory' ],
-                defaultPath: __dirname
-            }, function(path) {
-                if(path) {
-                    event.sender.send('path', path);
-                } else {
-                    event.sender.send('path', 'please select a path')
-                }
-            })
-        } else if(method === 'init') {  //初始化原始文件
-
-            initFiles( value );
-
-        } else if(method === 'spider') {    //投递平台爬取文件
-
-            initSpider( value );
-
-        } else if(method === '') {
-
-        }
-
-    })
+    
     
 }
 
-//构造spider 需要的参数，然后调用。
-function initSpider( value ) {
 
-    spider( value );
-}
-
-//构造生成原始文件需要的参数，然后调用。
-function initFiles( value ) {
-
-    initDefalt( value )
-}
 
 // 定义一个创建浏览器窗口的方法
 function createWindow(){
