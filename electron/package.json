@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "package": "electron-packager . myApp --platform=win32 --arch=x64 --version=1.4.5 --ignore=node_modules/.bin --ignore=readme.md"
+    "package": "electron-packager . myApp --platform=win32 --arch=x64 --version=1.4.5 --ignore=node_modules/.bin --ignore=readme.md",
+    "asar": "asar pack electron app.asar"
   },
   "keywords": [
     "electron",
