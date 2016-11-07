@@ -1,6 +1,6 @@
 /**
  * author: weijianghong
- * date: 2016-10-24
+ * date: 2016-11-7
  * description: 根据提供的模板ID爬取投递平台上已经配置好的模板。
  */
 
@@ -15,7 +15,7 @@ module.exports = (conf) => {
 	mkdir( conf.fullName, init( conf ) );
 }
 
-var init = function ( conf ) {
+let init = function ( conf ) {
 	return function () {
 		let config = core.extend(conf, localConfig);
 		//先登录，获取set-cookie里的sessionID等值。
@@ -23,9 +23,8 @@ var init = function ( conf ) {
 			.query(config.loginMessage)
 			.end((err, res) => {
 				core.handleError(err, 'login fail...');
-
 				let cookie = res.headers['set-cookie'];
-				if(!cookie) throw new Error('登录时没有返回set-cookie');
+				if( !cookie ) throw new Error('系统未正确响应，登录时没有返回set-cookie');
 
 				let cookieCombine = '';
 				cookie.forEach( item => {
@@ -78,7 +77,7 @@ function getConfigFile( core, config, cookieCombine ) {
 				core.handleError(err, 'Get' + config.ResourceView + 'error!')
 				
 				let RecordSet = JSON.parse(res.text).RecordSet;
-				if(!RecordSet) throw new Error("没有返回邮件模板内容，检查ID是否有误");
+				if(!RecordSet) throw new Error("没有返回邮件封装资源内容，检查ID是否有误");
 
 		        core.writeFile('./'+fullName+'/ParseConfig.xml', core.str2Buff(RecordSet.ParseConfig));
 		        core.writeFile('./'+fullName+'/ResourcePackageConfig.xml', core.str2Buff(RecordSet.ResourceConfig));

@@ -1,3 +1,4 @@
+//spider.js模块爬取投递平台需要的信息
 "use strict"
 
 module.exports = {

@@ -5,24 +5,24 @@
  */
 
 "use strict"
-var fs = require('fs');
-var cheerio = require('cheerio');
-var iconv = require('iconv-lite');
-var rimraf = require('rimraf');
-var superagent = require('superagent');
+const fs = require('fs');
+const cheerio = require('cheerio');
+const iconv = require('iconv-lite');
+const rimraf = require('rimraf');
+const superagent = require('superagent');
 
 const mkdir = require('../mkdir/mkdir.js');
 
-let core = require('./js/core.js');
-let localConfig = require('./js/config.js');
+const core = require('./js/core.js');
+const localConfig = require('./js/config.js');
 
 
-var createFiles = function (conf) {
+let createFiles = function (conf) {
 	return function () {
 		let config = core.extend( conf, localConfig );
 		let deliveryTplId = config.yjmbID;
-		var converted = {}
-		for(var i in config) {
+		let converted = {}
+		for(let i in config) {
 			//都转成了二进制了。
 			converted[i] = iconv.encode(config[i], 'gb2312')
 		}
@@ -43,21 +43,21 @@ function createConfigFiles(fullName, config) {
 		new Error('没有指定接口类型');
 		return;
 	}
-	var sourceFileMap = config.sourceFileMap;
-	var apiType = config.apiType.toLowerCase();
+	let sourceFileMap = config.sourceFileMap;
+	let apiType = config.apiType.toLowerCase();
 	//不需要操作时，不用转码，直接写入文件。
-	var parseConfigTpl = fs.readFileSync(sourceFileMap[apiType]);
+	let parseConfigTpl = fs.readFileSync(sourceFileMap[apiType]);
 
 
 	//读取默认的配置文件，然后用业务全称替换标记处。
-	var sourceConfigTpl = fs.readFileSync(sourceFileMap['resourceConfig'])
+	let sourceConfigTpl = fs.readFileSync(sourceFileMap['resourceConfig'])
 	//转码
-	var gbSourceConfig = iconv.decode(sourceConfigTpl, 'gb2312');
+	let gbSourceConfig = iconv.decode(sourceConfigTpl, 'gb2312');
 	fullName = iconv.decode(fullName, 'gb2312');
 	//替换
 	gbSourceConfig = gbSourceConfig.replace(/{{fullName}}/g, fullName);
 	//还原
-	var buffSourceConfig = iconv.encode(gbSourceConfig, 'gb2312');
+	let buffSourceConfig = iconv.encode(gbSourceConfig, 'gb2312');
 
 	
 
@@ -65,7 +65,7 @@ function createConfigFiles(fullName, config) {
 	fs.writeFileSync('./'+fullName+'/ParseConfig.xml', parseConfigTpl)
 	fs.writeFileSync('./'+fullName+'/ResourcePackageConfig.xml', buffSourceConfig)
 	if(apiType === 'bill') {
-		var configBuff = fs.readFileSync(sourceFileMap['config'])
+		let configBuff = fs.readFileSync(sourceFileMap['config'])
 		fs.writeFileSync('./'+fullName+'/'+config.shortName+'.config', configBuff)
 	}
 }
@@ -89,11 +89,11 @@ function createTempleteFiles(fullName, config) {
 }
 //生成模板地址文件
 function createTemplateStorageFile(webUrl, wapUrl, fullName, sourceFileMap) {
-	var tpl = fs.readFileSync( sourceFileMap['tpl'] , {coding: 'UTF-8'}, function() {})
+	let tpl = fs.readFileSync( sourceFileMap['tpl'] , {coding: 'UTF-8'}, function() {})
 
-	var $ = cheerio.load(tpl);
+	let $ = cheerio.load(tpl);
 
-	var result = '';
+	let result = '';
 
 	if(webUrl) {
 		$('#web').attr('href', webUrl);

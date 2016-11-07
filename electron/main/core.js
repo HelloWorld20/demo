@@ -6,8 +6,8 @@
 
 const electron = require('electron');
 const ipcMain = electron.ipcMain;
-var iconv = require('iconv-lite');
-var fs = require('fs');
+const iconv = require('iconv-lite');
+const fs = require('fs');
 
 module.exports = {
 	//读取前台传来的值，handleRes：处理信息的方法；reply：回执信息。
@@ -63,9 +63,9 @@ module.exports = {
 	},
 
 	extend: function( target, options ) {
-	    var result = new Object();  //return一个新对象，隔断引用
+	    let result = new Object();  //return一个新对象，隔断引用
 
-	    for( var property in target ) {
+	    for( let property in target ) {
 
 	        if( this.isObject( target[ property ] || this.isArray( target[ property ] ) ) ) {
 	            //如果属性是对象和对象则递归调用，防止直接赋值引用。
@@ -76,7 +76,7 @@ module.exports = {
 	        
 	    }
 
-	    for( var property in options ) {
+	    for( let property in options ) {
 
 	        if( this.isObject( options[ property ] || this.isArray( target[ property ] ) ) ) {
 	            //如果属性是对象和对象则递归调用，防止直接赋值引用。
@@ -100,5 +100,5 @@ module.exports = {
 
 	isObject: obj => {
 	    return Object.prototype.toString.call( obj ) === '[object Object]';
-	},
+	}
 }

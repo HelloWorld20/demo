@@ -2,8 +2,7 @@
 
 const core = myRequire('./js/core.web.js');
 const config = myRequire('./js/config.web.js');
-const electron = myRequire('electron');
-const ipcRenderer = electron.ipcRenderer;
+const {ipcRenderer} = myRequire('electron');
 
 const dom = myRequire('./js/dom.web.js');
 const $ = dom.$;
@@ -11,11 +10,11 @@ const $ = dom.$;
 function init() {
 	
 	dom.initFileReader('#uploadHtml', (e) => {
-		store.webTpl = e.target.result;
+		// store.webTpl = e.target.result;
 	})
 
 	dom.initFileReader('#uploadQvga', (e) => {
-		store.wapTpl = e.target.result;
+		// store.wapTpl = e.target.result;
 	})	
 
 	//阻止表单默认事件

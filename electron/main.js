@@ -1,11 +1,9 @@
 // 载入electron模块
 const {app,BrowserWindow,ipcMain,dialog}=require("electron");
 // 创建应用程序对象
-// const app=electron.app;
-// // 创建一个浏览器窗口，主要用来加载HTML页面
-// const BrowserWindow=electron.BrowserWindow;
-// const ipcMain = electron.ipcMain;
-// const dialog = electron.dialog;
+
+// 创建一个浏览器窗口，主要用来加载HTML页面
+
 // 声明一个BrowserWindow对象实例
 
 const core = require('./main/core.js');
