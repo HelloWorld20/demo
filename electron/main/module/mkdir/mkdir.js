@@ -8,6 +8,7 @@
 "use strict"
 
 const fs = require('fs');
+const rimraf = require('rimraf');
 
 /**
  * [创建目标文件夹]

@@ -1,0 +1,31 @@
+{
+  "name": "delivery",
+  "version": "1.0.0",
+  "description": "delivery platform tools",
+  "main": "app.js",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "iconv-lite": "^0.4.13",
+    "beautify": "^0.0.8",
+    "rimraf": "^2.5.4",
+    "simple-xml2json": "^1.2.3",
+    "superagent": "^2.3.0"
+  },
+  "devDependencies": {
+    "beautify": "^0.0.8",
+    "cheerio": "^0.22.0",
+    "iconv-lite": "^0.4.13",
+    "rimraf": "^2.5.4",
+    "simple-xml2json": "^1.2.3",
+    "superagent": "^2.3.0"
+  },
+  "scripts": {
+    "watch": "node watch.js",
+    "test": "node app.js"
+  },
+  "keywords": [
+    "delivery_platform"
+  ],
+  "author": "weijianghong",
+  "license": "ISC"
+}

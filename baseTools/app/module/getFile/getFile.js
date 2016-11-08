@@ -1,0 +1,44 @@
+/**
+ * 获取生产线投递平台模板并且生成文件模块
+ * author: weijianghong
+ * date: 2016-11-08
+ */
+
+"use strict"
+
+const config = require('../../lib/config.js');
+const core = require('../../lib/core.js');
+const superagent = require('superagent');
+
+module.exports = {
+	getTemplateFile: ( cookieCombine ) => {
+		let fullName = config.fullName;
+		superagent.post( config.templateView )
+				.query( '.hdTemplateID=' + config.yjmbID )
+				.set( 'cookie', cookieCombine )	//需要登录时的cookie
+				.end((err, res) => {
+					core.handleError(err, 'Get' + config.templateView + 'error!');
+
+					let RecordSet = JSON.parse(res.text).RecordSet;
+					if(!RecordSet) throw new Error("没有返回邮件模板内容，检查ID是否有误");
+
+			        core.writeFile('./'+fullName+'/'+ fullName +'.html', core.str2Buff(RecordSet.DataTemplate));
+			        core.writeFile('./'+fullName+'/'+ fullName +'.qvga', core.str2Buff(RecordSet.Qvga))
+		    })
+	},
+	getConfigFile: ( cookieCombine ) => {
+		let fullName = config.fullName;
+		superagent.post(config.ResourceView)
+				.query('.hdResourceID=' + config.yjfzzyID)
+				.set('cookie', cookieCombine)	//需要登录时的cookie
+				.end((err, res) => {
+					core.handleError(err, 'Get' + config.ResourceView + 'error!')
+					
+					let RecordSet = JSON.parse(res.text).RecordSet;
+					if(!RecordSet) throw new Error("没有返回邮件封装资源内容，检查ID是否有误");
+
+			        core.writeFile('./'+fullName+'/ParseConfig.xml', core.str2Buff(RecordSet.ParseConfig));
+			        core.writeFile('./'+fullName+'/ResourcePackageConfig.xml', core.str2Buff(RecordSet.ResourceConfig));
+		    })
+	}
+}
