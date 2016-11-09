@@ -7,6 +7,7 @@ module.exports = {
 	yjmbID: '21477',	
 	//如果要拉取投递平台上的邮件封装资源，则填入邮件封装资源ID	
 	yjfzzyID: '13843',	
+	tplName: '',	//邮件模板名称。上传邮件模板时用到。
 	apiType: 'bill',	//投递方式：ng：NGBOSS邮件下发；bill：账单类型；api_0：api接口且infoType为0；api_2：api接口且infoType为2；
 	sourceFileName: '',	//数据文件名
 	sourceFileMap: {
@@ -23,5 +24,9 @@ module.exports = {
 
 	templateView: 'http://delivery.mail.10086.cn:9000/delivery/Services/Template/TemplateView.ashx',	//模板详情页地址
 	ResourceView: 'http://delivery.mail.10086.cn:9000/delivery/Services/EncapsulateMailResource/EncapsulateMailResourceView.ashx',
+	loginServerTest: 'http://192.168.19.115:8000/Services/Login.ashx', 		//测试线登陆服务
 	loginMessageTest: '.UserLogin%2520.txtUserName=weijianghong&.UserLogin%2520.txtPassword=WJHmail139!',//登录测试线需要的信息
+	templateEditUrlTest: 'http://192.168.19.115:8000/delivery/Services/Template/TemplateEdit.ashx',	//修改邮件模板上传路径	
+	searchPageUrlTest: 'http://192.168.19.115:8000/delivery/Services/Template/TemplateList.ashx', 		//搜索页面服务地址
+	templateViewTest: 'http://192.168.19.115:8000/delivery/Services/Template/TemplateView.ashx', 		//测试线模板详情页
 }
