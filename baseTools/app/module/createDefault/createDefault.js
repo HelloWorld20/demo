@@ -69,6 +69,7 @@ module.exports = {
 			})
 		return;	
 	},
+	//生成‘模板地址.html‘文件
 	createTemplateStorageFile: () => {
 		let webUrl = config.webUrl, 
 			wapUrl = config.wapUrl, 

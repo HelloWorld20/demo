@@ -21,10 +21,12 @@ module.exports = {
 		tpl: './tpl/tpl.html',
 		config: './tpl/config.xml'
 	},
+	username: 'weijianghong',		//投递平台的用户名
+	password: 'B0AA38EEB4DA24AC7A89A51656320621',	//投递平台的密码的32位MD5加密
 	loginMessage: '.UserLogin%2520.txtUserName=weijianghong&.UserLogin%2520.txtPassword=B0AA38EEB4DA24AC7A89A51656320621',	//登录投递平台需要的登录账号密码信息。
 	loginServer: 'http://delivery.mail.10086.cn:9000/Services/Login.ashx',	//处理登录信息地址
 
-	templateView: 'http://delivery.mail.10086.cn:9000/delivery/Services/Template/TemplateView.ashx',	//模板详情页地址
+	templateView: 'http://delivery.mail.10086.cn:9000/delivery/Services/Template/TemplateView.ashx',	//模板详情请求地址
 	ResourceView: 'http://delivery.mail.10086.cn:9000/delivery/Services/EncapsulateMailResource/EncapsulateMailResourceView.ashx',
 	loginServerTest: 'http://192.168.19.115:8000/Services/Login.ashx', 		//测试线登陆服务
 	loginMessageTest: '.UserLogin%2520.txtUserName=weijianghong&.UserLogin%2520.txtPassword=WJHmail139!',//登录测试线需要的信息
