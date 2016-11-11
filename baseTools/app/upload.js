@@ -28,12 +28,10 @@
 const fs = require('fs');
 const superagent = require('superagent');
 
-const core = require('./app/lib/core.js');
-const config = require('./app/lib/config.js');
+const core = require('./lib/core.js');
+const config = require('./lib/config.js');
 
-const spider = require('./app/module/spider/spider.js');
-
-spider( entry );
+const spider = require('./module/spider/spider.js');
 
 //流程：获取登录信息=>用模板名称去搜索模板列表=》取第一个模板ID=》进入模板详情页=>再上传信息！！
 function entry( cookieCombine ) {
@@ -75,19 +73,48 @@ function getQuery( source, webTpl, wapTpl ) {
 }
 
 
-module.exports = () => {
+module.exports = (function() {
+	console.log('upload.js')
 	//流程
 	function* Process() {
-		yield spider();		//登录
-		yield search();		//根据邮件模板名称搜索
-		yield getId();		//获取第一条记录ID（如果不止一条，可以做个提示）
-		yield getInfo();	//进入模板详情页，组成信息
+				
+		yield login();		//登录
+		// yield search();		//根据邮件模板名称搜索				
+		yield getId();		//获取第一条记录ID（如果不止一条，可以做个提示）			
+		yield getInfo();	//进入模板详情页，组成信息				
 		yield upload();		//上传模板
 		return 'ending'
 	}
 
 	let proc = Process();
 
+	proc.next();
 
+	function login() {
+		spider( search );
+	}
 
-}
+	function search( cookieCombine ) {
+		console.log('search');
+		proc.next();
+	}
+
+	function getId() {
+		console.log('getId');
+		setTimeout( () => {
+			proc.next();
+		}, 2000)
+	}
+
+	function getInfo() {
+		console.log('getInfo');
+		setTimeout( () => {
+			proc.next();
+		}, 3000)
+	}
+
+	function upload() {
+		console.log('upload');
+	}
+
+})();

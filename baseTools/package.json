@@ -17,7 +17,8 @@
     "iconv-lite": "^0.4.13",
     "rimraf": "^2.5.4",
     "simple-xml2json": "^1.2.3",
-    "superagent": "^2.3.0"
+    "superagent": "^2.3.0",
+    "superagent-charset": "^1.1.1"
   },
   "scripts": {
     "watch": "node watch.js",

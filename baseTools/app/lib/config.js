@@ -1,8 +1,10 @@
 module.exports = {
-	fullName: '广东集团客户明细账单',	//业务全称
-	shortName: 'gdjtzd',	//业务简称
-	webUrl: 'http://fun.mail.10086.cn/10086/ah/351011/ah0001.html',		//web模板地址
-	wapUrl: 'http://fun.mail.10086.cn/10086/ah/351011/ah0001_wap.html',	//wap模板地址
+	fullName: '四川和账单',	//业务全称
+	shortName: 'sche',	//业务简称
+	webUrl: 'http://fun.mail.10086.cn/bills/sc/1611/5009/index.html',		//web模板地址
+	wapUrl: 'http://fun.mail.10086.cn//bills/sc/1611/5009/index300.html',	//wap模板地址
+	//获取设计稿模板时需要。设计稿模板页面可能是utf-8或者gb2312的。需区别对待。如果乱码检查下这个参数。
+	charset: 'gb2312', 		
 	//如果要拉取投递平台上的邮件模板，则填入邮件模板ID
 	yjmbID: '21477',	
 	//如果要拉取投递平台上的邮件封装资源，则填入邮件封装资源ID	

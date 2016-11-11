@@ -1,7 +1,7 @@
 /**
  * 生成原始配置文件。
  * author: weijianghong
- * date: 2016-10-18
+ * date: 2016-11-11
  */
 "use strict"
 
@@ -9,7 +9,11 @@ const fs = require('fs');
 const superagent = require('superagent');
 const config = require('../../lib/config.js');
 const core = require('../../lib/core.js');
+const cheerio = require('cheerio');
+const charset = require('superagent-charset');
 
+//把charset方法写入superagent原型里。扩展功能
+charset(superagent);
 
 module.exports = {
 
@@ -50,17 +54,55 @@ module.exports = {
 		let fullName = config.fullName;
 		//爬取静态模板内容然后填充
 		superagent.get(config.webUrl)
+			.charset(config.charset)
 			.end(function(err, res) {
 				core.handleError(err, '获取web模板错误，请检查wap模板地址是否有误');
-				fs.writeFile('./'+fullName+'/'+ fullName +'.html', core.str2Buff(res.text), function() {})
+
+				fs.writeFile('./'+fullName+'/'+ fullName +'.html', core.str2Buff(res.text) , function() {})
 			})
 
 		superagent.get(config.wapUrl)
 			.end(function(err, res) {
-				core.handleError(err, '获取wap模板错误，请检查wap模板地址是否有误');		
+				core.handleError(err, '获取wap模板错误，请检查wap模板地址是否有误');
+
 				fs.writeFile('./'+fullName+'/'+ fullName +'.qvga', core.str2Buff(res.text), function() {})
 			})
 		return;	
+	},
+	createTemplateStorageFile: () => {
+		let webUrl = config.webUrl, 
+			wapUrl = config.wapUrl, 
+			fullName = config.fullName, 
+			sourceFileMap = config.sourceFileMap;
+		let tpl = fs.readFileSync( sourceFileMap['tpl'] , {coding: 'UTF-8'}, function() {})
+
+		let $ = cheerio.load(tpl);
+
+		let result = '';
+
+		if(webUrl) {
+			$('#web').attr('href', webUrl);
+			$('#web').html(webUrl);
+		} else {
+			$('#web').html('没有web模板地址');
+		}
+		
+		if(wapUrl) {
+			$('#wap').attr('href', wapUrl);
+			$('#wap').html(wapUrl);
+		} else {
+			$('#wap').html('没有wap模板地址');
+		}
+
+		if(fullName) {
+			$('#head').html(fullName)
+		} else {
+			$('#head').html("模板地址");
+		}
+		
+		result = $("html").html();
+
+		fs.writeFile('./'+fullName+'/模板地址.html', result, {coding: 'UTF-8'})
 	}
 }
 

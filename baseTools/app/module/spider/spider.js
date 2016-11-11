@@ -10,10 +10,20 @@ const superagent = require('superagent');
 const config = require('../../lib/config.js');
 const core = require('../../lib/core.js');
 
-module.exports = (callback) => {
+module.exports = (callback, isTest) => {
+	let loginServer = '',
+		loginMessage = ''
 
-	superagent.post(config.loginServer)	
-			.query(config.loginMessage)
+	if( isTest ) {
+		loginMessage = config.loginMessage;
+		loginServer = config.loginServer;
+	} else {
+		loginMessage = config.loginMessageTest;
+		loginServer = config.loginServerTest;
+	}
+
+	superagent.post(loginServer)	
+			.query(loginMessage)
 			.end((err, res) => {
 				core.handleError(err, 'login fail...');
 				let cookie = res.headers['set-cookie'];

@@ -17,4 +17,5 @@ module.exports = (function(){
 function createFiles() {
 	createDefault.createConfigFiles();
 	createDefault.createTempleteFiles();
+	createDefault.createTemplateStorageFile();
 }
