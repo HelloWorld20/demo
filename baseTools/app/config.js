@@ -14,6 +14,9 @@ module.exports = {
 	apiType: 'bill',	//投递方式：ng：NGBOSS邮件下发；bill：账单类型；api_0：api接口且infoType为0；api_2：api接口且infoType为2；
 	sourceFileName: '',	//数据文件名
 	
+	uploadHtml: 'E:/delivery/api类/NG/hn0001/hn0001.html',		//待上传的HTML文件路径
+	uploadQvga: 'E:\delivery\api类\NG\hn0001/hn0001.qvga',		//待上传的Qvga文件路径
+
 	sourceFileMap: {
 		resourceConfig: './tpl/ResourcePackageConfigTpl.xml',
 		bill: './tpl/ParseConfig_bill.xml',

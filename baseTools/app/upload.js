@@ -43,6 +43,7 @@ PageSize:20
 
 const fs = require('fs');
 const superagent = require('superagent');
+const iconv = require('iconv-lite');
 
 const core = require('./lib/core.js');
 const config = require('./config.js');
@@ -54,6 +55,8 @@ let TemplateIDGlo = -1;
 let cookieCombineGlo = '';
 let queryMessageGlo = {};
 let resourceIDGlo = -1;
+let uploadHtml = '';
+let uploadQvga = '';
 
 //流程：获取登录信息=>用模板名称去搜索模板列表=》取第一个模板ID=》获取模板详情，获得足够上传参数=>上传模板=》审核
 
@@ -61,7 +64,7 @@ module.exports = (function() {
 	console.log('upload.js')
 	//流程
 	function* Process() {
-				
+		console.time('upload: ')
 		yield login();		//登录						
 		yield getInfo();	//进入模板详情页，组成信息				
 		yield upload();		//上传模板
@@ -71,10 +74,14 @@ module.exports = (function() {
 
 	let proc = Process();
 
-	proc.next();
+	readFile();
 
+	//先读取要上传的文件名
 	function readFile() {
-		fs.readFileSync('')
+		uploadHtml = core.buff2Str(fs.readFileSync( config.uploadHtml ));
+		uploadQvga = core.buff2Str(fs.readFileSync( config.uploadQvga ));
+		
+		proc.next();
 	}
 
 	//获取登录session
@@ -93,10 +100,14 @@ module.exports = (function() {
 				.end( ( err, res ) => {
 					core.handleError(err, 'get template ID fail...');
 
-					let firstLog = JSON.parse(res.text).RecordSet[0];
-					if( firstLog ) {
+					let RecordSet = JSON.parse(res.text).RecordSet;
+					//如果有两条记录
+					if( RecordSet && RecordSet[1] ) {
+						console.log('该模板文件名搜索出两条记录，请上投递平台核实邮件模板是否正确。')
+					}
+					if( RecordSet && RecordSet[0] ) {
 						//暂时用全局变量存储传值
-						TemplateIDGlo = firstLog.TemplateID;
+						TemplateIDGlo = RecordSet[0].TemplateID;
 						console.log('获取模板列表成功;模板ID：' + TemplateIDGlo);
 
 						proc.next();
@@ -126,7 +137,7 @@ module.exports = (function() {
 					//对应的邮件封装资源ID，审核时用到；
 
 					resourceIDGlo = RecordSet.ConvertResourceID;		
-					queryMessageGlo =  getUploadQuery( RecordSet );
+					queryMessageGlo =  getUploadQuery( RecordSet ,uploadHtml ,uploadQvga );
 
 					proc.next();
 				})
@@ -162,6 +173,7 @@ module.exports = (function() {
 	//审核
 	function verify() {
 		console.log('正在审核。。。');
+		return;
 		superagent.post( config.verifyUrlTest )
 				.set( 'cookie', cookieCombineGlo )
 				.send( 'ResourceID=' + resourceIDGlo )
@@ -177,13 +189,10 @@ module.exports = (function() {
 						console.log('审核失败。。。');
 						console.log(res.text);
 					}
-
+					//结束计时
+					console.timeEnd('upload: ');
 				} )
 	}
-
-
-
-
 
 
 	//上传模板时需要传递的信息。
