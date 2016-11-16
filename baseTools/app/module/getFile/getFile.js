@@ -6,7 +6,7 @@
 
 "use strict"
 
-const config = require('../../lib/config.js');
+const config = require('../../config.js');
 const core = require('../../lib/core.js');
 const superagent = require('superagent');
 

@@ -7,7 +7,7 @@
 "use strict"
 
 const superagent = require('superagent');
-const config = require('../../lib/config.js');
+const config = require('../../config.js');
 const core = require('../../lib/core.js');
 
 module.exports = (callback, isTest) => {
@@ -22,7 +22,7 @@ module.exports = (callback, isTest) => {
 		loginMessage = config.loginMessage;
 		loginServer = config.loginServer;
 	}
-
+	console.log('正在登录。。。');
 	superagent.post(loginServer)	
 			.query(loginMessage)
 			.end((err, res) => {
@@ -35,6 +35,7 @@ module.exports = (callback, isTest) => {
 				//cookie里只需要LoggedName和ASP.NET_SessionId就可以，多点无所谓；
 				cookieCombine = cookie[0] + '; LoggedName=' + config.username; 
 
+				console.log('登录成功：' + cookieCombine);
 				//如果参数是函数，生成的组合cookie传给回调函数
 				if( core.isFunction( callback ) )  callback( cookieCombine );
 

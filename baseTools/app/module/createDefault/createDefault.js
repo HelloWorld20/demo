@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const superagent = require('superagent');
-const config = require('../../lib/config.js');
+const config = require('../../config.js');
 const core = require('../../lib/core.js');
 const cheerio = require('cheerio');
 const charset = require('superagent-charset');

@@ -7,12 +7,12 @@
 "use strict"
 
 const superagent = require('superagent');
-const config = require('./lib/config.js');
+const config = require('./config.js');
 
 const spider = require('./module/spider/spider.js');
 const mkdir = require('./module/mkdir/mkdir.js');
 const getFile = require('./module/getFile/getFile.js');
-const createTplAddr = require('./module/createTplAddr/createTplAddr.js');
+const createTemplateStorageFile = require('./module/createDefault/createDefault.js').createTemplateStorageFile;
 
 module.exports = (function() {
 	console.log('getFile.js entry');
@@ -45,7 +45,7 @@ function entry( cookieCombine ) {
 		throw new Error('没有邮件封装资源ID')
 	}
 	//生成“模板地址.html”文件
-	createTplAddr.createTemplateStorageFile();
+	createTemplateStorageFile();
 
 }
 
