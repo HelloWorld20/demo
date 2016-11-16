@@ -1,41 +1,7 @@
 /**
- * 上传模板到测试线
- */
-//放弃，搁置，流程太复杂
-
-//上传邮件模板需要的内容
-//这些值都藏在邮件模板详情页面templateView里。
-//就是对应的className，直接$(".name").val()就出来
-//要上传的参数名  => 对应获取的参数名
-/*.hdTemplateID:5233  =>  TemplateID
-.hdResourceID:4209  =>  ConvertResourceID
-.hdOrigResourceID:0  =>  OrigResourceID
-.hdCompanyID:16  =>  CompanyID
-.hdBusinessID:915  =>  BusinessID
-.txtTemplateName:%B9  =>  TemplateName
-.hdUploadType:0  =>  UploadType
-.txtWapScript:  =>  WapScript(wap模板)
-.txtRemark:  =>  Remark
-.txtCode:html%3E  =>  web模板
-.txtSynUrl:  =>  SynUrl
-.txtPath:  =>  Path
-.txtQvga:html%3E  =>  wap模板
-.txtQvgaUrl:  =>  QvgaUrl*/
-
-/**
- * 搜索邮件模板时传的参数
- * 
- * .hdCompanyID:0
-.hdBusinessID:0
-.hdResourceID:0
-.hdBusinessTypeID:0
-.txtTemplateID:
-.txtTemplateName:%E6%B2%B3%E5%8C%971008611%E8%AF%9D%E8%B4%B9%E6%9F%A5%E8%AF%A2
-.txtSender:
-.txtStartDate:
-.txtEndDate:
-CurPage:0
-PageSize:20
+ * description：上传模板到测试线
+ * author：weijianghong
+ * date：2016-11-16
  */
 
 "use strict"
@@ -80,7 +46,7 @@ module.exports = (function() {
 	function readFile() {
 		uploadHtml = core.buff2Str(fs.readFileSync( config.uploadHtml ));
 		uploadQvga = core.buff2Str(fs.readFileSync( config.uploadQvga ));
-		
+
 		proc.next();
 	}
 
@@ -134,8 +100,8 @@ module.exports = (function() {
 					core.handleError(err, 'get template detail fail...');
 
 					let RecordSet = JSON.parse(res.text).RecordSet;
-					//对应的邮件封装资源ID，审核时用到；
 
+					//对应的邮件封装资源ID，审核时用到；
 					resourceIDGlo = RecordSet.ConvertResourceID;		
 					queryMessageGlo =  getUploadQuery( RecordSet ,uploadHtml ,uploadQvga );
 

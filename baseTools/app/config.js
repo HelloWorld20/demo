@@ -15,7 +15,7 @@ module.exports = {
 	sourceFileName: '',	//数据文件名
 	
 	uploadHtml: 'E:/delivery/api类/NG/hn0001/hn0001.html',		//待上传的HTML文件路径
-	uploadQvga: 'E:\delivery\api类\NG\hn0001/hn0001.qvga',		//待上传的Qvga文件路径
+	uploadQvga: 'E:/delivery/api类/NG/hn0001/hn0001.qvga',		//待上传的Qvga文件路径
 
 	sourceFileMap: {
 		resourceConfig: './tpl/ResourcePackageConfigTpl.xml',
