@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
     <title>Hello World!</title>
-<link rel="stylesheet" type="text/css" href="css/lib/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="./app/lib/css/bootstrap.css">
 <style type="text/css">
 
 body{
@@ -37,48 +37,44 @@ input[type="file"] {
 </style>
 <script type="text/javascript">
 //重命名require,exports,module并且删除掉这些对象，解决jquery不能使用的问题。
-window.myRequire = window.require;
-window.exports = window.myExports;
-window.module = window.myModule;
+// window.myRequire = window.require;
+// window.exports = window.myExports;
+// window.module = window.myModule;
 
-delete window.require;
-delete window.exports;
-delete window.module;
+// delete window.require;
+// delete window.exports;
+// delete window.module;
 
 </script>
 </head>
 <body>
-    <h1>Hello World!</h1>
+    <h1>139投递平台</h1>
     We are using io.js <script>document.write(process.version)</script>
     and Electron <script>document.write(process.versions['electron'])</script>.
     <hr>
 
     <ul id="nav" class="nav nav-tabs">
     	<li><a data-href="#loginPage">登陆</a></li>
-    	<li class="active"><a data-href="#configPage">生成原始文件配置</a></li>
-    	<li><a data-href="#spiderPage">爬取生产线配置</a></li>
+    	<li class="active"><a data-href="#initPage">生成原始文件配置</a></li>
+    	<li><a data-href="#getFilePage">爬取生产线配置</a></li>
+    	<li><a data-href="#uploadFilePage">上传邮件模板</a></li>
     </ul>
 
     <br>
 
 	<div class="tab relative">
+		<!-- 登录 start -->
     	<div id="loginPage" class="tab-pane hide">
     		登陆(暂不需要)
     	</div>
-    	<div id="configPage" class="tab-pane">
-			<label class="btn btn-default btn-file">
-		    	上传html模板
-				<input id="uploadHtml" type="file" name="html">
-		    </label>
-		    <label class="btn btn-default btn-file">
-		    	上传qvga模板
-				<input id="uploadQvga" type="file" name="qvga">
-		    </label>    
-		    <hr>
+		<!-- 登录 end -->
+    	<!-- 生成原始文件配置 start -->
+    	<div id="initPage" class="tab-pane">
+
 		    <button class="btn btn-large btn-primary" id="selectPath">选择生成路径</button>
 		    <span id="path">empty</span>
-		    <form name="default">
-		        <table id="defaultConf" class="table">
+		    <form name="init">
+		        <table id="initTable" class="table">
 		            <thead>
 		                <th width="15%">名称</th>
 		                <th width="60%">内容</th>
@@ -134,10 +130,11 @@ delete window.module;
 		        <input class="btn btn-large btn-primary" type="reset" value="清空表格">
 		    </form>
     	</div>
-
-    	<div id="spiderPage" class="tab-pane hide">
-    		<form name="spider">
-		        <table id="spiderConf" class="table">
+		<!-- 生成原始文件配置 end -->
+		<!-- 爬取生产线配置 start -->
+    	<div id="getFilePage" class="tab-pane hide">
+    		<form name="getPage">
+		        <table id="getPageTable" class="table">
 		            <thead>
 		                <th width="15%">名称</th>
 		                <th width="60%">内容</th>
@@ -152,14 +149,7 @@ delete window.module;
 		                    <td>
 		                        <p>必须。</p>
 		                    </td>
-		                </tr>
-		                <tr>
-		                    <td>业务简称：</td>
-		                    <td>
-		                        <input class="form-control" type="text" name="shortName" required="required" placeholder="gdjtmx" value="gdjtmx">
-		                    </td>
-		                    <td><p>必须。</p></td>
-		                </tr>
+		                </tr> 
 		                <tr>
 		                    <td>邮件模板ID：</td>
 		                    <td>
@@ -178,6 +168,15 @@ delete window.module;
 		                        <p>非必须。</p>
 		                    </td>
 		                </tr>
+		                <tr>
+		                    <td>编码格式：</td>
+		                    <td>
+		                        <input class="form-control" type="text" name="apiType" required="required" placeholder="utf-8" value="utf-8">
+		                    </td>
+		                    <td>
+		                        <p>必须。</p>
+		                    </td>
+		                </tr>
 		               
 		            </tbody>
 		        </table>
@@ -186,43 +185,77 @@ delete window.module;
 		    </form>
 			
     	</div>
+		<!-- 爬取生产线配置 end -->
+
+    	<!-- 上传邮件模板 start -->
+    	<div id="uploadFilePage" class="tab-pane hide">
+    		<form name="upload">
+		        <table id="uploadTable" class="table">
+		            <thead>
+		                <th width="15%">名称</th>
+		                <th width="60%">内容</th>
+		                <th width="25%">说明</th>
+		            </thead>
+		            <tbody>
+		                <tr>
+		                    <td>业务全称：</td>
+		                    <td>
+		                        <input class="form-control" type="text" name="fullName" required="required" placeholder="广东集团客户明细账单" value="广东集团客户明细账单">
+		                    </td>
+		                    <td>
+		                        <p>必须。</p>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>邮件模板名称：</td>
+		                    <td>
+		                        <input class="form-control" type="text" name="yjmbID" required="required"  placeholder="21639" value="21639">
+		                    </td>
+		                    <td>
+		                        <p>非必须。</p>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>HTML模板路径：</td>
+		                    <td>
+		                        <label class="btn btn-primary btn-file">
+							    	上传html模板
+									<input id="uploadHtml" type="file" name="html">
+							    </label>
+		                    </td>
+		                    <td>
+		                        <p>非必须。</p>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td>QVGA模板路径：</td>
+		                    <td>
+		                        
+							    <label class="btn btn-primary btn-file">
+							    	上传qvga模板
+									<input id="uploadQvga" type="file" name="qvga">
+							    </label>
+		                    </td>
+		                    <td>
+		                        <p>非必须。</p>
+		                    </td>
+		                </tr>
+		               
+		            </tbody>
+		        </table>
+		        <button id="spider" class="btn btn-large btn-primary">一键上传模板</button>
+		        <input class="btn btn-large btn-primary" type="reset" value="清空表格">
+		    </form>
+    	</div>
+    	<!-- 上传邮件模板 end -->
 
     </div> 
     
 </body>
-<script type="text/javascript" src="./js/maven/index.web.js"></script>
-<script type="text/javascript" src="./js/lib/jquery-3.1.0.js"></script>
+
+<script type="text/javascript" src="./app/index.dom.js"></script>
 <script type="text/javascript">
-
-//初始化tab切换
-function initTabs() {
-	var nav = document.querySelectorAll('#nav');
-
-	nav[0].onclick = function(e) {
-		e.preventDefault();
-
-		if(e.target.tagName !== 'A') return;
-
-		var panes = document.querySelectorAll('.tab-pane');
-		var tabs = document.querySelectorAll('#nav li');
-		tabs.forEach(function( item ) {
-			jQuery(item).removeClass('active');
-		})
-		panes.forEach(function( item ) {
-			jQuery(item).addClass('hide');
-		})
-
-		jQuery(e.target).parent().addClass('active');
-
-		var paneId = e.target.getAttribute('data-href');
-		var target = document.querySelectorAll(paneId);
-		jQuery(target).removeClass('hide');
-	}
-}
-
-initTabs();
-
-
+"use strict"
 
 
 </script>

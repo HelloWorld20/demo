@@ -1,14 +1,14 @@
 module.exports = {
-	fullName: 'hn0007',	//业务全称
-	shortName: 'jxllzd',	//业务简称
+	fullName: '湖南流量账单',	//业务全称
+	shortName: 'hnllzd',	//业务简称
 	webUrl: 'http://fun.mail.10086.cn/bills/gz/351114/index.html',		//web模板地址
 	wapUrl: 'http://fun.mail.10086.cn/bills/gz/351114/wap.html',	//wap模板地址
 	//获取设计稿模板时需要。设计稿模板页面可能是utf-8或者gb2312的。需区别对待。如果乱码检查下这个参数。
 	charset: 'utf-8', 		
 	//如果要拉取投递平台上的邮件模板，则填入邮件模板ID
-	yjmbID: '20066',	
+	yjmbID: '21837',	
 	//如果要拉取投递平台上的邮件封装资源，则填入邮件封装资源ID	
-	yjfzzyID: '12722',	
+	yjfzzyID: '14102',	
 	tplName: '河北1008611话费查询热线节点',		//上传邮件模板时需要用到的模板名称。
 	confName: '河北1008611话费查询热线节点', 	//上传邮件模板时需要用到的封装资源名称。
 	apiType: 'bill',	//投递方式：ng：NGBOSS邮件下发；bill：账单类型；api_0：api接口且infoType为0；api_2：api接口且infoType为2；
