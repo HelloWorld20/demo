@@ -53,6 +53,7 @@ module.exports = {
 	createTempleteFiles: () => {
 		let fullName = config.fullName;
 		//爬取静态模板内容然后填充
+		if( !config.webUrl ) return;
 		superagent.get(config.webUrl)
 			.charset(config.charset)
 			.end(function(err, res) {
@@ -61,6 +62,7 @@ module.exports = {
 				fs.writeFile('./'+fullName+'/'+ fullName +'.html', core.str2Buff(res.text) , function() {})
 			})
 
+		if( !config.wapUrl ) return;
 		superagent.get(config.wapUrl)
 			.end(function(err, res) {
 				core.handleError(err, '获取wap模板错误，请检查wap模板地址是否有误');

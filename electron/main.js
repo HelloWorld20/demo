@@ -6,14 +6,78 @@ const {app,BrowserWindow,ipcMain,dialog}=require("electron");
 
 // 声明一个BrowserWindow对象实例
 
-
+const core = require('./main/lib/core.js');
 
 
 let mainWindow;
 
 function init() {
+    core.get( (event, res) => {
+        let method = res.method;
+        let value = res.value;
+
+        if(method === 'dialog') {   //打开选择文件夹对话框
+            handleDialog( event );
+        } else if (method === 'fileDialog') {
+            handleFileDialog( event );
+        } else if (method === 'init') {     //初始化关键文件
+            handleInit( value );
+        } else if (method === 'upload') {       //上传文件
+            handleUpload( value );
+        } else if (method === 'getFile') {      //爬取文件
+            handleGetFile( value );
+        } else if (method === 'test' ) {        //测试
+            test( value );
+        } else if (method === '' ) {
+
+        }
+
+
+
+    })
     
-    
+}
+
+function test( value ) {
+    console.log( value );
+}
+
+function handleDialog( event ) {
+    dialog.showOpenDialog(mainWindow, {
+        properties: [ 'openDirectory' ],
+        defaultPath: __dirname
+    }, function(path) {
+        if(path) {
+            event.sender.send('path', path);
+        } else {
+            event.sender.send('path', 'please select a path')
+        }
+    })
+}
+
+function handleFileDialog ( event ) {
+    dialog.showOpenDialog(mainWindow, {
+        properties: [ 'openFile' ],
+        defaultPath: __dirname
+    }, function(path) {
+        if(path) {
+            event.sender.send('path', path);
+        } else {
+            event.sender.send('path', 'please select a path')
+        }
+    })
+}
+
+function handleInit( value ) {
+
+}
+
+function handleUpload( value ) {
+
+}
+
+function handleGetFile( value ) {
+
 }
 
 

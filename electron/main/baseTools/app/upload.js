@@ -44,8 +44,8 @@ module.exports = (function() {
 
 	//先读取要上传的文件名
 	function readFile() {
-		uploadHtml = core.buff2Str(fs.readFileSync( config.uploadHtml ));
-		uploadQvga = core.buff2Str(fs.readFileSync( config.uploadQvga ));
+		uploadHtml = core.buff2Str(fs.readFileSync( config.uploadHtml || '' ));
+		uploadQvga = core.buff2Str(fs.readFileSync( config.uploadQvga || '' ));
 
 		proc.next();
 	}

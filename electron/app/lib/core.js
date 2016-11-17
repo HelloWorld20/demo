@@ -1,6 +1,7 @@
 /**
  * description：我的核心函数库
  * author：weijianghong
+ * date：2016-11-17
  * list：getClass;hasClass;addClass;removeClass;extend;queue;throttle;debounc;ajax;isArray;isFunction;isObject;isElement;
  */
 
@@ -8,6 +9,10 @@
 
 module.exports = {
     $: function ( selector ) {
+        return document.querySelector( selector );
+    },
+
+    $$: function ( selector ) {
         return document.querySelectorAll( selector );
     },
     /**
