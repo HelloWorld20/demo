@@ -5,10 +5,9 @@
 "use strict"
 
 const fs = require('fs');
-const core = require('./lib/core.js')
 const config = require('./config.js');
-const mkdir = require('./module/mkdir/mkdir.js');
-const createDefault = require('./module/createDefault/createDefault.js');
+const mkdir = require('./module/mkdir.js');
+const createDefault = require('./module/createDefault.js');
 
 module.exports = (function(){
 	mkdir( config.fullName, createFiles );

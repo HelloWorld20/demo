@@ -7,8 +7,8 @@
 "use strict"
 
 const superagent = require('superagent');
-const config = require('../../config.js');
-const core = require('../../lib/core.js');
+const config = require('../config.js');
+const core = require('../lib/core.js');
 
 module.exports = (callback, isTest) => {
 	let loginServer = '',

@@ -9,10 +9,10 @@
 const superagent = require('superagent');
 const config = require('./config.js');
 
-const spider = require('./module/spider/spider.js');
-const mkdir = require('./module/mkdir/mkdir.js');
-const getFile = require('./module/getFile/getFile.js');
-const createTemplateStorageFile = require('./module/createDefault/createDefault.js').createTemplateStorageFile;
+const spider = require('./module/spider.js');
+const mkdir = require('./module/mkdir.js');
+const getFile = require('./module/getFile.js');
+const createTemplateStorageFile = require('./module/createDefault.js').createTemplateStorageFile;
 
 module.exports = (function() {
 	console.log('getFile.js entry');

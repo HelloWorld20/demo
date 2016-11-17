@@ -14,7 +14,7 @@ const iconv = require('iconv-lite');
 const core = require('./lib/core.js');
 const config = require('./config.js');
 
-const spider = require('./module/spider/spider.js');
+const spider = require('./module/spider.js');
 
 //以下都是为了异步传值的全局变量。暂时这么用
 let TemplateIDGlo = -1;
