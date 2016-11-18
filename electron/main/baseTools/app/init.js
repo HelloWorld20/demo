@@ -20,7 +20,7 @@ module.exports = ( conf ) => {
 
 	//就在入口处和并配置文件；
 	let confCombine = core.extend( config, temp );
-	// console.log(conf)
+
 	mkdir( confCombine.fullName, () => {
 		createFiles( confCombine )
 	});

@@ -106,13 +106,13 @@ let main = {
 		return config;
 	},
 
-	handleReadHtml: res => {
-		store.html = res;
-	},
+	// handleReadHtml: res => {
+	// 	store.html = res;
+	// },
 
-	handleReadQvga: res => {
-		store.qvga = res;
-	},
+	// handleReadQvga: res => {
+	// 	store.qvga = res;
+	// },
 
 	//点击之后弹出文件夹对话框，然后返回路径
 	initPathSelector: ( selector, callback ) => {
@@ -153,15 +153,10 @@ main.initTabs();
 main.disableSubmit();
 
 //挂载fileReader
-main.initReader( $("#uploadHtml") , main.handleReadHtml );
-main.initReader( $("#uploadQvga") , main.handleReadQvga );
+// main.initReader( $("#uploadHtml") , main.handleReadHtml );
+// main.initReader( $("#uploadQvga") , main.handleReadQvga );
 
 
-
-//初始化 选择文件夹 按钮
-main.initPathSelector( '#selectPath', res => {
-	console.log(res);
-})
 
 //初始化 选择文件 按钮,注意是文件，不是文件夹
 main.initFileSelector( '#uploadHtml', res => {

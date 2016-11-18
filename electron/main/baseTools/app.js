@@ -11,5 +11,3 @@ const upload = require('./app/upload.js');
 module.exports = (function() {
 	upload();
 })()
-
-// no such file or directory, open E:\demo\demo\electron\main\baseTools\tpl\ParseConfig_bill.xml

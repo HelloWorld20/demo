@@ -35,22 +35,14 @@ input[type="file"] {
 	border-bottom: 2px solid #eee;
 }
 </style>
-<script type="text/javascript">
-//重命名require,exports,module并且删除掉这些对象，解决jquery不能使用的问题。
-// window.myRequire = window.require;
-// window.exports = window.myExports;
-// window.module = window.myModule;
-
-// delete window.require;
-// delete window.exports;
-// delete window.module;
-
-</script>
 </head>
 <body>
     <h1>139投递平台</h1>
     We are using io.js <script>document.write(process.version)</script>
     and Electron <script>document.write(process.versions['electron'])</script>.
+    <br />
+    <br />
+    文件生成目录：<script>document.write(__dirname)</script>
     <hr>
 
     <ul id="nav" class="nav nav-tabs">
@@ -72,8 +64,6 @@ input[type="file"] {
     	<!-- 生成原始文件配置 start -->
     	<div id="initPage" class="tab-pane">
 
-		    <button class="btn btn-large btn-primary" id="selectPath">选择生成路径</button>
-		    <span id="path">empty</span>
 		    <form name="init">
 		        <table id="initTable" class="table">
 		            <thead>
