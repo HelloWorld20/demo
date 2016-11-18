@@ -27,9 +27,13 @@ let uploadQvga = '';
 //流程：获取登录信息=>用模板名称去搜索模板列表=》取第一个模板ID=》获取模板详情，获得足够上传参数=>上传模板=》审核
 
 
-module.exports = () => {
+module.exports = ( conf ) => {
 
-	console.log('upload.js')
+	console.log('upload.js');
+
+	//就在入口处和并配置文件；
+	let confCombine = core.extend( config, conf );
+
 	//流程
 	function* Process() {
 		console.time('upload: ')
@@ -46,8 +50,8 @@ module.exports = () => {
 
 	//先读取要上传的文件名
 	function readFile() {
-		uploadHtml = core.buff2Str(fs.readFileSync( config.uploadHtml || '' ));
-		uploadQvga = core.buff2Str(fs.readFileSync( config.uploadQvga || '' ));
+		uploadHtml = core.buff2Str(fs.readFileSync( confCombine.uploadHtml || '' ));
+		uploadQvga = core.buff2Str(fs.readFileSync( confCombine.uploadQvga || '' ));
 
 		proc.next();
 	}
@@ -59,12 +63,12 @@ module.exports = () => {
 
 	//搜索模板列表，获取第一条记录的模板ID
 	function search( cookieCombine ) {
-		console.log('正在获取模板列表。。。');
+		console.log('get template list....');
 
 		cookieCombineGlo = cookieCombine;
-		superagent.post( config.searchPageUrlTest )
+		superagent.post( confCombine.searchPageUrlTest )
 				.set( 'cookie', cookieCombine )	//需要登录时的cookie
-				.query( getListQuery( config.tplName ) )
+				.query( getListQuery( confCombine.tplName ) )
 				.end( ( err, res ) => {
 					core.handleError(err, 'get template ID fail...');
 
@@ -95,7 +99,7 @@ module.exports = () => {
 	function getInfo() {
 		console.log('正在获取模板详情。。。');
 
-		superagent.post( config.templateViewTest )
+		superagent.post( confCombine.templateViewTest )
 				.set( 'cookie', cookieCombineGlo )
 				.query( '.hdTemplateID=' + TemplateIDGlo )
 				.end( (err, res) => {
@@ -116,7 +120,7 @@ module.exports = () => {
 	function upload() {
 		console.log('正在上传模板详情。。。');
 
-		superagent.post( config.templateEditUrlTest )
+		superagent.post( confCombine.templateEditUrlTest )
 				.set( 'cookie', cookieCombineGlo )
 				.send( queryMessageGlo )
 				.end( (err, res) => {
@@ -125,11 +129,11 @@ module.exports = () => {
 					let ret = JSON.parse(res.text);
 
 					if( ret.Result ) {
-						console.log('上传模板成功。。。');
+						console.log('upload template success....');
 
 						proc.next();
 					} else {
-						console.log('上传模板失败。。。');
+						console.log('upload template fail....');
 						console.log(res.text);
 
 					}
@@ -140,9 +144,8 @@ module.exports = () => {
 
 	//审核
 	function verify() {
-		console.log('正在审核。。。');
-		return;
-		superagent.post( config.verifyUrlTest )
+		console.log('verifing....');
+		superagent.post( confCombine.verifyUrlTest )
 				.set( 'cookie', cookieCombineGlo )
 				.send( 'ResourceID=' + resourceIDGlo )
 				.end( ( err, res ) => {
@@ -151,10 +154,10 @@ module.exports = () => {
 					let ret = JSON.parse(res.text);
 
 					if( ret.Result ) {
-						console.log( '审核成功。。。' );
+						console.log( 'verify success....' );
 						proc.next();
 					} else {
-						console.log('审核失败。。。');
+						console.log('verify fail....');
 						console.log(res.text);
 					}
 					//结束计时

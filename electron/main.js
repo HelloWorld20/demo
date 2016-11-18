@@ -11,6 +11,7 @@ const core = require('./main/lib/core.js');
 
 const init = require('./main/baseTools/app/init.js');
 const getFile = require('./main/baseTools/app/getFile.js');
+const upload = require('./main/baseTools/app/upload.js')
 
 
 let mainWindow;
@@ -93,7 +94,10 @@ function handleGetFile( value ) {
 
 //处理 模板上传
 function handleUpload( value ) {
+    //保证传入的是一个配置对象
+    let conf = core.isObject(value) ? value : {};
 
+    upload( conf );
 }
 
 
