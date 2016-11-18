@@ -7,9 +7,9 @@ const core = require('./app/lib/core.js');
 //用于存储数据，以后要做成模块
 let store = {}
 
-
 let $ = core.$;
 let $$ = core.$$;
+
 let main = {
 	//webContent发送main消息到main Process。callback是处理main Process返回消息的方法
 	send: (message, callback) => {
@@ -36,7 +36,6 @@ let main = {
 	removeListener: (name, callback) => {
 		ipcRenderer.removeListener(name, callback);
 	},
-
 
 
 	//////////////////////////////
@@ -147,8 +146,8 @@ let main = {
 // 入口
 ;(function(main) {
 
+let htmlTpl, qvgaTpl;
 
-let getFileConf, uploadConf, initConf, htmlTpl, qvgaTpl;
 
 main.initTabs();
 main.disableSubmit();
@@ -157,21 +156,44 @@ main.disableSubmit();
 main.initReader( $("#uploadHtml") , main.handleReadHtml );
 main.initReader( $("#uploadQvga") , main.handleReadQvga );
 
-//三个表的配置内容
-getFileConf = main.getConfig( '#getFilePage tbody input' );
-uploadConf = main.getConfig( '#uploadPage tbody input' );
-initConf = main.getConfig( '#initPage tbody input' );
 
-//初始化选择文件夹路径
+
+//初始化 选择文件夹 按钮
 main.initPathSelector( '#selectPath', res => {
 	console.log(res);
 })
+
+//初始化 选择文件 按钮,注意是文件，不是文件夹
 main.initFileSelector( '#uploadHtml', res => {
-	console.log(res);
+	$("#uploadHtmlInput").setAttribute('value', res);
 })
 main.initFileSelector( '#uploadQvga', res => {
-	console.log(res);
+	$("#uploadQvgaInput").setAttribute('value', res);
 })
 
 
+//绑定一键生成初始文件按钮；
+$("#init").onclick = function(e) {
+
+	let initConf = main.getConfig( '#initPage tbody input' );
+
+	main.send( {method: 'init', value: initConf} );
+
+}
+//绑定生产线爬取按钮；
+$("#getFile").onclick = function(e) {
+
+	let getFileConf = main.getConfig( '#getFilePage tbody input' );
+
+	main.send( {method: 'getFile', value: getFileConf} );
+
+}
+//绑定一键上传邮件模板按钮；
+$("#upload").onclick = function(e) {
+
+	let uploadConf = main.getConfig( '#uploadFilePage tbody input' );
+
+	main.send( {method: 'upload', value: uploadConf} );
+
+}
 })(main);

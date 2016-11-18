@@ -11,13 +11,13 @@ const core = require('../lib/core.js');
 const superagent = require('superagent');
 
 module.exports = {
-	getTemplateFile: ( cookieCombine ) => {
-		let fullName = config.fullName;
-		superagent.post( config.templateView )
-				.query( '.hdTemplateID=' + config.yjmbID )
+	getTemplateFile: ( cookieCombine, conf ) => {
+		let fullName = conf.fullName;
+		superagent.post( conf.templateView )
+				.query( '.hdTemplateID=' + conf.yjmbID )
 				.set( 'cookie', cookieCombine )	//需要登录时的cookie
 				.end((err, res) => {
-					core.handleError(err, 'Get' + config.templateView + 'error!');
+					core.handleError(err, 'Get' + conf.templateView + 'error!');
 
 					let RecordSet = JSON.parse(res.text).RecordSet;
 					if(!RecordSet) throw new Error("没有返回邮件模板内容，检查ID是否有误");
@@ -26,13 +26,13 @@ module.exports = {
 			        core.writeFile('./'+fullName+'/'+ fullName +'.qvga', core.str2Buff(RecordSet.Qvga))
 		    })
 	},
-	getConfigFile: ( cookieCombine ) => {
-		let fullName = config.fullName;
-		superagent.post(config.ResourceView)
-				.query('.hdResourceID=' + config.yjfzzyID)
+	getConfigFile: ( cookieCombine, conf ) => {
+		let fullName = conf.fullName;
+		superagent.post(conf.ResourceView)
+				.query('.hdResourceID=' + conf.yjfzzyID)
 				.set('cookie', cookieCombine)	//需要登录时的cookie
 				.end((err, res) => {
-					core.handleError(err, 'Get' + config.ResourceView + 'error!')
+					core.handleError(err, 'Get' + conf.ResourceView + 'error!')
 					
 					let RecordSet = JSON.parse(res.text).RecordSet;
 					if(!RecordSet) throw new Error("没有返回邮件封装资源内容，检查ID是否有误");

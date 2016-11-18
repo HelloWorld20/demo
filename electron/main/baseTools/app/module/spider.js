@@ -10,6 +10,12 @@ const superagent = require('superagent');
 const config = require('../config.js');
 const core = require('../lib/core.js');
 
+/**
+ * [登录程序，访问登录服务器，获取sessionID，拼接关键的cookie]
+ * @param  {Function} callback [回调函数，登录成功后会把关键的cookie值填充给callback]
+ * @param  {Boolean}  isTest   [是否登录测试线，true：测试线；false：生产线]
+ * @return {[type]}            [description]
+ */
 module.exports = (callback, isTest) => {
 	let loginServer = '',
 		loginMessage = ''

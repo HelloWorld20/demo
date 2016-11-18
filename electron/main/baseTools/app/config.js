@@ -1,3 +1,7 @@
+/**
+ * description：默认配置
+ */
+
 module.exports = {
 	fullName: '湖南流量账单',	//业务全称
 	shortName: 'hnllzd',	//业务简称
@@ -18,13 +22,13 @@ module.exports = {
 	uploadQvga: 'E:/delivery/api类/NG/hn0001/hn0001.qvga',		//待上传的Qvga文件路径
 
 	sourceFileMap: {
-		resourceConfig: './tpl/ResourcePackageConfigTpl.xml',
-		bill: './tpl/ParseConfig_bill.xml',
-		ng: './tpl/ParseConfig_ng.xml',
-		api_0: './tpl/ParseConfig_api_0.xml',
-		api_2: './tpl/ParseConfig_api_2.xml',
-		tpl: './tpl/tpl.html',
-		config: './tpl/config.xml'
+		resourceConfig: __dirname + '/tpl/ResourcePackageConfigTpl.xml',
+		bill: __dirname + '/tpl/ParseConfig_bill.xml',
+		ng: __dirname + '/tpl/ParseConfig_ng.xml',
+		api_0: __dirname + '/tpl/ParseConfig_api_0.xml',
+		api_2: __dirname + '/tpl/ParseConfig_api_2.xml',
+		tpl: __dirname + '/tpl/tpl.html',
+		config: __dirname + '/tpl/config.xml'
 	},
 	username: 'weijianghong',		//投递平台的用户名
 	password: 'B0AA38EEB4DA24AC7A89A51656320621',	//投递平台的密码的32位MD5加密

@@ -1,17 +1,24 @@
+/**
+ * description：electron后台进程。
+ */
+"use strict"
+
 // 载入electron模块
 const {app,BrowserWindow,ipcMain,dialog}=require("electron");
-// 创建应用程序对象
 
-// 创建一个浏览器窗口，主要用来加载HTML页面
-
-// 声明一个BrowserWindow对象实例
 
 const core = require('./main/lib/core.js');
+
+const init = require('./main/baseTools/app/init.js');
+const getFile = require('./main/baseTools/app/getFile.js');
 
 
 let mainWindow;
 
-function init() {
+//自定义方法入口
+function entry() {
+
+    //监听前端页面传过来的方法。分开处理请求
     core.get( (event, res) => {
         let method = res.method;
         let value = res.value;
@@ -32,16 +39,16 @@ function init() {
 
         }
 
-
-
     })
     
 }
 
 function test( value ) {
-    console.log( value );
+
+    
 }
 
+//弹出 选取文件夹 对话框，返回文件夹路径
 function handleDialog( event ) {
     dialog.showOpenDialog(mainWindow, {
         properties: [ 'openDirectory' ],
@@ -55,6 +62,7 @@ function handleDialog( event ) {
     })
 }
 
+//弹出 选取文件 对话框，返回文件路径
 function handleFileDialog ( event ) {
     dialog.showOpenDialog(mainWindow, {
         properties: [ 'openFile' ],
@@ -67,19 +75,26 @@ function handleFileDialog ( event ) {
         }
     })
 }
-
+//处理 一键生成初始化文件
 function handleInit( value ) {
+    //保证传入的是一个配置对象
+    let conf = core.isObject(value) ? value : {}
 
+    init( conf );
 }
 
+//处理爬取文件
+function handleGetFile( value ) {
+    //保证传入的是一个配置对象
+    let conf = core.isObject(value) ? value : {};
+
+    getFile( conf );
+}
+
+//处理 模板上传
 function handleUpload( value ) {
 
 }
-
-function handleGetFile( value ) {
-
-}
-
 
 
 // 定义一个创建浏览器窗口的方法
@@ -99,8 +114,9 @@ function createWindow(){
         mainWindow = null;
     });
 
+    mainWindow.openDevTools();
     //自己写的方法流程入口；
-    init();
+    entry();
 
 }
 

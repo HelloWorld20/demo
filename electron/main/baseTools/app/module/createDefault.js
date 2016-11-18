@@ -7,7 +7,6 @@
 
 const fs = require('fs');
 const superagent = require('superagent');
-const config = require('../config.js');
 const core = require('../lib/core.js');
 const cheerio = require('cheerio');
 const charset = require('superagent-charset');
@@ -18,16 +17,17 @@ charset(superagent);
 module.exports = {
 
 	//生成配置文件ParseConfig.xml和ResourcePackageConfig.xml
-	createConfigFiles: () => {
-		let fullName = config.fullName;
-		if(!config.apiType) {
+	createConfigFiles: ( conf ) => {
+
+		let fullName = conf.fullName;
+		if(!conf.apiType) {
 			new Error('没有指定接口类型');
 			return;
 		}
-		let sourceFileMap = config.sourceFileMap;
-		let apiType = config.apiType.toLowerCase();
+		let sourceFileMap = conf.sourceFileMap;
+		let apiType = conf.apiType.toLowerCase();
 		//不需要操作时，不用转码，直接写入文件。
-		let parseConfigTpl = fs.readFileSync(sourceFileMap[apiType]);
+		let parseConfigTpl = fs.readFileSync(sourceFileMap[apiType] || 'bill');
 
 
 		//读取默认的配置文件，然后用业务全称替换标记处。
@@ -45,25 +45,26 @@ module.exports = {
 		fs.writeFile('./'+fullName+'/ResourcePackageConfig.xml', buffSourceConfig, function() {})
 		if(apiType === 'bill') {
 			let configBuff = fs.readFileSync(sourceFileMap['config'])
-			fs.writeFile('./'+fullName+'/'+config.shortName+'.config', configBuff, function() {})
+			fs.writeFile('./'+fullName+'/'+conf.shortName+'.config', configBuff, function() {})
 		}
 	},
 
 	//填充两个模板内容
-	createTempleteFiles: () => {
-		let fullName = config.fullName;
+	createTempleteFiles: ( conf ) => {
+
+		let fullName = conf.fullName;
 		//爬取静态模板内容然后填充
-		if( !config.webUrl ) return;
-		superagent.get(config.webUrl)
-			.charset(config.charset)
+		if( !conf.webUrl ) return;
+		superagent.get(conf.webUrl)
+			.charset(conf.charset)
 			.end(function(err, res) {
 				core.handleError(err, '获取web模板错误，请检查wap模板地址是否有误');
 
 				fs.writeFile('./'+fullName+'/'+ fullName +'.html', core.str2Buff(res.text) , function() {})
 			})
 
-		if( !config.wapUrl ) return;
-		superagent.get(config.wapUrl)
+		if( !conf.wapUrl ) return;
+		superagent.get(conf.wapUrl)
 			.end(function(err, res) {
 				core.handleError(err, '获取wap模板错误，请检查wap模板地址是否有误');
 
@@ -72,11 +73,12 @@ module.exports = {
 		return;	
 	},
 	//生成‘模板地址.html‘文件
-	createTemplateStorageFile: () => {
-		let webUrl = config.webUrl, 
-			wapUrl = config.wapUrl, 
-			fullName = config.fullName, 
-			sourceFileMap = config.sourceFileMap;
+	createTemplateStorageFile: ( conf ) => {
+
+		let webUrl = conf.webUrl, 
+			wapUrl = conf.wapUrl, 
+			fullName = conf.fullName, 
+			sourceFileMap = conf.sourceFileMap;
 		let tpl = fs.readFileSync( sourceFileMap['tpl'] , {coding: 'UTF-8'}, function() {})
 
 		let $ = cheerio.load(tpl);

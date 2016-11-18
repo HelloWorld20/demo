@@ -26,7 +26,9 @@ let uploadQvga = '';
 
 //流程：获取登录信息=>用模板名称去搜索模板列表=》取第一个模板ID=》获取模板详情，获得足够上传参数=>上传模板=》审核
 
-module.exports = (function() {
+
+module.exports = () => {
+
 	console.log('upload.js')
 	//流程
 	function* Process() {
@@ -215,7 +217,8 @@ module.exports = (function() {
 		return result;
 	}
 
-})();
+
+};
 
 
 
