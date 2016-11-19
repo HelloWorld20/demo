@@ -118,7 +118,7 @@ function createWindow(){
         mainWindow = null;
     });
 
-    // mainWindow.openDevTools();
+    mainWindow.openDevTools();
     //自己写的方法流程入口；
     entry();
 

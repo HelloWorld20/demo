@@ -197,28 +197,32 @@ input[type="file"] {
 		                        <p>必须。投递平台上邮件模板名。程序检索邮件模板名称得到的第一条记录的ID来上传</p>
 		                    </td>
 		                </tr>
-		                <tr>
+		                <tr id="dropHtml">
 		                    <td>HTML模板路径：</td>
 		                    <td>
 		                    	<button id="uploadHtml" class="btn btn-primary">上传html模板</button>
-		                       <!--  <label class="btn btn-primary btn-file">
-							    	上传html模板
-									<input id="uploadHtml" type="file" name="html">
+
+		                        <!-- <label class="btn btn-default btn-file">
+							    	拖拽上传html模板
+									<input id="uploadHtmlDrop" type="file" name="html">
 							    </label> -->
+
 							    <input id="uploadHtmlInput" class="form-control" type="text" name="uploadHtml" required="required"  placeholder="E:/delivery/api类/NG/hn0001/hn0001.html" value="E:/delivery/api类/NG/hn0001/hn0001.html">
 		                    </td>
 		                    <td>
 		                        <p>必须。要上传的web模板的路径。如果为空，则投递平台上的web模板也空</p>
 		                    </td>
 		                </tr>
-		                <tr>
+		                <tr id="dropQvga">
 		                    <td>QVGA模板路径：</td>
 		                    <td> 
 		                    	<button id="uploadQvga" class="btn btn-primary">上传qvga模板</button>
-							    <!-- <label class="btn btn-primary btn-file">
-							    	上传qvga模板
-									<input id="uploadQvga" type="file" name="qvga">
+
+							    <!-- <label class="btn btn-default btn-file">
+							    	拖拽上传qvga模板
+									<input id="uploadQvgaDrop" type="file" name="qvga">
 							    </label> -->
+
 							    <input id="uploadQvgaInput" class="form-control" type="text" name="uploadQvga" required="required"  placeholder="E:/delivery/api类/NG/hn0001/hn0001.qvga" value="E:/delivery/api类/NG/hn0001/hn0001.qvga">
 		                    </td>
 		                    <td>

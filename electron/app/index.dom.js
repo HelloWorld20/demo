@@ -73,22 +73,43 @@ let main = {
 		})
 	},
 
-	//挂载fileReader；
-	initReader: function( target , callback) {
-		let reader = new FileReader();
+	//初始化拖拽方法。只是要获取文件路径不需要readFile API
+	initDrag: function( selector , callback ) {
+		$(selector).ondragenter = e => {
+			e.preventDefault();
+		};
 
-		//当input包含的file有改变时才会触发
-		target.addEventListener('change', readFileText, false)
-		
-		function readFileText() {
-			let file = this.files[0];
-				
-			reader.readAsText(file);
-			reader.onload = function(e) {
-				if( core.isFunction( callback ) ) callback(e.target.result);
-			}
+		$(selector).ondragleave = e => {
+			e.preventDefault();
+		};
+
+		$(selector).ondragover = e => {
+			e.preventDefault();
+		};
+
+		$(selector).ondrop = e => {
+			e.preventDefault();
+			if(core.isFunction(callback)) callback(e);
 		}
+		
 	},
+
+	//挂载fileReader；
+	// initReader: function( target , callback) {
+	// 	let reader = new FileReader();
+
+	// 	//当input包含的file有改变时才会触发
+	// 	target.addEventListener('change', readFileText, false)
+		
+	// 	function readFileText() {
+	// 		let file = this.files[0];
+				
+	// 		reader.readAsText(file);
+	// 		reader.onload = function(e) {
+	// 			if( core.isFunction( callback ) ) callback(e.target.result);
+	// 		}
+	// 	}
+	// },
 
 	//销毁fileReader
 	destroyReader: selector => {
@@ -107,11 +128,11 @@ let main = {
 	},
 
 	// handleReadHtml: res => {
-	// 	store.html = res;
+	// 	console.log(res);
 	// },
 
 	// handleReadQvga: res => {
-	// 	store.qvga = res;
+	// 	console.log(res);
 	// },
 
 	//点击之后弹出文件夹对话框，然后返回路径
@@ -121,7 +142,7 @@ let main = {
 
 			//路径包含在res里
 			main.initListenerOne('path', (event, res) => {
-				callback( res );
+				if(core.isFunction(callback)) callback( res );
 			});
 
 		}, false)
@@ -133,7 +154,7 @@ let main = {
 
 			//路径包含在res里
 			main.initListenerOne('path', (event, res) => {
-				callback( res );
+				if(core.isFunction(callback)) callback( res );
 			});
 
 		}, false)
@@ -152,9 +173,21 @@ let htmlTpl, qvgaTpl;
 main.initTabs();
 main.disableSubmit();
 
-//挂载fileReader
-// main.initReader( $("#uploadHtml") , main.handleReadHtml );
-// main.initReader( $("#uploadQvga") , main.handleReadQvga );
+//初始化拖拽方法
+main.initDrag('#dropHtml', (e) => {
+	//有个小坑，必须直接读取到e.dataTransfer.files才能看到文件内容。直接打印e看不到
+	let filePath = e.dataTransfer.files[0].path
+	$("#uploadHtmlInput").setAttribute('value', filePath);
+});
+main.initDrag('#dropQvga', (e) => {
+	let filePath = e.dataTransfer.files[0].path
+	$("#uploadQvgaInput").setAttribute('value', filePath);
+});
+
+
+// 挂载fileReader
+// main.initReader( $("#uploadHtmlDrop") , main.handleReadHtml );
+// main.initReader( $("#uploadQvgaDrop") , main.handleReadQvga );
 
 
 
