@@ -10,6 +10,8 @@ let store = {}
 let $ = core.$;
 let $$ = core.$$;
 
+let counter = 0;
+
 let main = {
 	//webContent发送main消息到main Process。callback是处理main Process返回消息的方法
 	send: (message, callback) => {
@@ -41,7 +43,7 @@ let main = {
 	//////////////////////////////
 	// 初始化切换选项卡功能；
 	initTabs: function() {
-		let nav = core.$('#nav');
+		let nav = $('#nav');
 
 		nav.onclick = function(e) {
 			e.preventDefault();
@@ -74,21 +76,46 @@ let main = {
 	},
 
 	//初始化拖拽方法。只是要获取文件路径不需要readFile API
-	initDrag: function( selector , callback ) {
+	initDrag: function( selector, isLight, callback ) {
+		
+		let elem = $(selector);
+		elem.counter = 0;
+
 		$(selector).ondragenter = e => {
 			e.preventDefault();
+			e.stopPropagation();
+
+			if(!isLight) return;
+
+			elem.counter++;
+			core.addClass( elem, 'highLight' )
 		};
 
 		$(selector).ondragleave = e => {
 			e.preventDefault();
+			e.stopPropagation();
+
+			if(!isLight) return;
+
+			elem.counter--;
+			if(elem.counter === 0) {
+				core.removeClass( elem, 'highLight' )			
+			}
 		};
 
 		$(selector).ondragover = e => {
 			e.preventDefault();
+			e.stopPropagation();
 		};
 
 		$(selector).ondrop = e => {
 			e.preventDefault();
+			e.stopPropagation();
+			
+			elem.counter--;
+			if(elem.counter === 0) {
+				core.removeClass( elem, 'highLight' )
+			}
 			if(core.isFunction(callback)) callback(e);
 		}
 		
@@ -170,25 +197,34 @@ let main = {
 let htmlTpl, qvgaTpl;
 
 
+
 main.initTabs();
 main.disableSubmit();
 
 //初始化拖拽方法
-main.initDrag('#dropHtml', (e) => {
+main.initDrag('body', false, e => true); 	//禁止拖拽到其他地方时跳转
+main.initDrag('#dropHtml', true, (e) => {
 	//有个小坑，必须直接读取到e.dataTransfer.files才能看到文件内容。直接打印e看不到
-	let filePath = e.dataTransfer.files[0].path
-	$("#uploadHtmlInput").setAttribute('value', filePath);
+	let filePath = e.dataTransfer.files[0].path;
+
+	if( filePath && (filePath.slice(-5).toLowerCase()) === '.html') {
+		$("#uploadHtmlInput").setAttribute('value', filePath);
+	}
+	return false;
 });
-main.initDrag('#dropQvga', (e) => {
-	let filePath = e.dataTransfer.files[0].path
-	$("#uploadQvgaInput").setAttribute('value', filePath);
+main.initDrag('#dropQvga', true, (e) => {
+	let filePath = e.dataTransfer.files[0].path;
+
+	if( filePath && (filePath.slice(-5).toLowerCase()) === '.qvga') {
+		$("#uploadQvgaInput").setAttribute('value', filePath);
+	}
+	return false;
 });
 
 
 // 挂载fileReader
 // main.initReader( $("#uploadHtmlDrop") , main.handleReadHtml );
 // main.initReader( $("#uploadQvgaDrop") , main.handleReadQvga );
-
 
 
 //初始化 选择文件 按钮,注意是文件，不是文件夹
@@ -224,4 +260,6 @@ $("#upload").onclick = function(e) {
 	main.send( {method: 'upload', value: uploadConf} );
 
 }
+
+
 })(main);

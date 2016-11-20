@@ -27,17 +27,27 @@ input[type="file"] {
 .hide{
 	display: none;
 }
+.form-control{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
 .nav a{
 	cursor: pointer;
+}
+
+.highLight{
+	background-color: #eee;
+	transition: background-color .2s ease-in-out;
 }
 
 #path{
 	border-bottom: 2px solid #eee;
 }
+
 </style>
 </head>
 <body>
-    <h1>139投递平台</h1>
+    <h1>139投递平台开发辅助工具</h1>
     We are using io.js <script>document.write(process.version)</script>
     and Electron <script>document.write(process.versions['electron'])</script>.
     <br />
@@ -201,7 +211,7 @@ input[type="file"] {
 		                    <td>HTML模板路径：</td>
 		                    <td>
 		                    	<button id="uploadHtml" class="btn btn-primary">上传html模板</button>
-
+								&nbsp;&nbsp;&nbsp;&nbsp;可拖拽到此区域上传文件
 		                        <!-- <label class="btn btn-default btn-file">
 							    	拖拽上传html模板
 									<input id="uploadHtmlDrop" type="file" name="html">
@@ -217,7 +227,7 @@ input[type="file"] {
 		                    <td>QVGA模板路径：</td>
 		                    <td> 
 		                    	<button id="uploadQvga" class="btn btn-primary">上传qvga模板</button>
-
+								&nbsp;&nbsp;&nbsp;&nbsp;可拖拽到此区域上传文件
 							    <!-- <label class="btn btn-default btn-file">
 							    	拖拽上传qvga模板
 									<input id="uploadQvgaDrop" type="file" name="qvga">

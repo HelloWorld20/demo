@@ -19,7 +19,7 @@ module.exports = ( conf ) => {
 	console.log('init.js');
 
 	//就在入口处和并配置文件；
-	let confCombine = core.extend( config, temp );
+	let confCombine = core.extend( config, conf );
 
 	mkdir( confCombine.fullName, () => {
 		createFiles( confCombine )

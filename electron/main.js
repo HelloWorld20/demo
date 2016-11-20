@@ -5,14 +5,10 @@
 
 // 载入electron模块
 const {app,BrowserWindow,ipcMain,dialog}=require("electron");
+const get = require('./main/lib/core.js').get;
+const route = require('./main/route.js');
 
-
-const core = require('./main/lib/core.js');
-
-const init = require('./main/baseTools/app/init.js');
-const getFile = require('./main/baseTools/app/getFile.js');
-const upload = require('./main/baseTools/app/upload.js')
-
+const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test} = route;
 
 let mainWindow;
 
@@ -20,14 +16,14 @@ let mainWindow;
 function entry() {
 
     //监听前端页面传过来的方法。分开处理请求
-    core.get( (event, res) => {
+    get( (event, res) => {
         let method = res.method;
         let value = res.value;
 
         if(method === 'dialog') {   //打开选择文件夹对话框
-            handleDialog( event );
+            handleDialog( event, mainWindow );
         } else if (method === 'fileDialog') {
-            handleFileDialog( event );
+            handleFileDialog( event, mainWindow );
         } else if (method === 'init') {     //初始化关键文件
             handleInit( value );
         } else if (method === 'upload') {       //上传文件
@@ -42,62 +38,6 @@ function entry() {
 
     })
     
-}
-
-function test( value ) {
-
-    
-}
-
-//弹出 选取文件夹 对话框，返回文件夹路径
-function handleDialog( event ) {
-    dialog.showOpenDialog(mainWindow, {
-        properties: [ 'openDirectory' ],
-        defaultPath: __dirname
-    }, function(path) {
-        if(path) {
-            event.sender.send('path', path);
-        } else {
-            event.sender.send('path', 'please select a path')
-        }
-    })
-}
-
-//弹出 选取文件 对话框，返回文件路径
-function handleFileDialog ( event ) {
-    dialog.showOpenDialog(mainWindow, {
-        properties: [ 'openFile' ],
-        defaultPath: __dirname
-    }, function(path) {
-        if(path) {
-            event.sender.send('path', path);
-        } else {
-            event.sender.send('path', 'please select a path')
-        }
-    })
-}
-//处理 一键生成初始化文件
-function handleInit( value ) {
-    //保证传入的是一个配置对象
-    let conf = core.isObject(value) ? value : {}
-
-    init( conf );
-}
-
-//处理爬取文件
-function handleGetFile( value ) {
-    //保证传入的是一个配置对象
-    let conf = core.isObject(value) ? value : {};
-
-    getFile( conf );
-}
-
-//处理 模板上传
-function handleUpload( value ) {
-    //保证传入的是一个配置对象
-    let conf = core.isObject(value) ? value : {};
-
-    upload( conf );
 }
 
 
