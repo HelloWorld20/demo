@@ -3,7 +3,7 @@
 const {ipcRenderer} = require('electron');
 
 const core = require('./app/lib/core.js');
-const config = require('./main/baseTools/app/config.js');
+const tConfig = require('./main/tConfig.json');
 
 //用于存储数据，以后要做成模块
 // let store = {}
@@ -97,7 +97,7 @@ let main = {
 			e.stopPropagation();
 
 			if(!isLight) return;
-
+			//修正拖拽方法进入子元素时也会出发dragleave事件的方法
 			elem.counter--;
 			if(elem.counter === 0) {
 				core.removeClass( elem, 'highLight' )			
@@ -157,7 +157,7 @@ let main = {
 
 	//把配置内容写入前端页面
 	setConfig: function() {
-		let config = this.getDefaultConf();
+		let config = this.getTempConf();
 		for(let i in config) {
 			let elems = $$('input[name="'+i+'"]')
 			if(elems !== 0) {
@@ -169,8 +169,20 @@ let main = {
 	},
 
 	//读取默认配置文件
-	getDefaultConf: () => {
-		return core.extend({}, config);
+	getTempConf: () => {
+		return core.extend({}, tConfig);
+	},
+
+	getCurrentConf: () => {
+		let result = {};
+		$$('input').forEach( item => {
+			let name = item.getAttribute('name')
+			let value = item.value
+			if( name ) {
+				result[name] = value;
+			}
+		})
+		return result;
 	},
 
 	//设置默认配置文件
@@ -226,7 +238,11 @@ main.initTabs();
 main.disableSubmit();
 main.setConfig();		//页面加载时加载默认配置
 
-main.setDefaultConf({name: 'wei', value: 5});
+//代码是对的。保存暂时变量
+setTimeout(function() {
+	main.setDefaultConf(main.getCurrentConf())
+}, 3000)
+
 
 //初始化拖拽方法
 main.initDrag('body', false, e => true); 	//禁止拖拽到其他地方时跳转

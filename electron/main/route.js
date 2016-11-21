@@ -12,7 +12,7 @@ const {dialog}=require("electron");
 const init = require('./baseTools/app/init.js');
 const getFile = require('./baseTools/app/getFile.js');
 const upload = require('./baseTools/app/upload.js');
-let config = require('./baseTools/app/config.js');
+let tConfig = require('./tConfig.json');
 
 module.exports = {
 	test: ( value ) => {
@@ -73,13 +73,10 @@ module.exports = {
 
 	//覆盖总配置文件
 	handleSetDefaultConf: ( value ) => {
-		console.log( 'handleSetDefaultConf', value);
-		let result = core.extend( config , value );
-		console.log(__dirname+'/baseTools/app/config.js');
-		console.log(config.get('name'))
-		config.set('name', 'wulijiao');
-		console.log(config.get('name'))
-		// core.writeFile(__dirname+'/baseTools/app/config.js', result, 'set default config file error...')
+
+		let result = core.extend( tConfig, value );
+
+		core.writeFile(__dirname+'/tConfig.json', JSON.stringify(result, null, 4), 'set default config file error...')
 	}
 
 }
