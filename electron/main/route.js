@@ -11,11 +11,12 @@ const core = require('./lib/core.js');
 const {dialog}=require("electron");
 const init = require('./baseTools/app/init.js');
 const getFile = require('./baseTools/app/getFile.js');
-const upload = require('./baseTools/app/upload.js')
+const upload = require('./baseTools/app/upload.js');
+let config = require('./baseTools/app/config.js');
 
 module.exports = {
 	test: ( value ) => {
-
+		console.log('test: ', value);
 	},
 
 	//弹出 选取文件夹 对话框，返回文件夹路径
@@ -68,6 +69,17 @@ module.exports = {
 	    let conf = core.isObject(value) ? value : {};
 
 	    upload( conf );
+	}, 
+
+	//覆盖总配置文件
+	handleSetDefaultConf: ( value ) => {
+		console.log( 'handleSetDefaultConf', value);
+		let result = core.extend( config , value );
+		console.log(__dirname+'/baseTools/app/config.js');
+		console.log(config.get('name'))
+		config.set('name', 'wulijiao');
+		console.log(config.get('name'))
+		// core.writeFile(__dirname+'/baseTools/app/config.js', result, 'set default config file error...')
 	}
 
 }

@@ -1,17 +1,8 @@
 "use strict"
-
-const iconv = require('iconv-lite');
-const fs = require('fs');
-const {ipcMain} = require('electron');
+var iconv = require('iconv-lite');
+var fs = require('fs');
 
 module.exports = {
-	//读取前台传来的值，handleRes：处理信息的方法；reply：回执信息。
-	get: (handleRes, reply) => {
-		ipcMain.on('main', (event, res) => {
-		    handleRes(event, res);
-		    if(reply) event.sender.send('main-reply', reply);
-		})
-	},
 	//字符串转换成二进制。
 	str2Buff: (str) => {
 		return iconv.encode(str, 'gb2312')
@@ -85,7 +76,7 @@ module.exports = {
 	},
 
 	isArray: obj => {
-    	return Object.prototype.toString.call( obj ) === '[object Array]'
+    return Object.prototype.toString.call( obj ) === '[object Array]'
 	},
 
 	isFunction: obj => {

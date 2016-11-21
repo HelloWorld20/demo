@@ -100,9 +100,9 @@ module.exports = {
 
         for( var property in target ) {
 
-            if( isObject( target[ property ] || isArray( target[ property ] ) ) ) {
+            if( this.isObject( target[ property ] || this.isArray( target[ property ] ) ) ) {
                 //如果属性是对象和对象则递归调用，防止直接赋值引用。
-                result[ property ] = extend( {}, target[ property ] );  
+                result[ property ] = this.extend( {}, target[ property ] );  
             } else {
                 result[ property ] = target[ property ];
             }
@@ -111,9 +111,9 @@ module.exports = {
 
         for( var property in options ) {
 
-            if( isObject( options[ property ] || isArray( target[ property ] ) ) ) {
+            if( this.isObject( options[ property ] || this.isArray( target[ property ] ) ) ) {
                 //如果属性是对象和对象则递归调用，防止直接赋值引用。
-                result[ property ] = extend( {}, options[ property ] );
+                result[ property ] = this.extend( {}, options[ property ] );
             } else {
                 result[ property ] = options[ property ];
             }

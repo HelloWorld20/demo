@@ -3,9 +3,10 @@
 const {ipcRenderer} = require('electron');
 
 const core = require('./app/lib/core.js');
+const config = require('./main/baseTools/app/config.js');
 
 //用于存储数据，以后要做成模块
-let store = {}
+// let store = {}
 
 let $ = core.$;
 let $$ = core.$$;
@@ -146,12 +147,35 @@ let main = {
 	//把页面内的配置数据转换成对象；
 	getConfig: selector => {
 		let domInputs = $$(selector);
-		let config = {};
+		let result = {};
 		domInputs.forEach( dom => {
-			config[dom.getAttribute('name')] = dom.value;
+			result[dom.getAttribute('name')] = dom.value;
 		})
 
-		return config;
+		return result;
+	},
+
+	//把配置内容写入前端页面
+	setConfig: function() {
+		let config = this.getDefaultConf();
+		for(let i in config) {
+			let elems = $$('input[name="'+i+'"]')
+			if(elems !== 0) {
+				elems.forEach( item => {
+					item.setAttribute('value', config[i])
+				} )
+			}
+		}
+	},
+
+	//读取默认配置文件
+	getDefaultConf: () => {
+		return core.extend({}, config);
+	},
+
+	//设置默认配置文件
+	setDefaultConf: function( conf ) {
+		this.send( {method: 'setDefaultConf', value: conf} );
 	},
 
 	// handleReadHtml: res => {
@@ -194,12 +218,15 @@ let main = {
 // 入口
 ;(function(main) {
 
-let htmlTpl, qvgaTpl;
+let htmlTpl, qvgaTpl, initConf, getFileConf, uploadConf;
 
 
 
 main.initTabs();
 main.disableSubmit();
+main.setConfig();		//页面加载时加载默认配置
+
+main.setDefaultConf({name: 'wei', value: 5});
 
 //初始化拖拽方法
 main.initDrag('body', false, e => true); 	//禁止拖拽到其他地方时跳转
@@ -235,29 +262,32 @@ main.initFileSelector( '#uploadQvga', res => {
 	$("#uploadQvgaInput").setAttribute('value', res);
 })
 
+//页面加载时读取默认配置文件
+
+
 
 //绑定一键生成初始文件按钮；
 $("#init").onclick = function(e) {
 
-	let initConf = main.getConfig( '#initPage tbody input' );
+	let conf = main.getConfig( '#initPage tbody input' );
 
-	main.send( {method: 'init', value: initConf} );
+	main.send( {method: 'init', value: conf} );
 
 }
 //绑定生产线爬取按钮；
 $("#getFile").onclick = function(e) {
 
-	let getFileConf = main.getConfig( '#getFilePage tbody input' );
+	let conf = main.getConfig( '#getFilePage tbody input' );
 
-	main.send( {method: 'getFile', value: getFileConf} );
+	main.send( {method: 'getFile', value: conf} );
 
 }
 //绑定一键上传邮件模板按钮；
 $("#upload").onclick = function(e) {
 
-	let uploadConf = main.getConfig( '#uploadFilePage tbody input' );
+	let conf = main.getConfig( '#uploadFilePage tbody input' );
 
-	main.send( {method: 'upload', value: uploadConf} );
+	main.send( {method: 'upload', value: conf} );
 
 }
 

@@ -85,7 +85,7 @@ input[type="file"] {
 		                <tr>
 		                    <td>业务全称：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="fullName" required="required" placeholder="广东集团客户明细账单" value="广东集团客户明细账单">
+		                        <input class="form-control" type="text" name="fullName" required="required" placeholder="广东集团客户明细账单" value="">
 		                    </td>
 		                    <td>
 		                        <p>必须。新建的文件夹名，以及web模板和wap模板的名字；</p>
@@ -94,14 +94,14 @@ input[type="file"] {
 		                <tr>
 		                    <td>业务简称：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="shortName" required="required" placeholder="gdjtmx" value="gdjtmx">
+		                        <input class="form-control" type="text" name="shortName" required="required" placeholder="gdjtmx" value="">
 		                    </td>
 		                    <td><p>必须。bill格式才必须，生成XXX.config文件</p></td>
 		                </tr>
 		                <tr>
 		                    <td>web模板地址：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="webUrl" required="required" placeholder="http://fun.mail.10086.cn/10086/ah/351011/ah0001.html" value="http://fun.mail.10086.cn/10086/ah/351011/ah0001.html">
+		                        <input class="form-control" type="text" name="webUrl" required="required" placeholder="http://fun.mail.10086.cn/10086/ah/351011/ah0001.html" value="">
 		                    </td>
 		                    <td>
 		                        <p>必须。设计稿Web模板url，为空则不生成</p>
@@ -110,7 +110,7 @@ input[type="file"] {
 		                <tr>
 		                    <td>wap模板地址：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="wapUrl" required="required" placeholder="http://fun.mail.10086.cn/10086/ah/351011/ah0001_wap.html" value="http://fun.mail.10086.cn/10086/ah/351011/ah0001_wap.html">
+		                        <input class="form-control" type="text" name="wapUrl" required="required" placeholder="http://fun.mail.10086.cn/10086/ah/351011/ah0001_wap.html" value="">
 		                    </td>
 		                    <td>
 		                        <p>必须。设计稿wap模板url，为空则不生成</p>
@@ -119,7 +119,7 @@ input[type="file"] {
 		                <tr>
 		                    <td>接口类型：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="apiType" required="required" placeholder="bill" value="bill">
+		                        <input class="form-control" type="text" name="apiType" required="required" placeholder="bill" value="">
 		                    </td>
 		                    <td>
 		                        <p>必须。涉及到生成文件的类型；参数：bill,ng,api_0,api_2</p>
@@ -128,7 +128,7 @@ input[type="file"] {
 		                <tr>
 		                    <td>编码格式：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="charset" required="required" placeholder="utf-8" value="utf-8">
+		                        <input class="form-control" type="text" name="charset" required="required" placeholder="utf-8" value="">
 		                    </td>
 		                    <td>
 		                        <p>必须。设计稿模板的编码格式；参数：utf-8,gb2312</p>
@@ -137,7 +137,7 @@ input[type="file"] {
 		            </tbody>
 		        </table>
 		        <button class="btn btn-large btn-primary" id="init">一键生成文件</button>
-		        <input class="btn btn-large btn-primary" type="reset" value="清空表格">
+		        <input class="btn btn-large btn-primary" type="reset" value="重置">
 		    </form>
     	</div>
 		<!-- 生成原始文件配置 end -->
@@ -154,7 +154,7 @@ input[type="file"] {
 		                <tr>
 		                    <td>业务全称：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="fullName" required="required" placeholder="广东集团客户明细账单" value="广东集团客户明细账单">
+		                        <input class="form-control" type="text" name="fullName" required="required" placeholder="广东集团客户明细账单" value="">
 		                    </td>
 		                    <td>
 		                        <p>必须。新建的文件夹名，以及web模板和wap模板的名字；</p>
@@ -163,7 +163,7 @@ input[type="file"] {
 		                <tr>
 		                    <td>邮件模板ID：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="yjmbID" required="required"  placeholder="21639" value="21639">
+		                        <input class="form-control" type="text" name="yjmbID" required="required"  placeholder="21639" value="">
 		                    </td>
 		                    <td>
 		                        <p>必须。投递平台上邮件模板ID</p>
@@ -172,7 +172,7 @@ input[type="file"] {
 		                <tr>
 		                    <td>封装资源ID：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="yjfzzyID" required="required" placeholder="13968" value="13968">
+		                        <input class="form-control" type="text" name="yjfzzyID" required="required" placeholder="13968" value="">
 		                    </td>
 		                    <td>
 		                        <p>必须。投递平台上封装资源ID</p>
@@ -182,7 +182,7 @@ input[type="file"] {
 		            </tbody>
 		        </table>
 		        <button id="getFile" class="btn btn-large btn-primary">一键爬取文件</button>
-		        <input class="btn btn-large btn-primary" type="reset" value="清空表格">
+		        <input class="btn btn-large btn-primary" type="reset" value="重置">
 		    </form>
 			
     	</div>
@@ -201,7 +201,7 @@ input[type="file"] {
 		                <tr>
 		                    <td>邮件模板名称：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="tplName" required="required"  placeholder="河北1008611话费查询热线节点" value="河北1008611话费查询热线节点">
+		                        <input class="form-control" type="text" name="tplName" required="required"  placeholder="河北1008611话费查询热线节点" value="">
 		                    </td>
 		                    <td>
 		                        <p>必须。投递平台上邮件模板名。程序检索邮件模板名称得到的第一条记录的ID来上传</p>
@@ -217,7 +217,7 @@ input[type="file"] {
 									<input id="uploadHtmlDrop" type="file" name="html">
 							    </label> -->
 
-							    <input id="uploadHtmlInput" class="form-control" type="text" name="uploadHtml" required="required"  placeholder="E:/delivery/api类/NG/hn0001/hn0001.html" value="E:/delivery/api类/NG/hn0001/hn0001.html">
+							    <input id="uploadHtmlInput" class="form-control" type="text" name="uploadHtml" required="required"  placeholder="E:/delivery/api类/NG/hn0001/hn0001.html" value="">
 		                    </td>
 		                    <td>
 		                        <p>必须。要上传的web模板的路径。如果为空，则投递平台上的web模板也空</p>
@@ -233,7 +233,7 @@ input[type="file"] {
 									<input id="uploadQvgaDrop" type="file" name="qvga">
 							    </label> -->
 
-							    <input id="uploadQvgaInput" class="form-control" type="text" name="uploadQvga" required="required"  placeholder="E:/delivery/api类/NG/hn0001/hn0001.qvga" value="E:/delivery/api类/NG/hn0001/hn0001.qvga">
+							    <input id="uploadQvgaInput" class="form-control" type="text" name="uploadQvga" required="required"  placeholder="E:/delivery/api类/NG/hn0001/hn0001.qvga" value="">
 		                    </td>
 		                    <td>
 		                        <p>非必须。要上传的wap模板的路径。如果为空，则投递平台上的wap模板也空</p>
@@ -243,7 +243,7 @@ input[type="file"] {
 		            </tbody>
 		        </table>
 		        <button id="upload" class="btn btn-large btn-primary">一键上传模板</button>
-		        <input class="btn btn-large btn-primary" type="reset" value="清空表格">
+		        <input class="btn btn-large btn-primary" type="reset" value="重置">
 		    </form>
     	</div>
     	<!-- 上传邮件模板 end -->
