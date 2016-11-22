@@ -72,7 +72,7 @@ module.exports = {
 	}, 
 
 	//覆盖总配置文件
-	handleSetDefaultConf: ( value ) => {
+	handleSetLocalConf: ( value ) => {
 
 		let result = core.extend( tConfig, value );
 

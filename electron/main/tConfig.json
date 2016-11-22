@@ -1,6 +1,6 @@
 {
     "fullName": "湖南流量账单",
-    "shortName": "hnllzdfs'f'sa'd'f",
+    "shortName": "hnllzd",
     "webUrl": "http://fun.mail.10086.cn/bills/gz/351114/index.html",
     "wapUrl": "http://fun.mail.10086.cn/bills/gz/351114/wap.html",
     "charset": "utf-8",
@@ -8,7 +8,7 @@
     "yjfzzyID": "14102",
     "tplName": "河北1008611话费查询热线节点",
     "confName": "河北1008611话费查询热线节点",
-    "apiType": "bill",
+    "apiType": "bill wei",
     "uploadHtml": "E:/delivery/api类/NG/hn0001/hn0001.html",
     "uploadQvga": "E:/delivery/api类/NG/hn0001/hn0001.qvga"
 }

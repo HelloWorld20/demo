@@ -8,7 +8,7 @@ const {app,BrowserWindow,ipcMain,dialog}=require("electron");
 const get = require('./main/lib/core.js').get;
 const route = require('./main/route.js');
 
-const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test,handleSetDefaultConf} = route;
+const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test,handleSetLocalConf} = route;
 
 let mainWindow;
 
@@ -32,8 +32,8 @@ function entry() {
             handleGetFile( value );
         } else if (method === 'test' ) {        //测试
             test( value );
-        } else if (method === 'setDefaultConf' ) {
-            handleSetDefaultConf( value );
+        } else if (method === 'setLocalConf' ) {
+            handleSetLocalConf( value );
         }
 
     })

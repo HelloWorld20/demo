@@ -186,8 +186,8 @@ let main = {
 	},
 
 	//设置默认配置文件
-	setDefaultConf: function( conf ) {
-		this.send( {method: 'setDefaultConf', value: conf} );
+	setLocalConf: function( conf ) {
+		this.send( {method: 'setLocalConf', value: conf} );
 	},
 
 	// handleReadHtml: res => {
@@ -230,7 +230,7 @@ let main = {
 // 入口
 ;(function(main) {
 
-let htmlTpl, qvgaTpl, initConf, getFileConf, uploadConf;
+let htmlTpl, qvgaTpl, initConf, getFileConf, uploadConf, localConfig;
 
 
 
@@ -238,11 +238,7 @@ main.initTabs();
 main.disableSubmit();
 main.setConfig();		//页面加载时加载默认配置
 
-//代码是对的。保存暂时变量
-setTimeout(function() {
-	main.setDefaultConf(main.getCurrentConf())
-}, 3000)
-
+localConfig = main.getCurrentConf();
 
 //初始化拖拽方法
 main.initDrag('body', false, e => true); 	//禁止拖拽到其他地方时跳转
@@ -306,6 +302,23 @@ $("#upload").onclick = function(e) {
 	main.send( {method: 'upload', value: conf} );
 
 }
+
+//事件捕获可以让父元素代理blur事件
+//失焦的时候保存当前配置
+$(".tab").addEventListener('blur', function(e) {
+	let target = e.target,
+		name = target.getAttribute('name'),
+		value = target.value,
+		temp = {},
+		result = {};
+		
+	temp[name] = value;
+
+	result = core.extend( localConfig, temp )
+
+	main.setLocalConf(result)
+
+}, true)
 
 
 })(main);
