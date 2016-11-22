@@ -27,7 +27,7 @@ let uploadQvga = '';
 //流程：获取登录信息=>用模板名称去搜索模板列表=》取第一个模板ID=》获取模板详情，获得足够上传参数=>上传模板=》审核
 
 
-module.exports = ( conf ) => {
+module.exports = ( conf, callback ) => {
 
 	console.log('upload.js');
 
@@ -155,6 +155,7 @@ module.exports = ( conf ) => {
 
 					if( ret.Result ) {
 						console.log( 'verify success....' );
+						if( core.isFunction(callback) ) callback();
 						proc.next();
 					} else {
 						console.log('verify fail....');

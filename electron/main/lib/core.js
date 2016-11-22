@@ -1,8 +1,12 @@
+/**
+ * description: 主线程核心函数
+ */
+
 "use strict"
 
 const iconv = require('iconv-lite');
 const fs = require('fs');
-const {ipcMain} = require('electron');
+const {ipcMain,dialog} = require('electron');
 
 module.exports = {
 	//读取前台传来的值，handleRes：处理信息的方法；reply：回执信息。
@@ -82,6 +86,19 @@ module.exports = {
 	    }
 
 	    return result;
+	},
+
+	showMsg: (title, message) => {
+		if( message == undefined ) {
+			message = title;
+			title = '提示';
+		}
+		dialog.showMessageBox({
+	        type: 'info',
+	        buttons: ['确定'],
+	        title: title,
+	        message: message,
+	    });
 	},
 
 	isArray: obj => {

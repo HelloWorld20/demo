@@ -10,7 +10,6 @@ const fs = require('fs');
 const rimraf = require('rimraf');
 
 module.exports = ( dirName, callback ) => {
-	console.log('mkdir.js')
 
 	//generator函数
 	function* makeDir() {
@@ -33,6 +32,7 @@ module.exports = ( dirName, callback ) => {
 				md.next();
 			} else {
 				//不存在目标文件夹，即第一次新建
+				console.log('1')
 				fs.mkdirSync('./'+ dirName);
 				callback();
 			}
@@ -46,6 +46,7 @@ module.exports = ( dirName, callback ) => {
 				//存在oldVertion的情况
 				//强制删除非空文件夹。
 				rimraf('./'+ dirName + '_oldVersion', err => {
+						if( err ) throw new Error('rm oldVersion folder fail...')
 						fs.renameSync('./'+dirName, './'+ dirName + '_oldVersion');
 		    			fs.mkdirSync('./'+ dirName);
 					});

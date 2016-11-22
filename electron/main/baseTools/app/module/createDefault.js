@@ -6,10 +6,13 @@
 "use strict"
 
 const fs = require('fs');
+
 const superagent = require('superagent');
-const core = require('../lib/core.js');
-const cheerio = require('cheerio');
 const charset = require('superagent-charset');
+const cheerio = require('cheerio');
+
+const core = require('../lib/core.js');
+const Counter = require('../lib/counter.js');
 
 //把charset方法写入superagent原型里。扩展功能
 charset(superagent);
@@ -24,11 +27,12 @@ module.exports = {
 			new Error('没有指定接口类型');
 			return;
 		}
+
 		let sourceFileMap = conf.sourceFileMap;
 		let apiType = conf.apiType.toLowerCase();
-		//不需要操作时，不用转码，直接写入文件。
-		let parseConfigTpl = fs.readFileSync(sourceFileMap[apiType] || 'bill');
 
+		//不需要操作时，不用转码，直接写入文件。
+		let parseConfigTpl = fs.readFileSync(sourceFileMap[apiType] || sourceFileMap['bill']);
 
 		//读取默认的配置文件，然后用业务全称替换标记处。
 		let sourceConfigTpl = fs.readFileSync(sourceFileMap['resourceConfig'])
@@ -50,8 +54,8 @@ module.exports = {
 	},
 
 	//填充两个模板内容
-	createTempleteFiles: ( conf ) => {
-
+	createTempleteFiles: ( conf, callback ) => {
+		let couter = new Counter(1, callback);
 		let fullName = conf.fullName;
 		//爬取静态模板内容然后填充
 		if( !conf.webUrl ) return;
@@ -60,7 +64,9 @@ module.exports = {
 			.end(function(err, res) {
 				core.handleError(err, '获取web模板错误，请检查wap模板地址是否有误');
 
-				fs.writeFile('./'+fullName+'/'+ fullName +'.html', core.str2Buff(res.text) , function() {})
+				fs.writeFile('./'+fullName+'/'+ fullName +'.html', core.str2Buff(res.text) , function() {
+						couter.count();
+				})
 			})
 
 		if( !conf.wapUrl ) return;
@@ -69,9 +75,12 @@ module.exports = {
 			.end(function(err, res) {
 				core.handleError(err, '获取wap模板错误，请检查wap模板地址是否有误');
 
-				fs.writeFile('./'+fullName+'/'+ fullName +'.qvga', core.str2Buff(res.text), function() {})
+				fs.writeFile('./'+fullName+'/'+ fullName +'.qvga', core.str2Buff(res.text), function() {
+						couter.count();
+				})
 			})
 		return;	
+
 	},
 	//生成‘模板地址.html‘文件
 	createTemplateStorageFile: ( conf ) => {

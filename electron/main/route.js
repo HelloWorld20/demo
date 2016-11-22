@@ -52,7 +52,9 @@ module.exports = {
 	    //保证传入的是一个配置对象
 	    let conf = core.isObject(value) ? value : {}
 
-	    init( conf );
+	    init( conf, function() {
+	    	core.showMsg('成功', '获取生产线配置文件已完成，请前往指定目录查看生成的文件');
+	    } );
 	},
 
 	//处理爬取文件
@@ -60,7 +62,9 @@ module.exports = {
 	    //保证传入的是一个配置对象
 	    let conf = core.isObject(value) ? value : {};
 
-	    getFile( conf );
+	    getFile( conf, function() {
+	    	core.showMsg('成功', '获取生产线配置文件已完成，请前往指定目录查看生成的文件');
+	    });
 	},
 
 	//处理 模板上传
@@ -68,7 +72,9 @@ module.exports = {
 	    //保证传入的是一个配置对象
 	    let conf = core.isObject(value) ? value : {};
 
-	    upload( conf );
+	    upload( conf, function() {
+	    	core.showMsg('成功', '模板上传已完成，请前往投递平台查看上传结果');
+	    } );
 	}, 
 
 	//覆盖总配置文件

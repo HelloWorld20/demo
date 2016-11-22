@@ -11,7 +11,7 @@ const core = require('../lib/core.js');
 const superagent = require('superagent');
 
 module.exports = {
-	getTemplateFile: ( cookieCombine, conf ) => {
+	getTemplateFile: ( cookieCombine, conf, callback ) => {
 		let fullName = conf.fullName;
 		superagent.post( conf.templateView )
 				.query( '.hdTemplateID=' + conf.yjmbID )
@@ -23,10 +23,13 @@ module.exports = {
 					if(!RecordSet) throw new Error("没有返回邮件模板内容，检查ID是否有误");
 
 			        core.writeFile('./'+fullName+'/'+ fullName +'.html', core.str2Buff(RecordSet.DataTemplate));
-			        core.writeFile('./'+fullName+'/'+ fullName +'.qvga', core.str2Buff(RecordSet.Qvga))
+			        core.writeFile('./'+fullName+'/'+ fullName +'.qvga', core.str2Buff(RecordSet.Qvga));
+
+			        if( core.isFunction(callback) ) callback();
 		    })
+
 	},
-	getConfigFile: ( cookieCombine, conf ) => {
+	getConfigFile: ( cookieCombine, conf, callback ) => {
 		let fullName = conf.fullName;
 		superagent.post(conf.ResourceView)
 				.query('.hdResourceID=' + conf.yjfzzyID)
@@ -39,6 +42,8 @@ module.exports = {
 
 			        core.writeFile('./'+fullName+'/ParseConfig.xml', core.str2Buff(RecordSet.ParseConfig));
 			        core.writeFile('./'+fullName+'/ResourcePackageConfig.xml', core.str2Buff(RecordSet.ResourceConfig));
+
+			        if( core.isFunction(callback) ) callback();
 		    })
 	}
 }

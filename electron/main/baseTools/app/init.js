@@ -15,20 +15,20 @@ const createDefault = require('./module/createDefault.js');
  * @param  {[object]} conf [自定义配置文件]
  * @return {[type]}      [description]
  */
-module.exports = ( conf ) => {
+module.exports = ( conf, callback ) => {
 	console.log('init.js');
 
 	//就在入口处和并配置文件；
 	let confCombine = core.extend( config, conf );
 
 	mkdir( confCombine.fullName, () => {
-		createFiles( confCombine )
+		createFiles( confCombine, callback )
 	});
 
 }
 
-function createFiles( conf ) {
+function createFiles( conf, callback ) {
 	createDefault.createConfigFiles( conf );
-	createDefault.createTempleteFiles( conf );
+	createDefault.createTempleteFiles( conf, callback );
 	createDefault.createTemplateStorageFile( conf );
 }

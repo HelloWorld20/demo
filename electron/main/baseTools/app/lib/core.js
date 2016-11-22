@@ -1,3 +1,7 @@
+/**
+ * baseTools核心函数
+ */
+
 "use strict"
 var iconv = require('iconv-lite');
 var fs = require('fs');
