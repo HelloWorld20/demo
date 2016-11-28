@@ -8,7 +8,7 @@ const {app,BrowserWindow,ipcMain,dialog}=require("electron");
 const get = require('./main/lib/core.js').get;
 const route = require('./main/route.js');
 
-const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test,handleSetLocalConf} = route;
+const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test,handleSetLocalConf,handleSendMail} = route;
 
 let mainWindow;
 
@@ -22,7 +22,7 @@ function entry() {
 
         if(method === 'dialog') {   //打开选择文件夹对话框
             handleDialog( event, mainWindow );
-        } else if (method === 'fileDialog') {
+        } else if (method === 'fileDialog') {       //弹出对话框，返回文件路径
             handleFileDialog( event, mainWindow );
         } else if (method === 'init') {     //初始化关键文件
             handleInit( value );
@@ -32,8 +32,10 @@ function entry() {
             handleGetFile( value );
         } else if (method === 'test' ) {        //测试
             test( value );
-        } else if (method === 'setLocalConf' ) {
+        } else if (method === 'setLocalConf' ) {    //保存至本地配置
             handleSetLocalConf( value );
+        } else if (method === 'sendMail' ) {        //发送邮件
+            handleSendMail( value );
         }
 
     })

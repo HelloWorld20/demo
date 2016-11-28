@@ -31,6 +31,7 @@ module.exports = {
 		config: __dirname + '/tpl/config.xml',
 		default: __dirname + '/tpl/ParseConfig_bill.xml'
 	},
+
 	username: 'weijianghong',		//投递平台的用户名
 	password: 'B0AA38EEB4DA24AC7A89A51656320621',	//投递平台的密码的32位MD5加密
 

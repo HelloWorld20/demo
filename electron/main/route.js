@@ -12,6 +12,7 @@ const {dialog}=require("electron");
 const init = require('./baseTools/app/init.js');
 const getFile = require('./baseTools/app/getFile.js');
 const upload = require('./baseTools/app/upload.js');
+const sendMail =require('./baseTools/app/sendMail.js');
 let tConfig = require('./tConfig.json');
 
 module.exports = {
@@ -77,12 +78,23 @@ module.exports = {
 	    } );
 	}, 
 
+	//处理，发送邮件组件
+	handleSendMail: ( value ) => {
+		//保证传入的是一个配置对象
+	    let conf = core.isObject(value) ? value : {};
+
+	    sendMail( conf, function() {
+	    	core.showMsg('成功', '邮件发送已完成。');
+	    })
+	},
+
 	//覆盖总配置文件
 	handleSetLocalConf: ( value ) => {
-
 		let result = core.extend( tConfig, value );
 
 		core.writeFile(__dirname+'/tConfig.json', JSON.stringify(result, null, 4), 'set default config file error...')
-	}
+	},
+
+	
 
 }

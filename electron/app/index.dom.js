@@ -247,6 +247,7 @@ main.initDrag('#dropHtml', true, (e) => {
 	let filePath = e.dataTransfer.files[0].path;
 
 	if( filePath && (filePath.slice(-5).toLowerCase()) === '.html') {
+		//把文件路径写到input里
 		$("#uploadHtmlInput").setAttribute('value', filePath);
 	}
 	return false;
@@ -256,6 +257,14 @@ main.initDrag('#dropQvga', true, (e) => {
 
 	if( filePath && (filePath.slice(-5).toLowerCase()) === '.qvga') {
 		$("#uploadQvgaInput").setAttribute('value', filePath);
+	}
+	return false;
+});
+main.initDrag('#dropMail', true, (e) => {
+	let filePath = e.dataTransfer.files[0].path;
+
+	if( filePath && (filePath.slice(-5).toLowerCase()) === '.html') {
+		$("#mailHtmlInput").setAttribute('value', filePath);
 	}
 	return false;
 });
@@ -272,6 +281,9 @@ main.initFileSelector( '#uploadHtml', res => {
 })
 main.initFileSelector( '#uploadQvga', res => {
 	$("#uploadQvgaInput").setAttribute('value', res);
+})
+main.initFileSelector( '#mailHtml', res => {
+	$("#mailHtmlInput").setAttribute('value', res);
 })
 
 //页面加载时读取默认配置文件
@@ -302,6 +314,12 @@ $("#upload").onclick = function(e) {
 	main.send( {method: 'upload', value: conf} );
 
 }
+//绑定发送邮件按钮；
+$("#send").onclick = function(e) {
+	let conf = main.getConfig( '#sendMailPage tbody input' );
+
+	main.send( {method: 'sendMail', value: conf} );
+}
 
 //事件捕获可以让父元素代理blur事件
 //失焦的时候保存当前配置
@@ -314,7 +332,7 @@ $(".tab").addEventListener('blur', function(e) {
 		
 	temp[name] = value;
 
-	result = core.extend( localConfig, temp )
+	result = core.extend( main.getCurrentConf(), temp )
 
 	main.setLocalConf(result)
 
