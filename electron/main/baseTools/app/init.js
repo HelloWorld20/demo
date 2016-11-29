@@ -31,4 +31,5 @@ function createFiles( conf, callback ) {
 	createDefault.createConfigFiles( conf );
 	createDefault.createTempleteFiles( conf, callback );
 	createDefault.createTemplateStorageFile( conf );
+	createDefault.createDataFile( conf.fullName );
 }

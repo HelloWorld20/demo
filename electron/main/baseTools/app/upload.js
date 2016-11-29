@@ -50,9 +50,13 @@ module.exports = ( conf, callback ) => {
 
 	//先读取要上传的文件名
 	function readFile() {
-		uploadHtml = core.buff2Str(fs.readFileSync( confCombine.uploadHtml || '' ));
-		uploadQvga = core.buff2Str(fs.readFileSync( confCombine.uploadQvga || '' ));
-
+		if( confCombine.uploadHtml ) {
+			uploadHtml = core.buff2Str(fs.readFileSync( confCombine.uploadHtml || '' ));
+		}
+		if( confCombine.uploadQvga ) {
+			uploadQvga = core.buff2Str(fs.readFileSync( confCombine.uploadQvga || '' ));
+		}
+		
 		proc.next();
 	}
 

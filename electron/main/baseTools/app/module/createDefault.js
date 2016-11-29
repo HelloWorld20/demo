@@ -82,6 +82,10 @@ module.exports = {
 		return;	
 
 	},
+	//只是生成一个空白的txt文件。用于保存报文
+	createDataFile: ( fullName ) => {
+		fs.writeFileSync('./'+fullName+'/data.txt', '');
+	},
 	//生成‘模板地址.html‘文件
 	createTemplateStorageFile: ( conf ) => {
 
