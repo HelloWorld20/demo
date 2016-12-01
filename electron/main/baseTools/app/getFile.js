@@ -17,7 +17,7 @@ const getFile = require('./module/getFile.js');
 const createTemplateStorageFile = require('./module/createDefault.js').createTemplateStorageFile;
 
 module.exports = ( conf, callback ) => {
-	console.log('getFile.js');
+	core.log('getFile.js');
 
 	//就在入口处和并配置文件；
 	let confCombine = core.extend( config, conf );

@@ -6,9 +6,38 @@
 
 const iconv = require('iconv-lite');
 const fs = require('fs');
-const {ipcMain,dialog} = require('electron');
+const {ipcMain,dialog,BrowserWindow} = require('electron');
 
-module.exports = {
+let mainWindow;
+
+let core = {
+	mainInit: ( path, callback ) => {
+		// 创建一个浏览器窗口对象，并指定窗口的大小
+		mainWindow = new BrowserWindow({
+	        width:1000,
+	        height:700
+	    });
+
+	    // 通过浏览器窗口对象加载index.html文件，同时也是可以加载一个互联网地址的
+	    mainWindow.loadURL( path ); 
+	    // 同时也可以简化成：mainWindow.loadURL('./index.html');
+
+	    // 监听浏览器窗口对象是否关闭，关闭之后直接将mainWindow指向空引用，也就是回收对象内存空间
+	    mainWindow.on("closed",function(){
+	        mainWindow = null;
+	    });
+
+
+	    mainWindow.openDevTools();
+
+	    if(core.isFunction( callback )) callback();
+
+	},
+	//后台向前台发送信息
+	log: function( msg ) {
+		console.log('log: '+ msg );
+		mainWindow.webContents.send('log', {value: msg});
+	},
 	//读取前台传来的值，handleRes：处理信息的方法；reply：回执信息。
 	get: (handleRes, reply) => {
 		ipcMain.on('main', (event, res) => {
@@ -16,6 +45,7 @@ module.exports = {
 		    if(reply) event.sender.send('main-reply', reply);
 		})
 	},
+
 	//字符串转换成二进制。
 	str2Buff: (str) => {
 		return iconv.encode(str, 'gb2312')
@@ -114,3 +144,5 @@ module.exports = {
 	}
 
 }
+
+module.exports = core;

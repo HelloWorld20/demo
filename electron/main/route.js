@@ -17,7 +17,7 @@ let tConfig = require('./tConfig.json');
 
 module.exports = {
 	test: ( value ) => {
-		console.log('test: ', value);
+		core.log('test: ', value);
 	},
 
 	//弹出 选取文件夹 对话框，返回文件夹路径

@@ -4,8 +4,8 @@
 "use strict"
 
 // 载入electron模块
-const {app,BrowserWindow,ipcMain,dialog}=require("electron");
-const get = require('./main/lib/core.js').get;
+const {app,ipcMain,dialog}=require("electron");
+const {get,mainInit} = require('./main/lib/core.js');
 const route = require('./main/route.js');
 
 const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test,handleSetLocalConf,handleSendMail} = route;
@@ -19,7 +19,6 @@ function entry() {
     get( (event, res) => {
         let method = res.method;
         let value = res.value;
-        let callback = res.callback;
 
         if(method === 'dialog') {   //打开选择文件夹对话框
             handleDialog( event, mainWindow );
@@ -46,25 +45,8 @@ function entry() {
 
 // 定义一个创建浏览器窗口的方法
 function createWindow(){
-    // 创建一个浏览器窗口对象，并指定窗口的大小
-    mainWindow=new BrowserWindow({
-        width:1000,
-        height:700
-    });
-
-    // 通过浏览器窗口对象加载index.html文件，同时也是可以加载一个互联网地址的
-    mainWindow.loadURL('file://'+__dirname+'/index.html'); 
-    // 同时也可以简化成：mainWindow.loadURL('./index.html');
-
-    // 监听浏览器窗口对象是否关闭，关闭之后直接将mainWindow指向空引用，也就是回收对象内存空间
-    mainWindow.on("closed",function(){
-        mainWindow = null;
-    });
-
-    // mainWindow.openDevTools();
-    //自己写的方法流程入口；
-    entry();
-
+    //把所有初始化的东西都放到core里，为的是让窗口对象mainWindow可以全局访问;
+    mainInit( 'file://'+__dirname+'/index.html', entry );
 }
 
 // 监听应用程序对象是否初始化完成，初始化完成之后即可创建浏览器窗口

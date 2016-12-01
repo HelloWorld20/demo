@@ -303,7 +303,7 @@ main.initFileSelector( '#mailHtml', res => {
 
 //绑定一键生成初始文件按钮；
 $("#init").onclick = function(e) {
-
+	e.preventDefault();
 	let conf = main.getConfig( '#initPage tbody input' );
 
 	main.send( {method: 'init', value: conf} );
@@ -311,7 +311,7 @@ $("#init").onclick = function(e) {
 }
 //绑定生产线爬取按钮；
 $("#getFile").onclick = function(e) {
-
+	e.preventDefault();
 	let conf = main.getConfig( '#getFilePage tbody input' );
 
 	main.send( {method: 'getFile', value: conf} );
@@ -319,7 +319,7 @@ $("#getFile").onclick = function(e) {
 }
 //绑定一键上传邮件模板按钮；
 $("#upload").onclick = function(e) {
-
+	e.preventDefault();
 	let conf = main.getConfig( '#uploadFilePage tbody input' );
 
 	main.send( {method: 'upload', value: conf} );
@@ -327,6 +327,7 @@ $("#upload").onclick = function(e) {
 }
 //绑定发送邮件按钮；
 $("#send").onclick = function(e) {
+	e.preventDefault();
 	let conf = main.getConfig( '#sendMailPage tbody input' );
 
 	main.send( {method: 'sendMail', value: conf} );
@@ -349,5 +350,10 @@ $(".tab").addEventListener('blur', function(e) {
 
 }, true)
 
+//接受的消息打印到消息盒子
+ipcRenderer.on('log', (event, data) => {
+	let inner = $("#msgBox").innerHTML;
+	$("#msgBox").innerHTML = data.value + '<br>' + inner;
+})
 
 })(main);

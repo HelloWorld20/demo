@@ -10,6 +10,7 @@ body{
 	padding-bottom: 50px;
 	padding-left: 30px;
 	padding-right: 30px;
+	/*padding-top: 50px;*/
 	font-family:"Microsoft YaHei";
 	-webkit-user-select:none;
 }
@@ -18,13 +19,32 @@ input[type="file"] {
 	display: none;
 }
 
+#msgBox{
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	min-height: 70px;
+	max-height: 200px;
+	overflow: auto;
+	width: 100%;
+	z-index: 1000;
+}
+.alert {
+    padding: 15px;
+    border: 1px solid transparent;
+}
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
 .relative{
 	position: relative;
 }
 .tab-pane{
 	position: absolute;
 	width: 100%;
-	padding-bottom: 50px;
+	padding-bottom: 250px;
 }
 .hide{
 	display: none;
@@ -45,6 +65,9 @@ input[type="file"] {
 </style>
 </head>
 <body>
+	<div id="msgBox" class="alert alert-success" role="alert">
+		后台返回的消息会打印在此处。。。。
+	</div>
     <h1>139投递平台开发辅助工具</h1>
     We are using io.js <script>document.write(process.version)</script>
     and Electron <script>document.write(process.versions['electron'])</script>.

@@ -16,7 +16,7 @@ const createDefault = require('./module/createDefault.js');
  * @return {[type]}      [description]
  */
 module.exports = ( conf, callback ) => {
-	console.log('init.js');
+	core.log('init.js');
 
 	//就在入口处和并配置文件；
 	let confCombine = core.extend( config, conf );

@@ -31,7 +31,7 @@ let uploadResouce = '';
 
 module.exports = ( conf, callback ) => {
 
-	console.log('upload.js');
+	core.log('upload.js');
 
 	//就在入口处和并配置文件；
 	let confCombine = core.extend( config, conf );
@@ -77,7 +77,7 @@ module.exports = ( conf, callback ) => {
 
 	//搜索模板列表，获取第一条记录的模板ID
 	function entry( cookieCombine ) {
-		console.log('get template list....');
+		core.log('get template list....');
 
 		cookieCombineGlo = cookieCombine;
 		superagent.post( confCombine.searchPageUrlTest )
@@ -89,18 +89,18 @@ module.exports = ( conf, callback ) => {
 					let RecordSet = JSON.parse(res.text).RecordSet;
 					//如果有两条记录
 					if( RecordSet && RecordSet[1] ) {
-						console.log('该模板文件名搜索出两条记录，请上投递平台核实邮件模板是否正确。')
+						core.log('该模板文件名搜索出两条记录，请上投递平台核实邮件模板是否正确。')
 					}
 					if( RecordSet && RecordSet[0] ) {
 						//暂时用全局变量存储传值
 						TemplateIDGlo = RecordSet[0].TemplateID;
-						console.log('获取模板列表成功;模板ID：' + TemplateIDGlo);
+						core.log('获取模板列表成功;模板ID：' + TemplateIDGlo);
 
 						procTpl.next();
 					} else {
 						//中断流程generator函数
 						procTpl = null;
-						console.log('没有找到对应的模板ID');
+						core.log('没有找到对应的模板ID');
 						return false;
 					}
 
@@ -111,7 +111,7 @@ module.exports = ( conf, callback ) => {
 
 	//利用模板ID获取模板详细信息；
 	function getInfo() {
-		console.log('正在获取模板详情。。。');
+		core.log('正在获取模板详情。。。');
 
 		superagent.post( confCombine.templateViewTest )
 				.set( 'cookie', cookieCombineGlo )
@@ -132,7 +132,7 @@ module.exports = ( conf, callback ) => {
 
 	//合并模板信息，并上传修改模板；
 	function upload() {
-		console.log('正在上传模板详情。。。');
+		core.log('正在上传模板详情。。。');
 
 		superagent.post( confCombine.templateEditUrlTest )
 				.set( 'cookie', cookieCombineGlo )
@@ -143,11 +143,11 @@ module.exports = ( conf, callback ) => {
 					let ret = JSON.parse(res.text);
 
 					if( ret.Result ) {
-						console.log('upload template success....');
+						core.log('upload template success....');
 
 						procTpl.next();
 					} else {
-						console.log('upload template fail....');
+						core.log('upload template fail....');
 						console.log(res.text);
 
 					}
@@ -158,7 +158,7 @@ module.exports = ( conf, callback ) => {
 
 	//审核
 	function verify() {
-		console.log('verifing....');
+		core.log('verifing....');
 		superagent.post( confCombine.verifyUrlTest )
 				.set( 'cookie', cookieCombineGlo )
 				.send( 'ResourceID=' + resourceIDGlo )
@@ -168,16 +168,16 @@ module.exports = ( conf, callback ) => {
 					let ret = JSON.parse(res.text);
 
 					if( ret.Result ) {
-						console.log( 'verify success....' );
+						core.log( 'verify success....' );
 						if( core.isFunction(callback) ) callback();
 						procTpl.next();
 					} else {
-						console.log('verify fail....');
+						core.log('verify fail....');
 						console.log(res.text);
 					}
 					//结束计时
 					console.timeEnd('upload');
-					console.log('upload at time: ' + new Date())
+					core.log('upload at time: ' + new Date())
 				} )
 	}
 
