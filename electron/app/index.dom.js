@@ -112,7 +112,7 @@ let main = {
 		$(selector).ondrop = e => {
 			e.preventDefault();
 			e.stopPropagation();
-			
+
 			elem.counter--;
 			if(elem.counter === 0) {
 				core.removeClass( elem, 'highLight' )
@@ -248,7 +248,7 @@ main.initDrag('#dropHtml', true, (e) => {
 
 	if( filePath && (filePath.slice(-5).toLowerCase()) === '.html') {
 		//把文件路径写到input里
-		$("#uploadHtmlInput").setAttribute('value', filePath);
+		$("#uploadHtmlInput").value = filePath;
 	}
 	return false;
 });
@@ -256,7 +256,7 @@ main.initDrag('#dropQvga', true, (e) => {
 	let filePath = e.dataTransfer.files[0].path;
 
 	if( filePath && (filePath.slice(-5).toLowerCase()) === '.qvga') {
-		$("#uploadQvgaInput").setAttribute('value', filePath);
+		$("#uploadQvgaInput").value = filePath;
 	}
 	return false;
 });
@@ -264,7 +264,15 @@ main.initDrag('#dropMail', true, (e) => {
 	let filePath = e.dataTransfer.files[0].path;
 
 	if( filePath && (filePath.slice(-5).toLowerCase()) === '.html') {
-		$("#mailHtmlInput").setAttribute('value', filePath);
+		$("#mailHtmlInput").value = filePath;
+	}
+	return false;
+});
+main.initDrag('#dropResouce', true, (e) => {
+	let filePath = e.dataTransfer.files[0].path;
+
+	if( filePath && (filePath.slice(-15).toLowerCase()) === 'parseconfig.xml') {
+		$("#uploadResouceInput").value = filePath;
 	}
 	return false;
 });
@@ -277,13 +285,16 @@ main.initDrag('#dropMail', true, (e) => {
 
 //初始化 选择文件 按钮,注意是文件，不是文件夹
 main.initFileSelector( '#uploadHtml', res => {
-	$("#uploadHtmlInput").setAttribute('value', res);
+	$("#uploadHtmlInput").value = res;
 })
 main.initFileSelector( '#uploadQvga', res => {
-	$("#uploadQvgaInput").setAttribute('value', res);
+	$("#uploadQvgaInput").value = res;
+})
+main.initFileSelector( '#uploadResouce', res => {
+	$("#uploadResouceInput").value = res;
 })
 main.initFileSelector( '#mailHtml', res => {
-	$("#mailHtmlInput").setAttribute('value', res);
+	$("#mailHtmlInput").value = res;
 })
 
 //页面加载时读取默认配置文件

@@ -32,7 +32,6 @@ module.exports = ( dirName, callback ) => {
 				md.next();
 			} else {
 				//不存在目标文件夹，即第一次新建
-				console.log('1')
 				fs.mkdirSync('./'+ dirName);
 				callback();
 			}

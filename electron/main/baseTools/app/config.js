@@ -38,12 +38,18 @@ module.exports = {
 	loginMessage: '.UserLogin%2520.txtUserName=weijianghong&.UserLogin%2520.txtPassword=B0AA38EEB4DA24AC7A89A51656320621',	//登录投递平台需要的登录账号密码信息。
 	loginServer: 'http://delivery.mail.10086.cn:9000/Services/Login.ashx',	//处理登录信息地址
 	templateView: 'http://delivery.mail.10086.cn:9000/delivery/Services/Template/TemplateView.ashx',	//模板详情请求地址
-	ResourceView: 'http://delivery.mail.10086.cn:9000/delivery/Services/EncapsulateMailResource/EncapsulateMailResourceView.ashx',
+	ResourceView: 'http://delivery.mail.10086.cn:9000/delivery/Services/EncapsulateMailResource/EncapsulateMailResourceView.ashx',								//正式线获取封装资源详情服务。
+
 
 	loginMessageTest: '.UserLogin%2520.txtUserName=weijianghong&.UserLogin%2520.txtPassword=WJHmail139!',//登录测试线需要的信息
 	loginServerTest: 'http://192.168.19.115:8000/Services/Login.ashx', 		//测试线登陆服务
-	templateEditUrlTest: 'http://192.168.19.115:8000/delivery/Services/Template/TemplateEdit.ashx',	//修改邮件模板上传路径	
-	searchPageUrlTest: 'http://192.168.19.115:8000/delivery/Services/Template/TemplateList.ashx', 		//搜索页面服务地址
-	templateViewTest: 'http://192.168.19.115:8000/delivery/Services/Template/TemplateView.ashx', 		//测试线模板详情页
+	ResourceViewTest: 'http://192.168.19.115:8000/delivery/Services/EncapsulateMailResource/EncapsulateMailResourceView.ashx',						//测试线获取封装资源详情服务。
+	ResourceEditTest: 'http://192.168.19.115:8000/delivery/Services/EncapsulateMailResource/EncapsulateMailResourceEdit.ashx',						//测试线上传封装资源服务。
+	ResourceListTest: 'http://192.168.19.115:8000/delivery/Services/EncapsulateMailResource/EncapsulateMailResourceList.ashx',						//测试线封装资源列表服务
+
+	templateEditUrlTest: 'http://192.168.19.115:8000/delivery/Services/Template/TemplateEdit.ashx',	//测试线修改邮件模板上传路径	
+	searchPageUrlTest: 'http://192.168.19.115:8000/delivery/Services/Template/TemplateList.ashx', 		//测试线搜索邮件模板页面服务地址
+	templateViewTest: 'http://192.168.19.115:8000/delivery/Services/Template/TemplateView.ashx', 		//测试线邮件模板详情页
+
 	verifyUrlTest: 'http://192.168.19.115:8000/delivery/Services/EncapsulateMailResource/EncapsulateMailResourceAudit.ashx', 		//测试线审核邮件
 }

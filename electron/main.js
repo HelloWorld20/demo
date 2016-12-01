@@ -19,6 +19,7 @@ function entry() {
     get( (event, res) => {
         let method = res.method;
         let value = res.value;
+        let callback = res.callback;
 
         if(method === 'dialog') {   //打开选择文件夹对话框
             handleDialog( event, mainWindow );
@@ -60,7 +61,7 @@ function createWindow(){
         mainWindow = null;
     });
 
-    mainWindow.openDevTools();
+    // mainWindow.openDevTools();
     //自己写的方法流程入口；
     entry();
 

@@ -23,8 +23,10 @@ let queryMessageGlo = {};
 let resourceIDGlo = -1;
 let uploadHtml = '';
 let uploadQvga = '';
+let uploadResouce = '';
 
-//流程：获取登录信息=>用模板名称去搜索模板列表=》取第一个模板ID=》获取模板详情，获得足够上传参数=>上传模板=》审核
+//流程1：获取登录信息=>用模板名称去搜索模板列表=》取第一个模板ID=》获取模板详情，获得足够上传参数=>上传模板=》审核
+//流程2：获取登录信息=》用封装资源名搜索封装资源列表=》获取第一个封装资源ID=》获取详情，获得参数=》上传封装资源=》审核
 
 
 module.exports = ( conf, callback ) => {
@@ -34,9 +36,9 @@ module.exports = ( conf, callback ) => {
 	//就在入口处和并配置文件；
 	let confCombine = core.extend( config, conf );
 
-	//流程
-	function* Process() {
-		console.time('upload: ')
+	//邮件模板流程
+	function* ProcessTpl() {
+		console.time('upload')
 		yield login();		//登录						
 		yield getInfo();	//进入模板详情页，组成信息				
 		yield upload();		//上传模板
@@ -44,29 +46,37 @@ module.exports = ( conf, callback ) => {
 		return 'ending'
 	}
 
-	let proc = Process();
+	//封装资源流程
+	function* ProcessResouce() {
+
+	}
+
+	let procTpl = ProcessTpl();
 
 	readFile();
 
 	//先读取要上传的文件名
 	function readFile() {
 		if( confCombine.uploadHtml ) {
-			uploadHtml = core.buff2Str(fs.readFileSync( confCombine.uploadHtml || '' ));
+			uploadHtml = core.buff2Str(fs.readFileSync( confCombine.uploadHtml ));
 		}
 		if( confCombine.uploadQvga ) {
-			uploadQvga = core.buff2Str(fs.readFileSync( confCombine.uploadQvga || '' ));
+			uploadQvga = core.buff2Str(fs.readFileSync( confCombine.uploadQvga ));
+		}
+		if( confCombine.uploadResouce ) {
+			uploadResouce = core.buff2Str(fs.readFileSync( confCombine.uploadResouce ))
 		}
 		
-		proc.next();
+		procTpl.next();
 	}
 
 	//获取登录session
 	function login() {
-		spider( search , true);
+		spider( entry , true);
 	}
 
 	//搜索模板列表，获取第一条记录的模板ID
-	function search( cookieCombine ) {
+	function entry( cookieCombine ) {
 		console.log('get template list....');
 
 		cookieCombineGlo = cookieCombine;
@@ -86,10 +96,10 @@ module.exports = ( conf, callback ) => {
 						TemplateIDGlo = RecordSet[0].TemplateID;
 						console.log('获取模板列表成功;模板ID：' + TemplateIDGlo);
 
-						proc.next();
+						procTpl.next();
 					} else {
 						//中断流程generator函数
-						proc = null;
+						procTpl = null;
 						console.log('没有找到对应的模板ID');
 						return false;
 					}
@@ -115,7 +125,7 @@ module.exports = ( conf, callback ) => {
 					resourceIDGlo = RecordSet.ConvertResourceID;		
 					queryMessageGlo =  getUploadQuery( RecordSet ,uploadHtml ,uploadQvga );
 
-					proc.next();
+					procTpl.next();
 				})
 		
 	}
@@ -135,7 +145,7 @@ module.exports = ( conf, callback ) => {
 					if( ret.Result ) {
 						console.log('upload template success....');
 
-						proc.next();
+						procTpl.next();
 					} else {
 						console.log('upload template fail....');
 						console.log(res.text);
@@ -160,13 +170,14 @@ module.exports = ( conf, callback ) => {
 					if( ret.Result ) {
 						console.log( 'verify success....' );
 						if( core.isFunction(callback) ) callback();
-						proc.next();
+						procTpl.next();
 					} else {
 						console.log('verify fail....');
 						console.log(res.text);
 					}
 					//结束计时
-					console.timeEnd('upload: ');
+					console.timeEnd('upload');
+					console.log('upload at time: ' + new Date())
 				} )
 	}
 
@@ -230,3 +241,13 @@ module.exports = ( conf, callback ) => {
 
 
 
+// .hdResourceID:4288
+// .hdBusinessID:922
+// .txtResourceConfig:%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22gb2312%22%3F%3E%0A%3CPackage%20name%3D%22%E8%B5%84%E6%BA%90%E5%8C%85%E9%85%8D%E7%BD%AE%22%3E%09%0A%20%20%3CResourceName%20name%3D%22%E8%B5%84%E6%BA%90%E5%90%8D%E7%A7%B0%22%3E%E5%AE%89%E5%BE%BD%E6%9C%88%E8%B4%A6%E5%8D%95%E6%9F%A5%E8%AF%A2%3C%2FResourceName%3E%0A%09%3CTemplateGroup%20name%3D%22%E6%A8%A1%E6%9D%BF%E7%BB%84%22%3E%0A%09%09%3CTemplate%20name%3D%22%E6%A8%A1%E6%9D%BF%22%3E%0A%09%09%09%3CTemplateName%20name%3D%22%E6%A8%A1%E6%9D%BF%E6%96%87%E4%BB%B6%E5%90%8D%E7%A7%B0%22%3E%E5%AE%89%E5%BE%BD%E6%9C%88%E8%B4%A6%E5%8D%95%E6%9F%A5%E8%AF%A2.html%3C%2FTemplateName%3E%0A%09%09%3C%2FTemplate%3E%0A%09%3C%2FTemplateGroup%3E%0A%3C%2FPackage%3E
+// .txtParseConfig:%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22gb2312%22%3F%3E%0A%3CSTRINGTOXML%3E%0A%09%3CFixedNode%20Type%3D%22Reference%22%20MapField%3D%22to%3A%E9%82%AE%E7%AE%B1%E5%9C%B0%E5%9D%80%7Ctoname%3A%E5%AE%A2%E6%88%B7%E5%A7%93%E5%90%8D%7Cquerytime%3A%E6%9F%A5%E8%AF%A2%E6%97%B6%E9%97%B4%7Ctitle%3A%E9%82%AE%E4%BB%B6%E6%A0%87%E9%A2%98%22%3E%0A%09%09%3CDataSource%20Name%3D%22AH_HEADER%22%20Type%20%3D%20%22Fix%22%3E%0A%09%09%3C%2FDataSource%3E%0A%09%3C%2FFixedNode%3E%0A%09%3CFetchNode%20Key%3D%22info%22%3E%0A%09%09%3CGetItem%20ItemID%3D%22MONTHBILLCQ1%22%3E%0A%09%09%09%3CStringToXml%3E%0A%09%09%09%09%3CFixedNode%20Type%3D%22Reference%22%20MapField%3D%22BRAND%3A%E5%93%81%E7%89%8C%7CSUBSNAME%3A%E7%94%A8%E6%88%B7%E5%A7%93%E5%90%8D%22%3E%0A%09%09%09%09%09%3CDataSource%20Name%3D%22AH_INTRO%22%20Type%20%3D%20%22Fix%22%3E%0A%09%09%09%09%09%3C%2FDataSource%3E%0A%09%09%09%09%3C%2FFixedNode%3E%0A%09%09%09%3C%2FStringToXml%3E%0A%20%20%20%20%20%20%20%20%3C%2FGetItem%3E%0A%09%09%3CGetItem%20ItemID%3D%22MONTHBILLCQ1%22%3E%0A%09%09%09%3CStringToXml%3E%0A%09%09%09%09%3CFetchNode%20Key%3D%22CUST_FEE%22%3E%0A%09%09%09%09%09%3CFixedNode%20Type%3D%22Reference%22%20MapField%3D%22HF_FEE%3A%E8%AF%9D%E8%B4%B9%E8%B4%A6%E6%88%B7%E4%BD%99%E9%A2%9D%22%3E%0A%09%09%09%09%09%09%3CDataSource%20Name%3D%22AH_TEST%22%20Type%20%3D%20%22Fix%22%3E%3C%2FDataSource%3E%0A%09%09%09%09%09%3C%2FFixedNode%3E%0A%09%09%09%09%3C%2FFetchNode%3E%0A%09%09%09%3C%2FStringToXml%3E%0A%20%20%20%20%20%20%20%20%3C%2FGetItem%3E%0A%09%3C%2FFetchNode%3E%0A%3C%2FSTRINGTOXML%3E
+// .txtRemark:
+// .hdHttpUrl:
+// .hdUrl0:
+// .hdUrl1:
+// .hdUrl2:
+// .txtFilePath:
