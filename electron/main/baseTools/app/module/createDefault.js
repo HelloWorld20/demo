@@ -14,6 +14,7 @@ const cheerio = require('cheerio');
 const core = require('../lib/core.js');
 const Counter = require('../lib/counter.js');
 
+
 //把charset方法写入superagent原型里。扩展功能
 charset(superagent);
 

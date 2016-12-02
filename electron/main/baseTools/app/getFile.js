@@ -16,8 +16,10 @@ const mkdir = require('./module/mkdir.js');
 const getFile = require('./module/getFile.js');
 const createTemplateStorageFile = require('./module/createDefault.js').createTemplateStorageFile;
 
+const {log} = require('../../lib/core.js');
+
 module.exports = ( conf, callback ) => {
-	core.log('getFile.js');
+	log('getFile.js');
 
 	//就在入口处和并配置文件；
 	let confCombine = core.extend( config, conf );
