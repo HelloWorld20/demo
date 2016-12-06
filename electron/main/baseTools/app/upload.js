@@ -1,7 +1,7 @@
 /**
  * description：上传模板到测试线
  * author：weijianghong
- * date：2016-11-16
+ * date：2016-12-06
  */
 
 "use strict"
@@ -15,20 +15,24 @@ const core = require('./lib/core.js');
 const config = require('./config.js');
 
 const spider = require('./module/spider.js');
+const Counter = require('./lib/counter.js');
 
 const {log} = require('../../lib/core.js');
 
+
 //以下都是为了异步传值的全局变量。暂时这么用
 let TemplateIDGlo = -1;
-let cookieCombineGlo = '';
-let queryMessageGlo = {};
+let cookieCombineGlo = '';	
+let queryMessageGlo = {};			//上传邮件模板的信息
+let resouceQueryMessageGlo = {};	//上传封装资源的信息
 let resourceIDGlo = -1;
 let uploadHtml = '';
 let uploadQvga = '';
-let uploadResouce = '';
+let uploadResource = '';
+
 
 //流程1：获取登录信息=>用模板名称去搜索模板列表=》取第一个模板ID=》获取模板详情，获得足够上传参数=>上传模板=》审核
-//流程2：获取登录信息=》用封装资源名搜索封装资源列表=》获取第一个封装资源ID=》获取详情，获得参数=》上传封装资源=》审核
+//流程2：获取登录信息=>用模板名称去搜索模板列表=》对应封装资源ID=》获取详情，获得参数=》上传封装资源=》审核
 
 
 module.exports = ( conf, callback ) => {
@@ -38,25 +42,29 @@ module.exports = ( conf, callback ) => {
 	//就在入口处和并配置文件；
 	let confCombine = core.extend( config, conf );
 
+	let counter = new Counter(1, verify);
+
 	//邮件模板流程
 	function* ProcessTpl() {
-		console.time('upload')
-		yield login();		//登录						
-		yield getInfo();	//进入模板详情页，组成信息				
-		yield upload();		//上传模板
-		yield verify();		//审核
+		console.time('upload');	
+		yield getTemplateList();			//获取模板列表
+		yield getTemplateInfo();			//进入模板详情页，组成信息				
+		yield uploadTemplate();				//上传模板
 		return 'ending'
 	}
 
 	//封装资源流程
 	function* ProcessResouce() {
-
+		yield getResouceInfo();				//获取封装资源详情，
+		yield uploadResourceFile();			//上传封装资源文件
+		return 'ending'
 	}
 
 	let procTpl = ProcessTpl();
+	let procRes = ProcessResouce();
+
 
 	readFile();
-
 	//先读取要上传的文件名
 	function readFile() {
 		if( confCombine.uploadHtml ) {
@@ -65,11 +73,11 @@ module.exports = ( conf, callback ) => {
 		if( confCombine.uploadQvga ) {
 			uploadQvga = core.buff2Str(fs.readFileSync( confCombine.uploadQvga ));
 		}
-		if( confCombine.uploadResouce ) {
-			uploadResouce = core.buff2Str(fs.readFileSync( confCombine.uploadResouce ))
+		if( confCombine.uploadResource ) {
+			uploadResource = core.buff2Str(fs.readFileSync( confCombine.uploadResource ))
 		}
 		
-		procTpl.next();
+		login()
 	}
 
 	//获取登录session
@@ -79,11 +87,18 @@ module.exports = ( conf, callback ) => {
 
 	//搜索模板列表，获取第一条记录的模板ID
 	function entry( cookieCombine ) {
-		log('get template list....');
-
 		cookieCombineGlo = cookieCombine;
+		//上传邮件模板流程分支
+		procTpl.next();
+	}
+
+
+	//获取邮件模板列表
+	function getTemplateList( cookieCombine ) {
+		log('正在获取邮件模板列表....');
+
 		superagent.post( confCombine.searchPageUrlTest )
-				.set( 'cookie', cookieCombine )	//需要登录时的cookie
+				.set( 'cookie', cookieCombineGlo )	//需要登录时的cookie
 				.query( getListQuery( confCombine.tplName ) )
 				.end( ( err, res ) => {
 					core.handleError(err, 'get template ID fail...');
@@ -108,11 +123,11 @@ module.exports = ( conf, callback ) => {
 
 					return true;
 				} )
-
 	}
 
+
 	//利用模板ID获取模板详细信息；
-	function getInfo() {
+	function getTemplateInfo() {
 		log('正在获取模板详情。。。');
 
 		superagent.post( confCombine.templateViewTest )
@@ -126,15 +141,36 @@ module.exports = ( conf, callback ) => {
 					//对应的邮件封装资源ID，审核时用到；
 					resourceIDGlo = RecordSet.ConvertResourceID;		
 					queryMessageGlo =  getUploadQuery( RecordSet ,uploadHtml ,uploadQvga );
-
-					procTpl.next();
+					procTpl.next();		//继续邮件模板上传流程
+					
+					procRes.next();		//在这获得对应封装资源ID后进入上传封装资源流程。
+					return;
 				})
 		
 	}
 
+	//获取封装资源详情，
+	function getResouceInfo() {
+		log('正在获取封装资源详情....');
+
+		superagent.post( confCombine.ResourceViewTest )
+				.set( 'cookie', cookieCombineGlo )
+				.query( '.hdResourceID=' + resourceIDGlo )
+				.end( ( err, res ) =>{
+					core.handleError(err, 'get template detail fail...');
+
+					let RecordSet = JSON.parse(res.text).RecordSet;
+
+					resouceQueryMessageGlo = getUploadResourceQuery( RecordSet, uploadResource );
+					
+					procRes.next();
+					return;
+				})
+	}
+
 	//合并模板信息，并上传修改模板；
-	function upload() {
-		log('正在上传模板详情。。。');
+	function uploadTemplate() {
+		log('正在上传模板数据。。。');
 
 		superagent.post( confCombine.templateEditUrlTest )
 				.set( 'cookie', cookieCombineGlo )
@@ -145,11 +181,11 @@ module.exports = ( conf, callback ) => {
 					let ret = JSON.parse(res.text);
 
 					if( ret.Result ) {
-						log('upload template success....');
+						log('上传邮件模板成功....');
 
-						procTpl.next();
+						counter.count();
 					} else {
-						log('upload template fail....');
+						log('上传邮件模板失败....');
 						console.log(res.text);
 
 					}
@@ -158,9 +194,33 @@ module.exports = ( conf, callback ) => {
 		
 	}
 
+	//上传封装资源文件
+	function uploadResourceFile() {
+		log('正在上传封装资源数据。。。');
+
+		superagent.post( confCombine.ResourceEditTest )
+				.set( 'cookie', cookieCombineGlo )
+				.send( resouceQueryMessageGlo )
+				.end( (err, res) => {
+					core.handleError(err, 'upload resource files fail...');
+	
+					let ret = JSON.parse(res.text);
+
+					if( ret.Result ) {
+						log('上传封装资源成功....');
+
+						counter.count();
+					} else {
+						log('上传封装资源文件失败....');
+						console.log(res.text);
+					}
+
+				} )
+	}
+
 	//审核
 	function verify() {
-		log('verifing....');
+		log('审核中....');
 		superagent.post( confCombine.verifyUrlTest )
 				.set( 'cookie', cookieCombineGlo )
 				.send( 'ResourceID=' + resourceIDGlo )
@@ -170,7 +230,7 @@ module.exports = ( conf, callback ) => {
 					let ret = JSON.parse(res.text);
 
 					if( ret.Result ) {
-						log( 'verify success....' );
+						log( '审核成功，上传流程已经完成....' );
 						if( core.isFunction(callback) ) callback();
 						procTpl.next();
 					} else {
@@ -179,16 +239,19 @@ module.exports = ( conf, callback ) => {
 					}
 					//结束计时
 					console.timeEnd('upload');
-					log('upload at time: ' + new Date())
+					log('上传成功时间节点: ' + new Date())
 				} )
 	}
+
+	
+	
 
 
 	//上传模板时需要传递的信息。
 	function getUploadQuery( source, webTpl, wapTpl ) {
 		let result = "";
 
-		result += '.hdTemplateID=' + encodeURIComponent(source.TemplateID );
+		result += '.hdTemplateID=' + encodeURIComponent(source.TemplateID);
 		result += '&';
 		result += '.hdResourceID=' + encodeURIComponent(source.ConvertResourceID);
 		result += '&';
@@ -219,6 +282,35 @@ module.exports = ( conf, callback ) => {
 		return result;
 	}
 
+	//上传封装资源时需要传递的信息。
+	function getUploadResourceQuery( source, resourceStr ) {
+		let result = "";
+
+		result += '.hdResourceID=' + encodeURIComponent(source.ConvertResourceID);
+		result += '&';
+		result += '.hdBusinessID=' + encodeURIComponent(source.BusinessID);
+		result += '&';
+		result += '.txtResourceConfig=' + encodeURIComponent(source.ResourceConfig);
+		result += '&';
+		result += '.txtParseConfig='+(resourceStr ? encodeURIComponent(resourceStr) : encodeURIComponent(source.ParseConfig));
+		result += '&';
+		result += '.txtRemark=' + encodeURIComponent(source.Remark);
+		result += '&';
+		result += '.hdHttpUrl=' + encodeURIComponent(source.HttpUrl);
+		result += '&';
+		result += '.hdUrl0=';
+		result += '&';
+		result += '.hdUrl1=';
+		result += '&';
+		result += '.hdUrl2=';
+		result += '&';
+		result += '.txtFilePath=';
+
+		return result;
+	}
+
+
+
 	//搜索邮件模板时需要的参数
 	function getListQuery( value ) {
 		let result = {};
@@ -238,18 +330,23 @@ module.exports = ( conf, callback ) => {
 		return result;
 	}
 
+	function getResourceListQuery( value ) {
+		let result = {};
+
+		result['.hdCompanyID'] = 0
+		result['.hdBusinessID'] = 0
+		result['.txtSender'] = null
+		result['.txtStartDate:'] = null
+		result['.txtEndDate:'] = null
+		result['.hdBusinessTypeID'] = 0
+		result['.selectTag%20.EncapsulateMailResourceType'] = 0
+		result['.txtResourceName'] = escape( value )
+		result['CurPage'] = 0
+		result['PageSize'] = 2
+
+		return result;
+	}
+
 
 };
 
-
-
-// .hdResourceID:4288
-// .hdBusinessID:922
-// .txtResourceConfig:%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22gb2312%22%3F%3E%0A%3CPackage%20name%3D%22%E8%B5%84%E6%BA%90%E5%8C%85%E9%85%8D%E7%BD%AE%22%3E%09%0A%20%20%3CResourceName%20name%3D%22%E8%B5%84%E6%BA%90%E5%90%8D%E7%A7%B0%22%3E%E5%AE%89%E5%BE%BD%E6%9C%88%E8%B4%A6%E5%8D%95%E6%9F%A5%E8%AF%A2%3C%2FResourceName%3E%0A%09%3CTemplateGroup%20name%3D%22%E6%A8%A1%E6%9D%BF%E7%BB%84%22%3E%0A%09%09%3CTemplate%20name%3D%22%E6%A8%A1%E6%9D%BF%22%3E%0A%09%09%09%3CTemplateName%20name%3D%22%E6%A8%A1%E6%9D%BF%E6%96%87%E4%BB%B6%E5%90%8D%E7%A7%B0%22%3E%E5%AE%89%E5%BE%BD%E6%9C%88%E8%B4%A6%E5%8D%95%E6%9F%A5%E8%AF%A2.html%3C%2FTemplateName%3E%0A%09%09%3C%2FTemplate%3E%0A%09%3C%2FTemplateGroup%3E%0A%3C%2FPackage%3E
-// .txtParseConfig:%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22gb2312%22%3F%3E%0A%3CSTRINGTOXML%3E%0A%09%3CFixedNode%20Type%3D%22Reference%22%20MapField%3D%22to%3A%E9%82%AE%E7%AE%B1%E5%9C%B0%E5%9D%80%7Ctoname%3A%E5%AE%A2%E6%88%B7%E5%A7%93%E5%90%8D%7Cquerytime%3A%E6%9F%A5%E8%AF%A2%E6%97%B6%E9%97%B4%7Ctitle%3A%E9%82%AE%E4%BB%B6%E6%A0%87%E9%A2%98%22%3E%0A%09%09%3CDataSource%20Name%3D%22AH_HEADER%22%20Type%20%3D%20%22Fix%22%3E%0A%09%09%3C%2FDataSource%3E%0A%09%3C%2FFixedNode%3E%0A%09%3CFetchNode%20Key%3D%22info%22%3E%0A%09%09%3CGetItem%20ItemID%3D%22MONTHBILLCQ1%22%3E%0A%09%09%09%3CStringToXml%3E%0A%09%09%09%09%3CFixedNode%20Type%3D%22Reference%22%20MapField%3D%22BRAND%3A%E5%93%81%E7%89%8C%7CSUBSNAME%3A%E7%94%A8%E6%88%B7%E5%A7%93%E5%90%8D%22%3E%0A%09%09%09%09%09%3CDataSource%20Name%3D%22AH_INTRO%22%20Type%20%3D%20%22Fix%22%3E%0A%09%09%09%09%09%3C%2FDataSource%3E%0A%09%09%09%09%3C%2FFixedNode%3E%0A%09%09%09%3C%2FStringToXml%3E%0A%20%20%20%20%20%20%20%20%3C%2FGetItem%3E%0A%09%09%3CGetItem%20ItemID%3D%22MONTHBILLCQ1%22%3E%0A%09%09%09%3CStringToXml%3E%0A%09%09%09%09%3CFetchNode%20Key%3D%22CUST_FEE%22%3E%0A%09%09%09%09%09%3CFixedNode%20Type%3D%22Reference%22%20MapField%3D%22HF_FEE%3A%E8%AF%9D%E8%B4%B9%E8%B4%A6%E6%88%B7%E4%BD%99%E9%A2%9D%22%3E%0A%09%09%09%09%09%09%3CDataSource%20Name%3D%22AH_TEST%22%20Type%20%3D%20%22Fix%22%3E%3C%2FDataSource%3E%0A%09%09%09%09%09%3C%2FFixedNode%3E%0A%09%09%09%09%3C%2FFetchNode%3E%0A%09%09%09%3C%2FStringToXml%3E%0A%20%20%20%20%20%20%20%20%3C%2FGetItem%3E%0A%09%3C%2FFetchNode%3E%0A%3C%2FSTRINGTOXML%3E
-// .txtRemark:
-// .hdHttpUrl:
-// .hdUrl0:
-// .hdUrl1:
-// .hdUrl2:
-// .txtFilePath:

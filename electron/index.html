@@ -62,6 +62,26 @@ input[type="file"] {
 	transition: background-color .2s ease-in-out;
 }
 
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+width:8px;
+
+}
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+-webkit-box-shadow:inset006pxrgba(0,0,0,0.3);
+border-radius:10px;
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+border-radius:10px;
+background:rgba(0,0,0,0.1);
+-webkit-box-shadow:inset006pxrgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+background:rgba(255,0,0,0.4);
+}
+
 </style>
 </head>
 <body>
@@ -241,9 +261,18 @@ input[type="file"] {
 		                        <input class="form-control" type="text" name="tplName" required="required"  placeholder="河北1008611话费查询热线节点" value="">
 		                    </td>
 		                    <td>
-		                        <p>必须。投递平台上邮件模板名。程序检索邮件模板名称得到的第一条记录的ID来上传</p>
+		                        <p>必须。投递平台上邮件模板名称。用于找到要对应的业务模板ID以及资源ID。如模板名有重复，则获取邮件模板列表的第一条记录。</p>
 		                    </td>
 		                </tr>
+		                <!--  <tr>
+		                    <td>封装资源名称：</td>
+		                    <td>
+		                        <input class="form-control" type="text" name="resouceName" required="required"  placeholder="河北1008611话费查询热线节点" value="">
+		                    </td>
+		                    <td>
+		                        <p>必须。投递平台上封装资源名。程序检索封装资源名称得到的第一条记录的ID来上传</p>
+		                    </td>
+		                </tr> -->
 		                <tr id="dropHtml">
 		                    <td>HTML模板路径：</td>
 		                    <td>
@@ -281,13 +310,13 @@ input[type="file"] {
 		                    </td>
 		                </tr>
 
-		                <tr id="dropResouce">
+		                <tr id="dropResource">
 		                    <td>ResouceConfig.xml文件：</td>
 		                    <td>
-		                    	<button id="uploadResouce" class="btn btn-primary">上传配置文件</button>
+		                    	<button id="uploadResource" class="btn btn-primary">上传配置文件</button>
 								&nbsp;&nbsp;&nbsp;&nbsp;可拖拽到此区域上传文件
 
-							    <input id="uploadResouceInput" class="form-control" type="text" name="uploadResouce"  placeholder="E:\delivery\api类\NG\安徽月账单查询\ParseConfig.xml" value="">
+							    <input id="uploadResourceInput" class="form-control" type="text" name="uploadResource"  placeholder="E:\delivery\api类\NG\安徽月账单查询\ParseConfig.xml" value="">
 		                    </td>
 		                    <td>
 		                        <p>
@@ -319,7 +348,7 @@ input[type="file"] {
 		                        <input class="form-control" type="text" name="from" required="required"  placeholder="XXXXXXXXX@qq.com" value="">
 		                    </td>
 		                    <td>
-		                        <p>必须。发件人的邮箱地址</p>
+		                        <p>必须。发件人的邮箱地址,暂时只支持QQ邮箱。</p>
 		                    </td>
 		                </tr>
 		                <tr>

@@ -85,7 +85,7 @@ let core = {
 
 	handleError: (err, msg) => {
 		if(err) {
-			console.error(err);
+			core.error(err);
 			throw new Error('[Custom isError: ' + msg + ']')
 		}
 	},
@@ -118,6 +118,7 @@ let core = {
 	    return result;
 	},
 
+	//后台给前台的alert
 	showMsg: (title, message) => {
 		if( message == undefined ) {
 			message = title;
@@ -129,6 +130,7 @@ let core = {
 	        title: title,
 	        message: message,
 	    });
+	    core.log(message);
 	},
 
 	isArray: obj => {

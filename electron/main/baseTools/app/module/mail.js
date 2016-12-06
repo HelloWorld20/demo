@@ -17,7 +17,6 @@ function sendMail( config, callback ) {
         subject = config.subject,
         file = config.mailHtml
 
-// console.log(user, pass, to, subject, file);return;
 
     let html = fs.readFileSync(file, {});
 

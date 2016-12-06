@@ -268,11 +268,11 @@ main.initDrag('#dropMail', true, (e) => {
 	}
 	return false;
 });
-main.initDrag('#dropResouce', true, (e) => {
+main.initDrag('#dropResource', true, (e) => {
 	let filePath = e.dataTransfer.files[0].path;
 
 	if( filePath && (filePath.slice(-15).toLowerCase()) === 'parseconfig.xml') {
-		$("#uploadResouceInput").value = filePath;
+		$("#uploadResourceInput").value = filePath;
 	}
 	return false;
 });
@@ -290,8 +290,8 @@ main.initFileSelector( '#uploadHtml', res => {
 main.initFileSelector( '#uploadQvga', res => {
 	$("#uploadQvgaInput").value = res;
 })
-main.initFileSelector( '#uploadResouce', res => {
-	$("#uploadResouceInput").value = res;
+main.initFileSelector( '#uploadResource', res => {
+	$("#uploadResourceInput").value = res;
 })
 main.initFileSelector( '#mailHtml', res => {
 	$("#mailHtmlInput").value = res;
