@@ -28,10 +28,11 @@ let core = {
 	    });
 
 
-	    mainWindow.openDevTools();
+	    // mainWindow.openDevTools();
 
 	    if(core.isFunction( callback )) callback();
 
+	    return mainWindow;
 	},
 	//后台向前台发送信息
 	log: function( msg ) {

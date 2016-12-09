@@ -304,7 +304,7 @@ main.initFileSelector( '#mailHtml', res => {
 //绑定一键生成初始文件按钮；
 $("#init").onclick = function(e) {
 	e.preventDefault();
-	let conf = main.getConfig( '#initPage tbody input' );
+	let conf = main.getConfig( '#initPage tbody input,#initPage tbody select' );
 
 	main.send( {method: 'init', value: conf} );
 

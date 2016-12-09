@@ -1,83 +1,21 @@
+<!-- 加上{{}}的地方是需要手动修改的参数 -->
 <?xml version="1.0" encoding="gb2312"?>
 <Compose>
 <AREA Code="0" Method="Equal">
-  <DataSource Name="QL_YONGHUJBXX" Type = "Fix">
-  </DataSource>
+	<DataSource Name="{{QL_YONGHUJBXX}}" Type = "Fix">
+	</DataSource>
 </AREA>
-<AREA Code="01" Method="PrefixEqual">
-  <DataSource Name="QL_GUANJIAN" Type = "Map" MapField="费用项目:Key|金额:Value|区域码:AreaCode" >
-  </DataSource>
-</AREA>
+<!-- Filter：过滤 -->
 <AREA Code="02" Method="PrefixEqual">
-  <DataSource Name="QL_ZHANGHUXINXI" Type="Mixed" SplitBy="~" MainFiled="账户项目:Key|区域码:AreaCode" MixedField="账户余额|上期结余|本期收入|已扣费用" Filter="备注">
-  </DataSource>
+	<DataSource Name="{{QL_ZHANGHUXINXI}}" Type="Mixed" SplitBy="~" MainFiled="{{账户项目:Key|区域码:AreaCode}}" MixedField="{{账户余额|上期结余|本期收入|已扣费用}}" Filter="{{备注}}">
+	</DataSource>
 </AREA>
 <AREA Code="0299" Method="PrefixEqual">
-  <DataSource Name="QL_ZHANGHUBEIZHU" Type = "Map" MapField="备注项目:Key|描述:Value|区域码:AreaCode" >
-  </DataSource>
-</AREA>
-<AREA Code="03" Method="PrefixEqual">
-  <DataSource Name="QL_FEIYONGGAIYAO" Type = "Map" MapField="费用项目:Key|金额:Value|区域码:AreaCode" Filter="本期费用总额" >
-  </DataSource>
-</AREA>
-<AREA Code="039900" Method="Equal">
-  <DataSource Name="QL_FEIYONGHEJI" Type = "Map" MapField="费用项目:Key|金额:Value|区域码:AreaCode">
-  </DataSource>  
-</AREA>
-<AREA Code="04" Method="PrefixEqual" CodeFilter="049901|049902|049903">
-  <DataSource Name="QL_JIFENXINXI" Type = "Map" MapField="积分项目:Key|积分值:Value|区域码:AreaCode">
-  </DataSource>
-</AREA>
-<AREA Code="0499" Method="PrefixEqual">
-  <DataSource Name="QL_JIFENBEIZHU" Type = "Map" MapField="备注项目:Key|描述:Value|区域码:AreaCode" >
-  </DataSource>
+	<DataSource Name="{{QL_ZHANGHUBEIZHU}}" Type = "Map" MapField="{{备注项目:Key|描述:Value|区域码:AreaCode}}" >
+	</DataSource>
 </AREA>
 <AREA Code="050000" Method="Equal">
-  <DataSource Name="QL_XIAOFEIQUSHI" Type="Map" MapField="项目:Key|链接地址:Value">
-  </DataSource>
-</AREA>
-<AREA Code="060000" Method="Equal">
-  <DataSource Name="QL_FEIYONGJIEGOUTU" Type="Map" MapField="项目:Key|链接地址:Value">
-  </DataSource>
-</AREA>
-<AREA Code="07" Method="PrefixEqual">
-  <DataSource Name="QL_ZIFEITUIJIAN" Type = "Map" MapField="费用项目:Key|描述:Value|区域码:AreaCode">
-  </DataSource>
-</AREA>
-<AREA Code="0800" Method="PrefixEqual">
-  <DataSource Name="QL_PUTONGZHANGHU" Type="Mixed" SplitBy="~" MainFiled="区域码:AreaCode" MixedField="时间|方式|金额">
-  </DataSource>
-</AREA>
-<AREA Code="0801" Method="PrefixEqual">
-  <DataSource Name="QL_ZHUANYONGZHANGHU" Type="Mixed" SplitBy="~" MainFiled="区域码:AreaCode" MixedField="时间|方式|金额">
-  </DataSource>
-</AREA>
-<AREA Code="090" Method="PrefixEqual">
-  <DataSource Name="QL_FEIYONGMINGXI" Type = "Map" MapField="费用项目:Key|金额:Value|区域码:AreaCode">
-  </DataSource>
-</AREA>
-<AREA Code="099900" Method="PrefixEqual">
-  <DataSource Name="QL_FEIYONGMINGXIBEIZHU" Type = "Map" MapField="费用项目:Key|备注:Value|区域码:AreaCode">
-  </DataSource>
-</AREA>
-<AREA Code="1001" Method="PrefixEqual">
-  <DataSource Name="QL_DAISHOUFEIMINGXI" Type="Mixed" SplitBy="~" MainFiled="区域码:AreaCode" MixedField="业务端口|业务名称|企业名称|使用方式|费用类型|金额" Filter="代收费业务费用">
-  </DataSource>
-</AREA>
-<AREA Code="1000000" Method="Equal">
-  <DataSource Name="QL_DAISHOUFEIHEJI" Type="Map" MapField="费用项目:Key|金额:Value">
-  </DataSource>
-</AREA>
-<AREA Code="11" Method="PrefixEqual">
-  <DataSource Name="QL_DINGGOUTAOCAN" Type="Mixed" SplitBy="~" MainFiled="套餐名称:Key|区域码:AreaCode" MixedField="套餐明细|包含资源量|实际使用量|使用百分比">
-  </DataSource>
-</AREA>
-<AREA Code="12" Method="PrefixEqual">
-  <DataSource Name="QL_XUANCHUANNEIRONG" Type="Map" MapField="项目:Key|内容:Value">
-  </DataSource>
-</AREA>
-<AREA Code="130000" Method="Equal">
-  <DataSource Name="QL_TISHIYU" Type="Map" MapField="项目:Key|内容:Value">
-  </DataSource>
+	<DataSource Name="{{QL_XIAOFEIQUSHI}}" Type="Map" MapField="{{项目:Key|链接地址:Value}}">
+	</DataSource>
 </AREA>
 </Compose>

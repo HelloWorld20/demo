@@ -1,22 +1,22 @@
-<!-- 加上{{}}的地方是可能需要手动修改的参数 -->
+<!-- 加上{{}}的地方是需要手动修改的参数 -->
 <?xml version="1.0" encoding="gb2312"?>
 <STRINGTOXML>
 <!--读取公共部分数据，基本固定-->
  <FixedNode Type="Reference" MapField="to:邮箱地址|toname:客户名称|brand:客户等级|querytime:查询时间|title:邮件标题">
-    <DataSource Name="_HEADER" Type = "Fix">
+    <DataSource Name="{{HEADER}}" Type = "Fix">
     </DataSource>
   </FixedNode>
 <FetchNode Key="info">
 	<FetchNode Key="request">
 		<!-- 读取单个数据 -->
 		<FixedNode Type="Reference" MapField="{{Business_name:业务名称|Business_detail:业务内容介绍}}">
-			<DataSource Name="_SINGLE" Type = "Fix">
+			<DataSource Name="{{SINGLE}}" Type = "Fix">
 			</DataSource>
 		</FixedNode>
-		<!-- 读取表格数据 -->
 		<FetchNode Key="{{freebie}}">
+			<!-- 读取表格数据 -->
 			<FetchMultiseriateNode ColumnNames="{{freebiename|freebieused|freebieunused}}">
-				<DataSource Name="_TABLE" Type="Mixed" SplitBy="~" MainFiled="{{套餐名}}:Key" MixedField="{{已使用|剩余}}">
+				<DataSource Name="{{TABLE}}" Type="Mixed" SplitBy="~" MainFiled="{{套餐名}}:Key" MixedField="{{已使用|剩余}}">
 				</DataSource>
 			</FetchMultiseriateNode>
 		</FetchNode>

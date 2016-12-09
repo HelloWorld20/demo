@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
     <title>Hello World!</title>
 <link rel="stylesheet" type="text/css" href="./app/lib/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="./app/lib/css/markdown.css">
 <style type="text/css">
 
 body{
@@ -13,6 +14,10 @@ body{
 	/*padding-top: 50px;*/
 	font-family:"Microsoft YaHei";
 	-webkit-user-select:none;
+	width: 100%; 
+    border: none; 
+    outline: 1300px solid #fff;
+    margin: 0; 
 }
 
 input[type="file"] {
@@ -64,22 +69,21 @@ input[type="file"] {
 
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {
-width:8px;
-
+	width:8px;
 }
 /* 滚动槽 */
 ::-webkit-scrollbar-track {
--webkit-box-shadow:inset006pxrgba(0,0,0,0.3);
-border-radius:10px;
+	-webkit-box-shadow:inset006pxrgba(0,0,0,0.3);
+	border-radius:10px;
 }
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
-border-radius:10px;
-background:rgba(0,0,0,0.1);
--webkit-box-shadow:inset006pxrgba(0,0,0,0.5);
+	border-radius:10px;
+	background:rgba(0,0,0,0.1);
+	-webkit-box-shadow:inset006pxrgba(0,0,0,0.5);
 }
-::-webkit-scrollbar-thumb:window-inactive {
-background:rgba(255,0,0,0.4);
+	::-webkit-scrollbar-thumb:window-inactive {
+	background:rgba(255,0,0,0.4);
 }
 
 </style>
@@ -107,7 +111,7 @@ background:rgba(255,0,0,0.4);
 	<div class="tab relative">
 		<!-- 登录 start -->
     	<div id="loginPage" class="tab-pane hide">
-    		登陆(暂不需要)
+    		登陆(暂不需要，去baseTools文件夹下的config.js文件修改就好)
     	</div>
 		<!-- 登录 end -->
     	<!-- 生成原始文件配置 start -->
@@ -158,19 +162,29 @@ background:rgba(255,0,0,0.4);
 		                <tr>
 		                    <td>接口类型：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="apiType" required="required" placeholder="bill" value="">
+		                        <!-- <input class="form-control" type="text" name="apiType" required="required" placeholder="bill" value=""> -->
+		                        <select class="form-control" name="apiType">
+		                        	<option value="ng">ng</option>
+		                        	<option value="bill">bill</option>
+		                        	<option value="api_0">api_0</option>
+		                        	<option value="api_2">api_2</option>
+		                        </select>
 		                    </td>
 		                    <td>
-		                        <p>必须。涉及到生成文件的类型；参数：bill,ng,api_0,api_2</p>
+		                        <p>必须。涉及到生成文件的类型；</p>
 		                    </td>
 		                </tr>
 		                <tr>
 		                    <td>编码格式：</td>
 		                    <td>
-		                        <input class="form-control" type="text" name="charset" required="required" placeholder="utf-8" value="">
+		                        <!-- <input class="form-control" type="text" name="charset" required="required" placeholder="utf-8" value=""> -->
+		                        <select class="form-control" name="charset">
+		                        	<option value="utf-8">utf-8</option>
+		                        	<option value="gb2312">gb2312</option>
+		                        </select>
 		                    </td>
 		                    <td>
-		                        <p>必须。设计稿模板的编码格式；参数：utf-8,gb2312</p>
+		                        <p>必须。设计稿模板的编码格式；如果生成的页面中文为问号，则说明编码格式错误</p>
 		                    </td>
 		                </tr>
 		            </tbody>

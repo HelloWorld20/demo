@@ -8,6 +8,8 @@ const {app,ipcMain,dialog}=require("electron");
 const {get,mainInit} = require('./main/lib/core.js');
 const route = require('./main/route.js');
 
+const superagent = require('superagent');
+
 const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test,handleSetLocalConf,handleSendMail} = route;
 
 let mainWindow;
@@ -40,13 +42,14 @@ function entry() {
 
     })
     
+
 }
 
 
 // 定义一个创建浏览器窗口的方法
 function createWindow(){
     //把所有初始化的东西都放到core里，为的是让窗口对象mainWindow可以全局访问;
-    mainInit( 'file://'+__dirname+'/index.html', entry );
+    mainWindow = mainInit( 'file://'+__dirname+'/index.html', entry );
 }
 
 // 监听应用程序对象是否初始化完成，初始化完成之后即可创建浏览器窗口

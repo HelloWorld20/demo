@@ -22,7 +22,7 @@ const {log} = require('../../lib/core.js');
 
 //以下都是为了异步传值的全局变量。暂时这么用
 let TemplateIDGlo = -1;
-let cookieCombineGlo = '';	
+let cookieCombineGlo = '';
 let queryMessageGlo = {};			//上传邮件模板的信息
 let resouceQueryMessageGlo = {};	//上传封装资源的信息
 let resourceIDGlo = -1;
@@ -141,16 +141,31 @@ module.exports = ( conf, callback ) => {
 					//对应的邮件封装资源ID，审核时用到；
 					resourceIDGlo = RecordSet.ConvertResourceID;		
 					queryMessageGlo =  getUploadQuery( RecordSet ,uploadHtml ,uploadQvga );
-					procTpl.next();		//继续邮件模板上传流程
+
+					if(!uploadHtml && !uploadResource) {
+						return;
+					}
+
+					if (!!uploadHtml) {
+						procTpl.next();		//继续邮件模板上传流程
+					} else {
+						counter.count();
+					}
+
+					if (!!uploadResource) {
+						procRes.next();		//在这获得对应封装资源ID后进入上传封装资源流程。
+					} else {
+						counter.count();
+					}
 					
-					procRes.next();		//在这获得对应封装资源ID后进入上传封装资源流程。
 					return;
 				})
 		
 	}
 
 	//获取封装资源详情，
-	function getResouceInfo() {
+	function getResouceInfo() {		
+		
 		log('正在获取封装资源详情....');
 
 		superagent.post( confCombine.ResourceViewTest )

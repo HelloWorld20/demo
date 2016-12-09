@@ -59,27 +59,35 @@ module.exports = {
 		let couter = new Counter(1, callback);
 		let fullName = conf.fullName;
 		//爬取静态模板内容然后填充
-		if( !conf.webUrl ) return;
-		superagent.get(conf.webUrl)
-			.charset(conf.charset)
-			.end(function(err, res) {
-				core.handleError(err, '获取web模板错误，请检查wap模板地址是否有误');
+		if( conf.webUrl ) {
+			superagent.get(conf.webUrl)
+				.charset(conf.charset)
+				.end(function(err, res) {
+					core.handleError(err, '获取web模板错误，请检查wap模板地址是否有误');
 
-				fs.writeFile('./'+fullName+'/'+ fullName +'.html', core.str2Buff(res.text) , function() {
-						couter.count();
+					fs.writeFile('./'+fullName+'/'+ fullName +'.html', core.str2Buff(res.text) , function() {
+							couter.count();
+					})
 				})
-			})
+		} else {
+			couter.count();
+		}
+		
 
-		if( !conf.wapUrl ) return;
-		superagent.get(conf.wapUrl)
-			.charset(conf.charset)
-			.end(function(err, res) {
-				core.handleError(err, '获取wap模板错误，请检查wap模板地址是否有误');
+		if( conf.wapUrl ) {
+			superagent.get(conf.wapUrl)
+				.charset(conf.charset)
+				.end(function(err, res) {
+					core.handleError(err, '获取wap模板错误，请检查wap模板地址是否有误');
 
-				fs.writeFile('./'+fullName+'/'+ fullName +'.qvga', core.str2Buff(res.text), function() {
-						couter.count();
+					fs.writeFile('./'+fullName+'/'+ fullName +'.qvga', core.str2Buff(res.text), function() {
+							couter.count();
+					})
 				})
-			})
+		} else {
+			couter.count();
+		}
+		
 		return;	
 
 	},
