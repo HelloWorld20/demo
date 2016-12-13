@@ -281,6 +281,9 @@ main.initDrag('#dropResource', true, (e) => {
 // 挂载fileReader
 // main.initReader( $("#uploadHtmlDrop") , main.handleReadHtml );
 // main.initReader( $("#uploadQvgaDrop") , main.handleReadQvga );
+// main.initReader( $("#testBtn"), function(e) {
+// 	console.log(e)
+// } )
 
 
 //初始化 选择文件 按钮,注意是文件，不是文件夹

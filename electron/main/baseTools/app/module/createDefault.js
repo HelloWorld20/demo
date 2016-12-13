@@ -80,7 +80,7 @@ module.exports = {
 				.end(function(err, res) {
 					core.handleError(err, '获取wap模板错误，请检查wap模板地址是否有误');
 
-					fs.writeFile('./'+fullName+'/'+ fullName +'.qvga', core.str2Buff(res.text), function() {
+					fs.writeFile('./'+fullName+'/'+ fullName +'.qvga.html', core.str2Buff(res.text), function() {
 							couter.count();
 					})
 				})
