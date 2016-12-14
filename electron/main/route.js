@@ -6,9 +6,11 @@
 
 "use strict"
 
-const core = require('./lib/core.js');
 const {dialog}=require("electron");
 const iconv = require('iconv-lite');
+const basename = require('path').basename;
+
+const core = require('./lib/core.js');
 
 const init = require('./baseTools/app/init.js');
 const getFile = require('./baseTools/app/getFile.js');
@@ -105,6 +107,8 @@ module.exports = {
 	handleConverEml: (value) => {
 		let eml = core.loadFile(value, 'read eml file fail....');
 
+		let basename = basename(value);
+
 		let emlArr = escape(iconv.decode(eml, 'utf-8')).split('%0D%0A');
 
 		let flagBlank = false;
@@ -121,7 +125,6 @@ module.exports = {
 				flagBlank = !flagBlank;
 			}
 
-
 			if(flagBlank && flagText) {
 				//开始读取值
 				result += unescape(item)
@@ -136,7 +139,7 @@ module.exports = {
 
 		let resultGbBuff = iconv.encode(result, 'base64');
 
-		core.writeFile('./test.html', resultGbBuff, "convert eml to html fail....");
+		core.writeFile( basename + '.html', resultGbBuff, "convert eml to html fail....");
 
 		core.log('html邮件生成完成。。。');
 
