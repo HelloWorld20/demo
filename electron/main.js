@@ -10,7 +10,7 @@ const route = require('./main/route.js');
 
 const superagent = require('superagent');
 
-const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test,handleSetLocalConf,handleSendMail} = route;
+const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test,handleSetLocalConf,handleSendMail,handleConverEml} = route;
 
 let mainWindow;
 
@@ -38,6 +38,8 @@ function entry() {
             handleSetLocalConf( value );
         } else if (method === 'sendMail' ) {        //发送邮件
             handleSendMail( value );
+        } else if (method === 'eml') {
+            handleConverEml(value);
         }
 
     })

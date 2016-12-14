@@ -190,14 +190,6 @@ let main = {
 		this.send( {method: 'setLocalConf', value: conf} );
 	},
 
-	// handleReadHtml: res => {
-	// 	console.log(res);
-	// },
-
-	// handleReadQvga: res => {
-	// 	console.log(res);
-	// },
-
 	//点击之后弹出文件夹对话框，然后返回路径
 	initPathSelector: ( selector, callback ) => {
 		$(selector).addEventListener('click', function() {
@@ -221,6 +213,10 @@ let main = {
 			});
 
 		}, false)
+	},
+
+	handleEml: filePath => {
+		main.send({method: 'eml', value: filePath});
 	}
 
 
@@ -273,6 +269,14 @@ main.initDrag('#dropResource', true, (e) => {
 
 	if( filePath && (filePath.slice(-15).toLowerCase()) === 'parseconfig.xml') {
 		$("#uploadResourceInput").value = filePath;
+	}
+	return false;
+});
+main.initDrag('#dropEml', true, (e) => {
+	let filePath = e.dataTransfer.files[0].path;
+
+	if( filePath && (filePath.slice(-4).toLowerCase()) === '.eml') {
+		main.handleEml(filePath);
 	}
 	return false;
 });

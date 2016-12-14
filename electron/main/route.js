@@ -7,12 +7,14 @@
 "use strict"
 
 const core = require('./lib/core.js');
-
 const {dialog}=require("electron");
+const iconv = require('iconv-lite');
+
 const init = require('./baseTools/app/init.js');
 const getFile = require('./baseTools/app/getFile.js');
 const upload = require('./baseTools/app/upload.js');
 const sendMail =require('./baseTools/app/sendMail.js');
+
 let tConfig = require('./tConfig.json');
 
 module.exports = {
@@ -95,6 +97,50 @@ module.exports = {
 		core.writeFile(__dirname+'/tConfig.json', JSON.stringify(result, null, 4), 'set default config file error...')
 	},
 
+	/**
+	 * [处理eml文件，转换成html]
+	 * @param  {[type]} value [eml文件路径]
+	 * @return {[type]}       [html文件内容]
+	 */
+	handleConverEml: (value) => {
+		let eml = core.loadFile(value, 'read eml file fail....');
+
+		let emlArr = escape(iconv.decode(eml, 'utf-8')).split('%0D%0A');
+
+		let flagBlank = false;
+		let flagText = false;
+		
+		let result = "";
+		emlArr.forEach(item => {
+
+			if( item.indexOf('text/html') !== -1 ) {	//找到开始的关键字
+				flagText = !flagText;
+			}
+			//如果找到text/html之后再找到空格之后就可以读值了。
+			if(flagText && item === "") {		
+				flagBlank = !flagBlank;
+			}
+
+
+			if(flagBlank && flagText) {
+				//开始读取值
+				result += unescape(item)
+			}
+
+			//如果再遇到空白
+			if(flagBlank && flagText && item === "") {				
+				return;
+			}
+
+		})
+
+		let resultGbBuff = iconv.encode(result, 'base64');
+
+		core.writeFile('./test.html', resultGbBuff, "convert eml to html fail....");
+
+		core.log('html邮件生成完成。。。');
+
+	}
 	
 
 }

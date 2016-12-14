@@ -30,12 +30,8 @@ body{
 	overflow: auto;
 	width: 100%;
 	z-index: 1000;
-}
-.alert {
-    padding: 15px;
+	padding: 15px;
     border: 1px solid transparent;
-}
-.alert-success {
     color: #3c763d;
     background-color: #dff0d8;
     border-color: #d6e9c6;
@@ -64,6 +60,19 @@ body{
 	transition: background-color .2s ease-in-out;
 }
 
+#dropEml{
+	width: 90%;
+	height: 300px;
+	border: 2px dashed #eee;
+	border-radius: 4px;
+	margin: 10px auto;
+}
+
+#dropEml h2{
+	text-align: center;
+	margin-top: 100px;
+}
+
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {
 	width:8px;
@@ -86,7 +95,7 @@ body{
 </style>
 </head>
 <body>
-	<div id="msgBox" class="alert alert-success" role="alert">
+	<div id="msgBox" role="alert">
 		后台返回的消息会打印在此处。。。。
 	</div>
     <h1>139投递平台开发辅助工具</h1>
@@ -100,6 +109,7 @@ body{
     	<li><a data-href="#getFilePage">爬取生产线配置</a></li>
     	<li><a data-href="#uploadFilePage">上传邮件模板</a></li>
     	<li><a data-href="#sendMailPage">发送邮件</a></li>
+    	<li><a data-href="#eml">调试eml</a></li>
     	<li><a data-href="#more">更多说明</a></li>
     </ul>
 
@@ -125,7 +135,6 @@ body{
 		                <tr>
 		                    <td>业务全称：</td>
 		                    <td>
-		                    	<!-- <input type="file" id="testBtn" value="test"> -->
 		                        <input class="form-control" type="text" name="fullName" required="required" placeholder="广东集团客户明细账单" value="">
 		                    </td>
 		                    <td>
@@ -276,15 +285,6 @@ body{
 		                        <p>必须。投递平台上邮件模板名称。用于找到要对应的业务模板ID以及资源ID。如模板名有重复，则获取邮件模板列表的第一条记录。</p>
 		                    </td>
 		                </tr>
-		                <!--  <tr>
-		                    <td>封装资源名称：</td>
-		                    <td>
-		                        <input class="form-control" type="text" name="resouceName" required="required"  placeholder="河北1008611话费查询热线节点" value="">
-		                    </td>
-		                    <td>
-		                        <p>必须。投递平台上封装资源名。程序检索封装资源名称得到的第一条记录的ID来上传</p>
-		                    </td>
-		                </tr> -->
 		                <tr id="dropHtml">
 		                    <td>HTML模板路径：</td>
 		                    <td>
@@ -308,10 +308,6 @@ body{
 		                    <td>
 		                    	<button id="uploadQvga" class="btn btn-primary">上传qvga模板</button>
 								&nbsp;&nbsp;&nbsp;&nbsp;可拖拽到此区域上传文件
-							    <!-- <label class="btn btn-default btn-file">
-							    	拖拽上传qvga模板
-									<input id="uploadQvgaDrop" type="file" name="qvga">
-							    </label> -->
 
 							    <input id="uploadQvgaInput" class="form-control" type="text" name="uploadQvga"  placeholder="E:/delivery/api类/NG/hn0001/hn0001.qvga" value="">
 		                    </td>
@@ -421,6 +417,13 @@ body{
 		    </form>
     	</div>
     	<!-- 发邮件模块 end -->
+    	<!-- 更多说明 start -->
+    	<div id="eml" class="tab-pane hide">
+    		<div id="dropEml">
+    			<h2>把<code>.eml</code>文件拖拽到此区域</h2>
+    		</div>
+    	</div>
+    	<!-- 更多说明 end -->
 		<!-- 更多说明 start -->
     	<div id="more" class="tab-pane hide">
     		更多说明(暂时没什么好说的)

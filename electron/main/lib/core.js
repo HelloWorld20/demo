@@ -60,7 +60,7 @@ let core = {
 		if(!errMsg) {
 			errMsg = 'loadFile error...'
 		}
-		fs.readFileSync(filePath, {}, function(err) {
+		return fs.readFileSync(filePath, {}, function(err) {
 			if(err) {
 				console.log(errMsg);
 				throw new Error('loadFile Error: ' + err);
@@ -86,8 +86,8 @@ let core = {
 
 	handleError: (err, msg) => {
 		if(err) {
-			core.error(err);
-			throw new Error('[Custom isError: ' + msg + ']')
+			core.log(msg);
+			throw new Error('[Custom Error: ' + msg + ']')
 		}
 	},
 	
