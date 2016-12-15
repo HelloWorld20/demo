@@ -20,7 +20,7 @@ module.exports = {
 		if(!errMsg) {
 			errMsg = 'loadFile error...'
 		}
-		fs.readFileSync(filePath, {}, function(err) {
+		return fs.readFileSync(filePath, {}, function(err) {
 			if(err) {
 				console.log(errMsg);
 				throw new Error('loadFile Error: ' + err);

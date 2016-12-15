@@ -7,8 +7,6 @@
 "use strict"
 
 const {dialog}=require("electron");
-const iconv = require('iconv-lite');
-const basename = require('path').basename;
 
 const core = require('./lib/core.js');
 
@@ -16,6 +14,7 @@ const init = require('./baseTools/app/init.js');
 const getFile = require('./baseTools/app/getFile.js');
 const upload = require('./baseTools/app/upload.js');
 const sendMail =require('./baseTools/app/sendMail.js');
+const eml2html = require('./baseTools/app/module/eml2html.js');
 
 let tConfig = require('./tConfig.json');
 
@@ -105,44 +104,9 @@ module.exports = {
 	 * @return {[type]}       [html文件内容]
 	 */
 	handleConverEml: (value) => {
-		let eml = core.loadFile(value, 'read eml file fail....');
-
-		let basename = basename(value);
-
-		let emlArr = escape(iconv.decode(eml, 'utf-8')).split('%0D%0A');
-
-		let flagBlank = false;
-		let flagText = false;
-		
-		let result = "";
-		emlArr.forEach(item => {
-
-			if( item.indexOf('text/html') !== -1 ) {	//找到开始的关键字
-				flagText = !flagText;
-			}
-			//如果找到text/html之后再找到空格之后就可以读值了。
-			if(flagText && item === "") {		
-				flagBlank = !flagBlank;
-			}
-
-			if(flagBlank && flagText) {
-				//开始读取值
-				result += unescape(item)
-			}
-
-			//如果再遇到空白
-			if(flagBlank && flagText && item === "") {				
-				return;
-			}
-
+		eml2html(value, function() {
+			core.log('html邮件生成完成。。。');
 		})
-
-		let resultGbBuff = iconv.encode(result, 'base64');
-
-		core.writeFile( basename + '.html', resultGbBuff, "convert eml to html fail....");
-
-		core.log('html邮件生成完成。。。');
-
 	}
 	
 
