@@ -374,11 +374,11 @@ let vm = avalon.define({
 })
 
 
-let allSiderbar = getHead("#more article h1")
+let allSiderbar = [];
 //搜索功能，监听input
 vm.$watch('input', function(newVal, oldVal) {
 	let filted = allSiderbar.filter(function(value){
-		return value[1].indexOf(vm.input) != -1	
+		return value[1].toLowerCase().indexOf(vm.input.toLowerCase()) != -1	
 	})
 	vm.sidebar = filted;
 })
@@ -405,7 +405,7 @@ main.initListener('markdown', function(event, res) {
 	vm.panel = res.value;
 	//延迟执行，让视图先同步到dom上先。
 	setTimeout(function() {
-		vm.sidebar = getHead("#more article h1");
+		vm.sidebar = allSiderbar = getHead("#more article h1");
 	}, 20)
 })
 
