@@ -20,6 +20,9 @@ body{
     margin: 0; 
 }
 
+.select{
+	-webkit-user-select:text;
+}
 
 #msgBox{
 	position: fixed;
@@ -100,9 +103,11 @@ body{
 </style>
 </head>
 <body>
-	<div id="msgBox" role="alert">
+	<a href="#" title="回到顶部">
+		<div id="msgBox" role="alert">
 		后台返回的消息会打印在此处。。。。
 	</div>
+	</a>
     <h1>139投递平台开发辅助工具</h1>
     We are using io.js <script>document.write(process.version)</script>
     and Electron <script>document.write(process.versions['electron'])</script>.
@@ -432,17 +437,94 @@ body{
     	<!-- 更多说明 end -->
 		<!-- 更多说明 start -->
     	<div id="more" class="tab-pane hide">
-    		更多说明(暂时没什么好说的)
+    		
+    		<div class="row" ms-controller="more">
+    			<div id="sidebar" class="col-sm-3">
+    				<input type="text" class="form-control" placeholder="标题搜索" ms-duplex="input">
+    				<ul class="nav nav-pills nav-stacked" role="tablist">
+    					<li role="presentation" ms-repeat="sidebar" ><a ms-attr-href="el[0]">{{el[1]}}</a></li>
+		    			<!-- <li role="presentation"><a href="#">1</a></li>
+		    			<li role="presentation"><a href="#">2</a></li>
+		    			<li role="presentation"><a href="#">3</a></li> -->
+		    		</ul>
+    			</div>
+    			<div id="article" class="col-sm-8 select" ms-html="panel">
+<!--     				<article class="markdown-body"><h1 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>判断文字是否存在</h1>
+<p>参考： 全国季度账单<br />
+lua：</p>
+<pre><code>l_cond_show(l_not_exist_string_show(l_get_value('QL_AREA0500','金额'),"nil") .. " == nil","%s","&lt;!--")
+</code></pre>
+<p>配置格式：略<br />
+数据格式：略<br />
+效果：略</p>
+<h1 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>双层柱状图</h1>
+<p>参考：重庆流量账单<br />
+lua：</p>
+<pre><code>p_fill_flow_trend('QL_GeneralFlowTrend')
+</code></pre>
+<p>配置格式：</p>
+<pre><code>&lt;Area Code="0400" Method="PrefixEqual"&gt;
+    &lt;DataSource Name="QL_GeneralFlowTrend" Type = "Mixed" SplitBy="~" MainFiled="月份:Key|区域码:AreaCode" MixedField="套餐内|套餐外"&gt;
+    &lt;/DataSource&gt;
+&lt;/Area&gt;
+</code></pre>
+<p>数据格式：</p>
+<pre><code>201311|0.00~0.00|040101
+201312|0.00~0.00|040102
+201401|0.00~0.00|040103
+201402|0.00~0.00|040104
+201403|0.00~0.00|040105
+201404|512.00~0.00|040106
+</code></pre>
+<p>效果：</p>
+<h1 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>彩色环形饼图</h1>
+<p>参考：全国季度账单<br />
+lua：</p>
+<pre><code>&lt;img src="http://deliveryimg.mail.10086.cn/imageserv?&lt;% r_echo(l_generate_qw_xf_circle_param('QL_AREA0101', 1, 2, l_get_value('QL_SHAREINFOXXX', '服务号码'))) %&gt;" /&gt;
+</code></pre>
+<p>配置格式：</p>
+<pre><code>&lt;Area Code="010001|010002|010003|010004|010005|010006|010007" Method="Gather"&gt;
+    &lt;DataSource Name="QL_AREA0101" Type="Map" MapField="费用项目:Key|金额:Value|区域码:AreaCode" /&gt; 
+&lt;/Area&gt;
+</code></pre>
+<p>数据格式：</p>
+<pre><code>套餐及固定费|46.00|010001
+语音通信费|36.00|010002
+上网费|20.00|010003
+短彩信费|6.00|010004
+其他费用|0.00|010005
+</code></pre>
+<p>效果：</p>
+<h1 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>彩色折线图</h1>
+<p>参考：全国季度账单<br />
+lua：</p>
+<pre><code>&lt;img src="http://deliveryimg.mail.10086.cn/imageserv?&lt;% r_echo(l_generate_qw_jd_histogram_param('QL_AREA0200', 1, 2, l_get_value('QL_SHAREINFO', '服务号码'))) %&gt;" /&gt;
+</code></pre>
+<p>配置格式：</p>
+<pre><code>&lt;Area Code="0200" Method="PrefixEqual"&gt;
+    &lt;DataSource Name="QL_AREA0200" Type = "Map" MapField="费用项目:Key|金额:Value|区域码:AreaCode"&gt;
+    &lt;/DataSource&gt;
+&lt;/Area&gt;
+</code></pre>
+<p>数据格式：</p>
+<pre><code>201601|201.50|020001
+201602|278.00|020002
+201603|387.50|020003
+</code></pre>
+<p>说明：彩色折线图只支持3个数据<br />
+效果：</p>
+<h1 id="_5"><a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>排名小人图</h1>
+<p>参考：全国季度账单</p></article> -->
+    			</div>
+    		</div>
+    		
     	</div>
     	<!-- 更多说明 end -->
     </div>
 
 </body>
 
+<script type="text/javascript" src="./app/lib/avalon.shim.js"></script>
 <script type="text/javascript" src="./app/index.dom.js"></script>
-<script type="text/javascript">
-"use strict"
-
-
-</script>
+<script type="text/javascript" src="./app/md4More.js"></script>
 </html>

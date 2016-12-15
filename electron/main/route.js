@@ -8,6 +8,7 @@
 
 const {dialog}=require("electron");
 
+const cheerio = require('cheerio');
 const core = require('./lib/core.js');
 
 const init = require('./baseTools/app/init.js');
@@ -15,6 +16,7 @@ const getFile = require('./baseTools/app/getFile.js');
 const upload = require('./baseTools/app/upload.js');
 const sendMail =require('./baseTools/app/sendMail.js');
 const eml2html = require('./baseTools/app/module/eml2html.js');
+
 
 let tConfig = require('./tConfig.json');
 
@@ -103,10 +105,23 @@ module.exports = {
 	 * @param  {[type]} value [eml文件路径]
 	 * @return {[type]}       [html文件内容]
 	 */
-	handleConverEml: (value) => {
+	handleConverEml: value => {
 		eml2html(value, function() {
 			core.log('html邮件生成完成。。。');
 		})
+	},
+
+	handleGetMarkdown: () => {
+		let markdown = core.loadFile(__dirname + '/about.html', 'get markdown html fail....');
+
+		let markdownStr = new Buffer(markdown).toString();
+
+
+		let $ = cheerio.load(markdownStr);
+
+		let result = $("article").parent().html(); 
+
+		core.send('markdown', result);
 	}
 	
 

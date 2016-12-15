@@ -1,5 +1,7 @@
 /**
- * 
+ * eml转html核心函数
+ * author: weijianghong
+ * date: 2016-12-15 
  */
 
 "use strict"

@@ -10,7 +10,7 @@ const route = require('./main/route.js');
 
 const superagent = require('superagent');
 
-const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test,handleSetLocalConf,handleSendMail,handleConverEml} = route;
+const {handleDialog,handleInit,handleUpload,handleFileDialog,handleGetFile,test,handleSetLocalConf,handleSendMail,handleConverEml,handleGetMarkdown} = route;
 
 let mainWindow;
 
@@ -40,6 +40,8 @@ function entry() {
             handleSendMail( value );
         } else if (method === 'eml') {
             handleConverEml(value);
+        } else if (method === 'getMarkdown') {
+            handleGetMarkdown();
         }
 
     })

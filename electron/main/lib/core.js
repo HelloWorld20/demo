@@ -34,6 +34,13 @@ let core = {
 
 	    return mainWindow;
 	},
+	//返回主页面对象
+	getWindow: () => mainWindow,
+
+	send: (channal, msg) => {
+		mainWindow.webContents.send(channal, {value: msg})
+	},
+
 	//后台向前台发送信息
 	log: function( msg ) {
 		console.log('log: '+ msg );

@@ -363,4 +363,50 @@ ipcRenderer.on('log', (event, data) => {
 	$("#msgBox").innerHTML = data.value + '<br>' + inner;
 })
 
+
+
+//////////////////////////////////////////
+let vm = avalon.define({
+	$id: 'more',
+	input: '',
+	sidebar: [],
+	panel: '<h1>empty</h1>'
+})
+
+
+let allSiderbar = getHead("#more article h1")
+//搜索功能，监听input
+vm.$watch('input', function(newVal, oldVal) {
+	let filted = allSiderbar.filter(function(value){
+		return value[1].indexOf(vm.input) != -1	
+	})
+	vm.sidebar = filted;
+})
+
+
+// 从markdown文章体提取标题和id的方法。不同的markdown解析方法不一样。
+function getHead(selector) {
+	let head = $$(selector);
+	let siderList = [];
+	head.forEach(item => {
+		siderList.push(['#'+item.id,item.innerText]);
+	})
+	return siderList;
+}
+///////////////////////////////////////////////////
+
+
+//获取“更多说明”的html文件。
+main.send({method: 'getMarkdown'});
+
+//监听“更多说明”的html文件的返回
+main.initListener('markdown', function(event, res) {
+	// $("#article").innerHTML = res.value;
+	vm.panel = res.value;
+	//延迟执行，让视图先同步到dom上先。
+	setTimeout(function() {
+		vm.sidebar = getHead("#more article h1");
+	}, 20)
+})
+
 })(main);
