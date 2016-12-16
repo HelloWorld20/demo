@@ -12,6 +12,7 @@
 			<!-- FieldName：页面中索引中文值，此种方式能获取到value标签内所有内容 -->
             <StringToField FieldName="{{手机号码}}">
 				<!-- Name：页面中索引英文值 -->
+				<!-- ng格式获取value内部所有内容 -->
                 <DataSource Name="{{TELNUM}}" Type="Fix">
                 </DataSource>
             </StringToField>

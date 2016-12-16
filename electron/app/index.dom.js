@@ -20,11 +20,11 @@ let main = {
 		if(callback) ipcRenderer.once('main-reply', callback);
 	},
 
-	mainListener: (callback) => {
+	mainListener: callback => {
 	    ipcRenderer.on('main', callback);
 	},
 
-	removeMainListener: (callback) => {
+	removeMainListener: callback => {
 	    ipcRenderer.removeListener('main', callback);
 	},
 
@@ -68,7 +68,7 @@ let main = {
 		}
 	},
 	//禁止表单默认提交事件
-	disableSubmit: function () {
+	disableSubmit: () => {
 		$$("form").forEach( item => {
 			item.onsubmit = e => {
 				e.preventDefault();
@@ -156,8 +156,8 @@ let main = {
 	},
 
 	//把配置内容写入前端页面
-	setConfig: function() {
-		let config = this.getTempConf();
+	setConfig: () => {
+		let config = main.getTempConf();
 		for(let i in config) {
 			let elems = $$('input[name="'+i+'"]')
 			if(elems !== 0) {
@@ -186,8 +186,8 @@ let main = {
 	},
 
 	//设置默认配置文件
-	setLocalConf: function( conf ) {
-		this.send( {method: 'setLocalConf', value: conf} );
+	setLocalConf: conf => {
+		main.send( {method: 'setLocalConf', value: conf} );
 	},
 
 	//点击之后弹出文件夹对话框，然后返回路径
@@ -405,7 +405,7 @@ main.initListener('markdown', function(event, res) {
 	vm.panel = res.value;
 	//延迟执行，让视图先同步到dom上先。
 	setTimeout(function() {
-		vm.sidebar = allSiderbar = getHead("#more article h1");
+		vm.sidebar = allSiderbar = getHead("#more article h1,#more article h2,#more article h3");
 	}, 20)
 })
 
