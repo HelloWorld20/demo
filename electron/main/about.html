@@ -1014,17 +1014,8 @@ body .markdown-body
     page-break-after: avoid;
   }
 }
-</style><title>新建文本文档</title></head><body><article class="markdown-body"><h1 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>判断文字是否存在</h1>
-<p>参考： 全国季度账单<br />
-lua：</p>
-<pre><code>l_cond_show(l_not_exist_string_show(l_get_value('QL_AREA0500','金额'),"nil") .. " == nil","%s","&lt;!--")
-</code></pre>
-<p>配置格式：略<br />
-数据格式：略<br />
-效果：略</p>
-<h1 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>双层柱状图</h1>
-<p>参考：重庆流量账单<br />
-lua：</p>
+</style><title>about</title></head><body><article class="markdown-body"><h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>双层柱状图</h2>
+<p>lua：</p>
 <pre><code>p_fill_flow_trend('QL_GeneralFlowTrend')
 </code></pre>
 <p>配置格式：</p>
@@ -1041,10 +1032,10 @@ lua：</p>
 201403|0.00~0.00|040105
 201404|512.00~0.00|040106
 </code></pre>
-<p>效果：</p>
-<h1 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>彩色环形饼图</h1>
-<p>参考：全国季度账单<br />
-lua：</p>
+<p>效果：略<br />
+参考：<code>重庆流量账单（账单）</code></p>
+<h2 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>彩色环形饼图</h2>
+<p>lua：</p>
 <pre><code>&lt;img src="http://deliveryimg.mail.10086.cn/imageserv?&lt;% r_echo(l_generate_qw_xf_circle_param('QL_AREA0101', 1, 2, l_get_value('QL_SHAREINFOXXX', '服务号码'))) %&gt;" /&gt;
 </code></pre>
 <p>配置格式：</p>
@@ -1059,10 +1050,13 @@ lua：</p>
 短彩信费|6.00|010004
 其他费用|0.00|010005
 </code></pre>
-<p>效果：</p>
-<h1 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>彩色折线图</h1>
-<p>参考：全国季度账单<br />
-lua：</p>
+<p>效果：<img alt="彩色环形饼图" src="http://deliveryimg.mail.10086.cn/imageserv?charttype=1002&amp;data=zNeyzbywucy2qLfRPTQzO9Pv0vTNqNDFt9E9MzM7yc/N+LfRPTE5O7bMssrQxbfRPTU7xuTL+7fR08M9MDs=&amp;id=&amp;timestamp=1479777803&amp;sign=3bbea081420fd09f69b928e313de50a4" /><br />
+说明：还有两个方法，画出不同的样式：<br />
+<code>l_generate_qw_th_circle_param</code>;<br />
+<code>l_generate_qw_dc_circle_param</code><br />
+参考：<code>全国季度账单（账单）</code></p>
+<h2 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>彩色折线图</h2>
+<p>lua：</p>
 <pre><code>&lt;img src="http://deliveryimg.mail.10086.cn/imageserv?&lt;% r_echo(l_generate_qw_jd_histogram_param('QL_AREA0200', 1, 2, l_get_value('QL_SHAREINFO', '服务号码'))) %&gt;" /&gt;
 </code></pre>
 <p>配置格式：</p>
@@ -1076,7 +1070,462 @@ lua：</p>
 201602|278.00|020002
 201603|387.50|020003
 </code></pre>
-<p>说明：彩色折线图只支持3个数据<br />
-效果：</p>
-<h1 id="_5"><a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>排名小人图</h1>
-<p>参考：全国季度账单</p></article></body></html>
+<p>说明：3个数据的方法：；<code>l_generate_qw_jd_histogram_param</code><br />
+6个数据的方法：；<code>l_generate_qw_histogram_param</code><br />
+12个数据的方法：<code>l_generate_qw_qn_histogram_param</code></p>
+<p>效果：<img alt="彩色折线图" src="http://deliveryimg.mail.10086.cn/imageserv?charttype=1005&amp;data=MdTCPTIwMS41MNSqOzLUwj0yNzguMDDUqjsz1MI9Mzg3LjUw1Ko7NNTCPTI0MC4wMNSqOzXUwj00NTIuMDDUqjs21MI9MTk5LjAw1Ko7N9TCPTEwMC4wMNSqOzjUwj0xMjguMDDUqjs51MI9MjM5LjAw1Ko7MTDUwj0xODkuMDDUqjsxMdTCPTE2OS4wMNSqOzEy1MI9MjAxLjAw1Ko7&amp;id=13580554545&amp;timestamp=1481166984&amp;sign=5f7e40aeeff997a65caa718f35e32b01" /><br />
+参考：<code>全国季度账单（账单）</code></p>
+<h2 id="ngboss"><a name="user-content-ngboss" href="#ngboss" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>NGBOSS接口添加附件</h2>
+<p>lua: 无<br />
+配置格式：</p>
+<p>ResourcePackageConfig.xml文件：</p>
+<pre><code>&lt;AttachmentSource name="附件源名称"&gt;ATTACHMENT&lt;/AttachmentSource&gt;
+</code></pre>
+<p>ParseConfig.xml文件：</p>
+<pre><code>&lt;FetchNode Key="info"&gt;
+    &lt;GetItem ItemID="01"&gt;
+      &lt;StringToXml&gt;
+        &lt;FetchDynamicNode AttributeName="name"&gt;
+          &lt;DataSource Name="ATTACHMENT" Type="Fix"&gt;
+          &lt;/DataSource&gt;
+        &lt;/FetchDynamicNode&gt;
+      &lt;/StringToXml&gt;
+    &lt;/GetItem&gt;
+&lt;/FetchNode&gt;
+</code></pre>
+<p>数据格式：</p>
+<pre><code>&lt;ITEM&gt;
+    &lt;ID&gt;001&lt;/ID&gt;
+    &lt;TYPE&gt;application/attachment&lt;/TYPE&gt;
+    &lt;VALUE&gt;
+        &lt;![CDATA[
+        &lt;accessory name="邮件附件列表""&gt;
+            &lt;file name="附件名称1.pdf"&gt;BASE64&lt;/file&gt;
+            &lt;file name="附件名称2.doc"&gt;BASE64&lt;/file&gt;
+            &lt;file name="附件名称3.xsl"&gt;BASE64&lt;/file&gt;
+            &lt;file name="附件名称N.pdf"&gt;BASE64&lt;/file&gt;
+            &lt;file name="附件名称s.txt"&gt;ZmlsZTovLy9DOi9Vc2Vycy93aG8vRG9jdW1lbnRzL1RlbmNlbnQlMjBGaWxlcy8xNjI0MTM2NjIxL0ZpbGVSZWN2LyVFNSU5MiU4QyVFNSU4QyU4NSVFNyU5NCVCNSVFNSVBRCU5MCVFNSU4OCVCOCVFOCVCNSU4NCVFOSU4NyU5MSVFNSU4RiU5OCVFNSU4QSVBOCVFNiU4RiU5MCVFOSU4NiU5Mi5odG1s&lt;/file&gt;
+        &lt;/accessory&gt;
+        ]]&gt;
+    &lt;/VALUE&gt;
+&lt;/ITEM&gt;
+</code></pre>
+<p>说明：<br />
+如果是图片类型，base64值不要带上<code>data:image/jpg;base64,</code>前缀;<br />
+好像10086API也可以添加附件，但是没找到旧参考;</p>
+<p>数据格式：略</p>
+<p>效果：略</p>
+<p>参考：浙江电子发票个人（NG）</p>
+<h2 id="ngboss_1"><a name="user-content-ngboss_1" href="#ngboss_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>NGBOSS格式混账单</h2>
+<p>说明：太复杂了，直接看备份吧</p>
+<p>参考：<code>gx1002账单查询（账单）</code></p>
+<h2 id="ngbossxml"><a name="user-content-ngbossxml" href="#ngbossxml" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>NGBOSS格式混xml</h2>
+<p>lua: 无</p>
+<p>配置格式：</p>
+<pre><code>&lt;GetItem ItemID="MONTHBILLCQ1"&gt;
+    &lt;!-- 关键是StringToXml --&gt;
+    &lt;StringToXml&gt;
+        &lt;!-- 可以多层FetchNode，逐层递进获取 --&gt;
+        &lt;FetchNode Key="CUST_FEE"&gt;
+            &lt;FixedNode Type="Reference" MapField="HF_FEE:话费账户余额"&gt;
+                &lt;DataSource Name="AH_FEE" Type="Fix"&gt;&lt;/DataSource&gt;
+            &lt;/FixedNode&gt;
+        &lt;/FetchNode&gt;
+    &lt;/StringToXml&gt;
+&lt;/GetItem&gt;
+&lt;GetItem ItemID="MONTHBILLCQ1"&gt;
+    &lt;StringToXml&gt;
+        &lt;!-- 可以多层FetchNode，逐层递进获取 --&gt;
+        &lt;FetchNode Key="USER_REMAIN"&gt;
+            &lt;FetchNode Key="ROW"&gt;
+                &lt;FetchMultiseriateNode ColumnNames="FREE_VALUE_ACOUNT|UESD_VALUE_ACOUNT|REMAIN_VALUE_ACOUNT|AVERAGE"&gt;
+                    &lt;DataSource Name="AH_REMAIN" Type="Mixed" SplitBy="~" MainFiled="总量:Key" MixedField="已用|可用|日均"&gt;
+                    &lt;/DataSource&gt;
+                &lt;/FetchMultiseriateNode&gt;
+            &lt;/FetchNode&gt;
+        &lt;/FetchNode&gt;
+    &lt;/StringToXml&gt;
+&lt;/GetItem&gt;
+</code></pre>
+<p>数据格式：</p>
+<pre><code>&lt;ITEM&gt;
+    &lt;ID&gt;MONTHBILLCQ1&lt;/ID&gt;
+    &lt;TYPE&gt;text/plain&lt;/TYPE&gt;
+    &lt;VALUE&gt;&lt;![CDATA[
+        &lt;MONTHBILLCQ1 name="月帐单查询"&gt;
+            &lt;BRAND name="品牌"&gt;全球通&lt;/BRAND&gt;
+            &lt;SUBSNAME name="用户姓名"&gt;地方三&lt;/SUBSNAME&gt;
+            &lt;CUST_FEE name="用户当前余额"&gt;
+                &lt;HF_FEE name="话费账户余额"&gt;45.80&lt;/HF_FEE &gt;
+            &lt;/CUST_FEE&gt;
+            &lt;USER_REMAIN name="用户当前流量剩余量"&gt;
+                &lt;ROW&gt;
+                    &lt;FREE_VALUE_ACOUNT name="总量"&gt;7268M&lt;/FREE_VALUE_ACOUNT&gt;
+                    &lt;UESD_VALUE_ACOUNT name="已用"&gt;0M&lt;/UESD_VALUE_ACOUNT&gt;
+                    &lt;REMAIN_VALUE_ACOUNT name="可用"&gt;7268M&lt;/REMAIN_VALUE_ACOUNT&gt;
+                    &lt;AVERAGE name="日均"&gt;0M&lt;/AVERAGE&gt;
+                    &lt;FREE_VALUE_ACOUNT name="总量"&gt;0分&lt;/FREE_VALUE_ACOUNT&gt;
+                    &lt;UESD_VALUE_ACOUNT name="已用"&gt;0分&lt;/UESD_VALUE_ACOUNT&gt;
+                    &lt;REMAIN_VALUE_ACOUNT name="可用"&gt;0分&lt;/REMAIN_VALUE_ACOUNT&gt;
+                    &lt;AVERAGE name="日均"&gt;0分&lt;/AVERAGE&gt;
+                &lt;/ROW&gt;
+            &lt;/USER_REMAIN&gt;
+        &lt;/MONTHBILLCQ1&gt;]]&gt;
+    &lt;/VALUE&gt;
+&lt;/ITEM&gt;
+</code></pre>
+<p>说明：详情参见线上业务；</p>
+<p>效果：略</p>
+<p>参考：<code>重庆流量账单查询、重庆月账单查询（NG）</code></p>
+<h2 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>一个业务带多份模板</h2>
+<p>lua: 无</p>
+<p>配置格式：</p>
+<p>ResourcePackageConfig.xml文件：</p>
+<pre><code>&lt;?xml version="1.0" encoding="gb2312"?&gt;
+&lt;Package name="资源包配置"&gt;  
+  &lt;ResourceName name="资源名称"&gt;北京全年趣味账单&lt;/ResourceName&gt;
+    &lt;FieldName&gt;品牌&lt;/FieldName&gt;
+    &lt;TemplateGroup name="模板组"&gt;
+        &lt;Template name="模板"&gt;
+            &lt;TemplateName name="模板文件名称"&gt;全球通.html&lt;/TemplateName&gt;
+            &lt;FieldValue name="模板映射关系字段值"&gt;全球通&lt;/FieldValue&gt;
+            &lt;WapScriptFileName name="wap生成脚本文件名"&gt;全球通.scr&lt;/WapScriptFileName&gt;
+            &lt;QvgaTemplateName name="QVGA模板文件名"&gt;全球通.qvga&lt;/QvgaTemplateName&gt;
+            &lt;IsDefault name="默认使用"&gt;1&lt;/IsDefault&gt;
+        &lt;/Template&gt;
+        &lt;Template name="模板"&gt;
+            &lt;TemplateName name="模板文件名称"&gt;动感地带.html&lt;/TemplateName&gt;
+            &lt;FieldValue name="模板映射关系字段值"&gt;动感地带&lt;/FieldValue&gt;
+            &lt;WapScriptFileName name="wap生成脚本文件名"&gt;动感地带.scr&lt;/WapScriptFileName&gt;
+            &lt;QvgaTemplateName name="QVGA模板文件名"&gt;动感地带.qvga&lt;/QvgaTemplateName&gt;
+            &lt;IsDefault name="默认使用"&gt;0&lt;/IsDefault&gt;
+        &lt;/Template&gt;
+        &lt;Template name="模板"&gt;
+            &lt;TemplateName name="模板文件名称"&gt;神州行.html&lt;/TemplateName&gt;
+            &lt;FieldValue name="模板映射关系字段值"&gt;神州行&lt;/FieldValue&gt;
+            &lt;WapScriptFileName name="wap生成脚本文件名"&gt;神州行.scr&lt;/WapScriptFileName&gt;
+            &lt;QvgaTemplateName name="QVGA模板文件名"&gt;神州行.qvga&lt;/QvgaTemplateName&gt;
+            &lt;IsDefault name="默认使用"&gt;0&lt;/IsDefault&gt;
+        &lt;/Template&gt;
+    &lt;/TemplateGroup&gt;
+&lt;/Package&gt;
+</code></pre>
+<p>数据格式：略</p>
+<p>说明：详情参见线上业务；</p>
+<p>效果：略</p>
+<p>参考：北京年度趣味账单（账单）</p>
+<h2 id="lua"><a name="user-content-lua" href="#lua" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>LUA判断文字是否存在</h2>
+<p>lua：</p>
+<pre><code>r_echo( l_cond_show(l_not_exist_string_show(l_get_value('QL_AREA0500','金额'),"nil") .. " == nil","%s","&lt;!--") )
+</code></pre>
+<p>配置格式：略<br />
+数据格式：略<br />
+效果：略<br />
+参考：<code>全国季度账单（账单）</code></p>
+<h2 id="luaxml"><a name="user-content-luaxml" href="#luaxml" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>LUA解析纯xml方法</h2>
+<p>方法定义：</p>
+<pre><code>-- 获取标签内内容。
+function get_value(source)
+    local temp = string.match(source,"&gt;.*&lt;");
+    local value = string.sub(temp, 2, string.len(temp) - 1)
+
+    return value;
+end
+
+-- 切分标签，返回结果是key从1开始的table
+-- source: 要解析的原始xml； tagName：要切分的xml标签名，大小写敏感
+-- 返回存放切分好的标签table，返回table长度
+function split(source, tagName)
+    local temp = source
+    local result = {}
+    local len = 0
+
+    while(string.find(temp, "&lt;" .. tagName .. " ")) do
+        s1,s2 = string.find(temp, "&lt;" .. tagName .. " ");
+        e1,e2 = string.find(temp, "&lt;/" .. tagName .. "&gt;");
+
+        -- if &lt;/tag&gt; before &lt;tag&gt;
+        if s2 &gt; e1 then
+            return false;
+        end
+
+        center = string.sub(temp, s1, e2);
+
+        temp = string.sub(temp, e2);
+
+        len = len + 1
+        -- result = result .. "   " .. center;
+        table.insert(result, len, center)
+    end
+    return result, len;
+
+end
+</code></pre>
+<p>使用方法：</p>
+<pre><code>--返回标签table和table长度
+result, len = split(str, 'HALF_YEAR_FEE');
+-- 遍历table，打印
+table.foreachi(result, function(i, v) print (i, "-&gt;",v) end)
+--读取单个标签内内容
+get_value(result[1])
+</code></pre>
+<p>说明：这方法放在模板下经常不奏效，不知道为什么。直接用控制台执行是可以的</p>
+<p>参考：无</p>
+<h2 id="lua_1"><a name="user-content-lua_1" href="#lua_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>LUA画自定义柱状图</h2>
+<p>方法定义：</p>
+<pre><code>-- 主函数
+function draw_chart(data_source)
+    data_table = r_data_table_find(data_source);
+
+    if not data_table then
+        return ""
+    end
+
+    local value_table = r_data_table_get_col(data_table, "金额");
+
+    local month_table = r_data_table_get_col(data_table, "费用项目");
+
+    local sum = l_get_data_sum(data_source);
+    local max = l_max_value(data_source);
+
+    local combine_wrap = '';
+    local merge_wrap = '';
+    local container = '&lt;div id="container"&gt;&lt;div class="leftbar"&gt;&lt;/div&gt;&lt;div class="body"&gt;%s&lt;/div&gt;&lt;div class="bottombar"&gt;&lt;/div&gt;&lt;/div&gt;'
+
+    local wrap = '&lt;div class="wrap"&gt;&lt;div class="bar" style="height:%s"&gt;&lt;/div&gt;&lt;div class="fix"&gt;&lt;p class="u" style="top:%s"&gt;%d&lt;/p&gt;&lt;/div&gt;&lt;p class="d"&gt;%s&lt;/p&gt;&lt;/div&gt;'
+
+    local len = table.getn(value_table);
+
+    table.foreachi(value_table, function(i, v)
+        local m = month_table[i]
+        local h = (v / max)*100;
+        local t = 100 - h;
+        merge_wrap = string.format(wrap, h .. '%', t .. '%', v, string.sub(m,5,6)+0 .. '');
+        combine_wrap = combine_wrap .. merge_wrap; 
+    end)
+
+    local result = string.format(container, combine_wrap);
+    return result
+end
+
+-- 表格数据中“金额”项的和
+function l_get_data_sum(data_source)
+    data_table = r_data_table_find(data_source);
+
+    if not data_table then
+        return ""
+    end
+
+    local value_table = r_data_table_get_col(data_table, "金额");
+
+    local result = l_sum(value_table);
+
+    return result;
+end
+
+-- 一维lua table的所有数字和
+function l_sum(l_table)
+    local sum = 0;
+    table.foreachi(l_table, function(i, v)
+        sum = sum + v
+    end)
+
+    return sum;
+end
+
+-- 从表格数据中获取“金额”最大一项
+function l_max_value(data_source)
+    data_table = r_data_table_find(data_source);
+
+    if not data_table then
+        return ""
+    end
+    c_table = r_data_table_get_col(data_table, "金额");
+
+    max_index, max_num = l_find_max(c_table);
+
+    return max_num;
+end
+
+-- 从一维数字table中找出最大一项
+function l_find_max(l_table)
+    local num = -9999;
+    local index = nil
+    table.foreachi(l_table, function(i, v)
+        c_num = v + 0;
+        if c_num &gt; num then
+            num = c_num;
+            index = i
+        end
+    end)
+    return index, num
+end
+</code></pre>
+<p>样式：</p>
+<pre><code>#container{
+width: 100%;
+height: 150px;
+padding-top: 50px;
+margin-bottom: 50px;
+}   
+.leftbar{
+    border: 1px solid gray;
+    height: 120%;
+    width: 0;
+    position: relative;
+    top: -20%;
+    float: left;
+}
+.bottombar{
+    border: 1px solid gray;
+    height: 0;
+    width: 100%;
+}
+.body{
+    width: 100%;
+    height: 100%;
+}
+.wrap{
+    width: 8%;
+    height: 100%;
+    float: left;
+    position: relative;
+}
+.bar{
+    position: absolute;
+    width: 30%;
+    height: 100%;
+    background-color: blue;
+    bottom: 0;
+    left: 50%;
+    margin:0 -15%;
+}
+.wrap p{
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+.fix{
+    position: relative;
+    height: 100%;
+    top: -20px;
+}
+.u{
+    position: relative;
+}
+.d{
+    position: absolute;
+    top: 105%;
+}
+</code></pre>
+<p>效果：略<br />
+参考：<code>全国全年度账单</code><br />
+说明：可以自适应宽度的柱状图，要画多少条柱子对应data_source指定的数据源条数。而且<code>draw_chart</code>函数里依赖的自定义函数也挺有用的。</p>
+<h2 id="-"><a name="user-content--" href="#-" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>表格-父子节点采用不同的样式，并可以将数据源分为多块</h2>
+<p>使用样例：</p>
+<pre><code>&lt;%r_echo (l_fill_table_cond("数据源名称",
+    '&lt;tr&gt;&lt;td class="tdc10px"&gt;$帐单项名称$&lt;/td&gt;&lt;td class="tdr40px"&gt;$自付费$&lt;/td&gt;&lt;td class="tdr40px"&gt;$代他人付费$&lt;/td&gt;&lt;td class="tdr40px"&gt;$由他人付费$&lt;/td&gt;&lt;/tr&gt;',
+    '&lt;tr&gt;&lt;td class="tdc10px"&gt;&lt;strong&gt;$帐单项名称$&lt;/strong&gt;&lt;/td&gt;&lt;td class="tdr40px"&gt;&lt;/td&gt;&lt;td class="tdr40px"&gt;&lt;/td&gt;&lt;td class="tdr40px"&gt;&lt;/td&gt;&lt;/tr&gt;',
+    "$区域码$ == 1",
+    1,
+    1)) 
+%&gt;
+</code></pre>
+<p>参数说明：<br />
+1. 解析配置文件中的数据源名称；<br />
+2. 子节点样式，数据源对应的列名使用头尾$号包起；<br />
+3. 父节点样式，格式同上一点；<br />
+4. 区分父节点与子节点判断条件，邮件下发类区域码为1，账单类的区域码请看对应数据格式说明的区域码，一般是%100==0；<br />
+5. 把当前数据源切为多少部分；<br />
+6. 当前取的是第几部分。</p>
+<p>效果图：<br />
+<img alt="l_fill_table_cond" src="http://ww4.sinaimg.cn/large/8218e04fgw1fb3e4kwqgwj206u09eq3g.jpg" /></p>
+<p>参考：<code>\bill\trunk\src\湖南和账单</code></p>
+<h2 id="-_1"><a name="user-content--_1" href="#-_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>表格填充&mdash;隔行换样式</h2>
+<p>使用样例：</p>
+<pre><code>&lt;%r_echo(l_stripe_fill_table_cond("数据源名称",
+    '&lt;tr&gt;%s&lt;/tr&gt;',
+    '&lt;tr class="gray"&gt;%s&lt;/tr&gt;',
+     '&lt;td&gt;&amp;middot;$费用项目$&lt;/td&gt;&lt;td align="center"&gt;$金额$&lt;/td&gt;',
+     '&lt;td class="fBlack"&gt;$费用项目$&lt;/td&gt;&lt;td align="center"&gt;$金额$&lt;/td&gt;',
+     'tonumber(\"$区域码$\",10)%100==0',
+     1,
+     1
+     )
+%&gt;
+</code></pre>
+<p>参数说明：</p>
+<ol>
+<li>解析配置文件中的数据源名称；</li>
+<li>第一个tr样式；</li>
+<li>隔行tr样式；</li>
+<li>子节点样式；</li>
+<li>父节点样式；</li>
+<li>区分父节点与子节点判断条件，邮件下发类区域码为1，账单类的区域码请看对应数据格式说明的区域码，一般是%100==0；</li>
+<li>把当前数据源切为多少部分；</li>
+<li>当前取的是第几部分。<br />
+效果图:</li>
+</ol>
+<p>其它使用方式说明: <br />
+1. 稍微变换一下也可以做成父节点与子节点不同的样式，即与第5点做成的效果一样，例子如下：</p>
+<pre><code>&lt;%r_echo(l_stripe_fill_table_cond("数据源名称",
+    '%s',
+    '%s',
+    '&lt;tr&gt;&lt;td&gt;&amp;middot;$费用项目$&lt;/td&gt;&lt;td align="center"&gt;$金额$&lt;/td&gt;&lt;/tr&gt;',
+    '&lt;tr class="gray"&gt;&lt;td class="fBlack"&gt;$费用项目$&lt;/td&gt;&lt;td align="center"&gt;$金额$&lt;/td&gt;&lt;/tr&gt;',
+    'tonumber(\"$区域码$\",10)%100==0',
+    1,
+    1
+)
+%&gt;
+</code></pre>
+<p>参考：<code>\bill\trunk\src\湖南全量账单、湖南和账单</code></p>
+<h2 id="-_2"><a name="user-content--_2" href="#-_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>表格填充&mdash;隔行换色加金额判断是否为空加最少填充列数</h2>
+<p>使用样例:</p>
+<pre><code>&lt;%r_echo (l_custom_stripe_cond_fill_table("数据源名称",
+    "输出金额",
+    'l_exist_string_show($金额$,"￥%s")',
+    '&lt;tr&gt;%s&lt;/tr&gt;',
+    '&lt;tr class="gray"&gt;%s&lt;/tr&gt;',
+    '&lt;td&gt;&amp;#8226; $帐户项目$&lt;/td&gt;&lt;td&gt;$输出金额$&lt;/td&gt;',
+    '&lt;td class="fBlack"&gt;&lt;strong&gt;$帐户项目$&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;$输出金额$&lt;/td&gt;',
+    "tonumber(\"$区域码$\",10)%100 == 0",
+    r_data_table_max_row("JXQL_ZHANGHUGAIYAO") -1,
+    '&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;'
+))%&gt;
+</code></pre>
+<p>参数说明:<br />
+1. 解析配置文件中的数据源名称；<br />
+2. 格式化后的金额列名；<br />
+3. 格式化后的金额列的值；<br />
+4. 第一个tr样式；<br />
+5. 隔行tr样式；<br />
+6. 子节点样式；<br />
+7. 父节点样式；<br />
+8. 区分父节点与子节点判断条件，邮件下发类区域码为1，账单类的区域码请看对应数据格式说明的区域码，一般是%100==0；<br />
+9. 最少填充行数,案例中的r_data_table_max_row方法是计算当前数据源有多少列，多个数据源用&rdquo;,&rdquo;号隔开，记得最后要减1把列名那一行去掉；<br />
+10. 如果数据不够最少填充行数时，填充的空行代码。【效果图:</p>
+<p>参考： <code>\bill\trunk\src\湖南全量账单</code></p>
+<h2 id="-_3"><a name="user-content--_3" href="#-_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>表格填充&mdash;有大项及无大项特殊显示及子节点的第一行特殊显示</h2>
+<p>使用样例:</p>
+<pre><code>&lt;% r_echo(l_plus_multiple_fill_table_cond("数据源名称",
+    '&lt;tr&gt;&lt;th&gt;$费用项目$&lt;/th&gt;&lt;td&gt;$金额$&lt;/td&gt;&lt;/tr&gt;',
+    '&lt;tr&gt;&lt;th&gt;$费用项目$&lt;/th&gt;&lt;td&gt;$金额$&lt;/td&gt;&lt;/tr&gt;',
+    '&lt;tr&gt;&lt;th&gt;其中：$费用项目$&lt;/th&gt;&lt;td&gt;$金额$&lt;/td&gt;&lt;/tr&gt;',
+    '&lt;tr&gt;&lt;th&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;$费用项目$&lt;/th&gt;&lt;td&gt;$金额$&lt;/td&gt;&lt;/tr&gt;',
+    "tonumber(\"$区域码$\",10)%100 == 0",
+    1,
+    1)) 
+%&gt;
+</code></pre>
+<p>参数说明:<br />
+1. 解析配置文件中的数据源名称；<br />
+2. 无小项的大项样式；<br />
+3. 有小项的大项样式；<br />
+4. 小项第一行样式；<br />
+5. 大项第一行样式；<br />
+6. 区分父节点与子节点判断条件，邮件下发类区域码为1，账单类的区域码请看对应数据格式说明的区域码，一般是%100==0；<br />
+7. 把当前数据源切为多少部分；<br />
+8. 当前取的是第几部分。</p>
+<p>效果：</p>
+<p>参考： <code>\bill\trunk\src\湖南和账单</code></p></article></body></html>

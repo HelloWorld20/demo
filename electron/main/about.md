@@ -17,7 +17,7 @@ lua：
     201403|0.00~0.00|040105
     201404|512.00~0.00|040106
 效果：略
-参考：重庆流量账单（账单）
+参考：`重庆流量账单（账单）`
 
 ##彩色环形饼图
 lua：
@@ -36,7 +36,10 @@ lua：
     短彩信费|6.00|010004
     其他费用|0.00|010005
 效果：![彩色环形饼图](http://deliveryimg.mail.10086.cn/imageserv?charttype=1002&data=zNeyzbywucy2qLfRPTQzO9Pv0vTNqNDFt9E9MzM7yc/N+LfRPTE5O7bMssrQxbfRPTU7xuTL+7fR08M9MDs=&id=&timestamp=1479777803&sign=3bbea081420fd09f69b928e313de50a4)
-参考：全国季度账单（账单）
+说明：还有两个方法，画出不同的样式：
+`l_generate_qw_th_circle_param`;
+`l_generate_qw_dc_circle_param`
+参考：`全国季度账单（账单）`
 
 ##彩色折线图
 lua：
@@ -54,10 +57,12 @@ lua：
     201602|278.00|020002
     201603|387.50|020003
 
-说明：上面的方法只能画3个，9个数据的方法`l_generate_qw_qn_histogram_param`
+说明：3个数据的方法：；`l_generate_qw_jd_histogram_param`
+6个数据的方法：；`l_generate_qw_histogram_param`
+12个数据的方法：`l_generate_qw_qn_histogram_param`
 
 效果：![彩色折线图](http://deliveryimg.mail.10086.cn/imageserv?charttype=1005&data=MdTCPTIwMS41MNSqOzLUwj0yNzguMDDUqjsz1MI9Mzg3LjUw1Ko7NNTCPTI0MC4wMNSqOzXUwj00NTIuMDDUqjs21MI9MTk5LjAw1Ko7N9TCPTEwMC4wMNSqOzjUwj0xMjguMDDUqjs51MI9MjM5LjAw1Ko7MTDUwj0xODkuMDDUqjsxMdTCPTE2OS4wMNSqOzEy1MI9MjAxLjAw1Ko7&id=13580554545&timestamp=1481166984&sign=5f7e40aeeff997a65caa718f35e32b01)
-参考：全国季度账单（账单）
+参考：`全国季度账单（账单）`
 
 ##NGBOSS接口添加附件
 lua: 无
@@ -112,7 +117,7 @@ ParseConfig.xml文件：
 
 说明：太复杂了，直接看备份吧
 
-参考：gx1002账单查询（账单）
+参考：`gx1002账单查询（账单）`
 
 ##NGBOSS格式混xml
 lua: 无
@@ -176,7 +181,7 @@ lua: 无
 
 效果：略
 
-参考：重庆流量账单查询、重庆月账单查询（NG）
+参考：`重庆流量账单查询、重庆月账单查询（NG）`
 
 ##一个业务带多份模板
 lua: 无
@@ -230,7 +235,7 @@ lua：
 配置格式：略
 数据格式：略
 效果：略
-参考：全国季度账单（账单）
+参考：`全国季度账单（账单）`
 
 ##LUA解析纯xml方法
 
@@ -283,3 +288,283 @@ lua：
     get_value(result[1])
 
 说明：这方法放在模板下经常不奏效，不知道为什么。直接用控制台执行是可以的
+
+参考：无
+
+##LUA画自定义柱状图（账单）
+
+方法定义：
+
+    -- 主函数
+    function draw_chart(data_source)
+        data_table = r_data_table_find(data_source);
+        
+        if not data_table then
+            return ""
+        end
+        
+        local value_table = r_data_table_get_col(data_table, "金额");
+        
+        local month_table = r_data_table_get_col(data_table, "费用项目");
+        
+        local sum = l_get_data_sum(data_source);
+        local max = l_max_value(data_source);
+        
+        local combine_wrap = '';
+        local merge_wrap = '';
+        local container = '<div id="container"><div class="leftbar"></div><div class="body">%s</div><div class="bottombar"></div></div>'
+        
+        local wrap = '<div class="wrap"><div class="bar" style="height:%s"></div><div class="fix"><p class="u" style="top:%s">%d</p></div><p class="d">%s</p></div>'
+        
+        local len = table.getn(value_table);
+        
+        table.foreachi(value_table, function(i, v)
+            local m = month_table[i]
+            local h = (v / max)*100;
+            local t = 100 - h;
+            merge_wrap = string.format(wrap, h .. '%', t .. '%', v, string.sub(m,5,6)+0 .. '');
+            combine_wrap = combine_wrap .. merge_wrap; 
+        end)
+        
+        local result = string.format(container, combine_wrap);
+        return result
+    end
+    
+    -- 表格数据中“金额”项的和
+    function l_get_data_sum(data_source)
+        data_table = r_data_table_find(data_source);
+        
+        if not data_table then
+            return ""
+        end
+        
+        local value_table = r_data_table_get_col(data_table, "金额");
+        
+        local result = l_sum(value_table);
+        
+        return result;
+    end
+    
+    -- 一维lua table的所有数字和
+    function l_sum(l_table)
+        local sum = 0;
+        table.foreachi(l_table, function(i, v)
+            sum = sum + v
+        end)
+        
+        return sum;
+    end
+    
+    -- 从表格数据中获取“金额”最大一项
+    function l_max_value(data_source)
+        data_table = r_data_table_find(data_source);
+        
+        if not data_table then
+            return ""
+        end
+        c_table = r_data_table_get_col(data_table, "金额");
+        
+        max_index, max_num = l_find_max(c_table);
+        
+        return max_num;
+    end
+    
+    -- 从一维数字table中找出最大一项
+    function l_find_max(l_table)
+        local num = -9999;
+        local index = nil
+        table.foreachi(l_table, function(i, v)
+            c_num = v + 0;
+            if c_num > num then
+                num = c_num;
+                index = i
+            end
+        end)
+        return index, num
+    end
+
+样式：
+    
+    #container{
+    width: 100%;
+    height: 150px;
+    padding-top: 50px;
+    margin-bottom: 50px;
+    }   
+    .leftbar{
+        border: 1px solid gray;
+        height: 120%;
+        width: 0;
+        position: relative;
+        top: -20%;
+        float: left;
+    }
+    .bottombar{
+        border: 1px solid gray;
+        height: 0;
+        width: 100%;
+    }
+    .body{
+        width: 100%;
+        height: 100%;
+    }
+    .wrap{
+        width: 8%;
+        height: 100%;
+        float: left;
+        position: relative;
+    }
+    .bar{
+        position: absolute;
+        width: 30%;
+        height: 100%;
+        background-color: blue;
+        bottom: 0;
+        left: 50%;
+        margin:0 -15%;
+    }
+    .wrap p{
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    .fix{
+        position: relative;
+        height: 100%;
+        top: -20px;
+    }
+    .u{
+        position: relative;
+    }
+    .d{
+        position: absolute;
+        top: 105%;
+    }
+
+效果：略
+说明：可以自适应宽度的柱状图，要画多少条柱子对应data_source指定的数据源条数。而且`draw_chart`函数里依赖的自定义函数也挺有用的。
+参考：`全国全年度账单`
+
+##表格-父子节点采用不同的样式，并可以将数据源分为多块
+
+使用样例：
+
+    <%r_echo (l_fill_table_cond("数据源名称",
+        '<tr><td class="tdc10px">$帐单项名称$</td><td class="tdr40px">$自付费$</td><td class="tdr40px">$代他人付费$</td><td class="tdr40px">$由他人付费$</td></tr>',
+        '<tr><td class="tdc10px"><strong>$帐单项名称$</strong></td><td class="tdr40px"></td><td class="tdr40px"></td><td class="tdr40px"></td></tr>',
+        "$区域码$ == 1",
+        1,
+        1)) 
+    %>
+
+参数说明：
+1. 解析配置文件中的数据源名称；
+2. 子节点样式，数据源对应的列名使用头尾$号包起；
+3. 父节点样式，格式同上一点；
+4. 区分父节点与子节点判断条件，邮件下发类区域码为1，账单类的区域码请看对应数据格式说明的区域码，一般是%100==0；
+5. 把当前数据源切为多少部分；
+6. 当前取的是第几部分。
+
+效果图：
+![l_fill_table_cond](http://ww4.sinaimg.cn/large/8218e04fgw1fb3e4kwqgwj206u09eq3g.jpg)
+
+参考：`\bill\trunk\src\湖南和账单`
+
+##表格填充---隔行换样式
+使用样例：
+
+    <%r_echo(l_stripe_fill_table_cond("数据源名称",
+        '<tr>%s</tr>',
+        '<tr class="gray">%s</tr>',
+         '<td>&middot;$费用项目$</td><td align="center">$金额$</td>',
+         '<td class="fBlack">$费用项目$</td><td align="center">$金额$</td>',
+         'tonumber(\"$区域码$\",10)%100==0',
+         1,
+         1
+         )
+    %>
+参数说明：
+
+1. 解析配置文件中的数据源名称；
+2. 第一个tr样式；
+3. 隔行tr样式；
+4. 子节点样式；
+5. 父节点样式；
+6. 区分父节点与子节点判断条件，邮件下发类区域码为1，账单类的区域码请看对应数据格式说明的区域码，一般是%100==0；
+7. 把当前数据源切为多少部分；
+8. 当前取的是第几部分。
+效果图:
+
+其它使用方式说明: 
+1. 稍微变换一下也可以做成父节点与子节点不同的样式，即与第5点做成的效果一样，例子如下：
+
+    <%r_echo(l_stripe_fill_table_cond("数据源名称",
+        '%s',
+        '%s',
+        '<tr><td>&middot;$费用项目$</td><td align="center">$金额$</td></tr>',
+        '<tr class="gray"><td class="fBlack">$费用项目$</td><td align="center">$金额$</td></tr>',
+        'tonumber(\"$区域码$\",10)%100==0',
+        1,
+        1
+    )
+    %>
+
+参考：`\bill\trunk\src\湖南全量账单、湖南和账单`
+
+
+##表格填充---隔行换色加金额判断是否为空加最少填充列数
+使用样例:
+
+    <%r_echo (l_custom_stripe_cond_fill_table("数据源名称",
+        "输出金额",
+        'l_exist_string_show($金额$,"￥%s")',
+        '<tr>%s</tr>',
+        '<tr class="gray">%s</tr>',
+        '<td>&#8226; $帐户项目$</td><td>$输出金额$</td>',
+        '<td class="fBlack"><strong>$帐户项目$</strong></td><td>$输出金额$</td>',
+        "tonumber(\"$区域码$\",10)%100 == 0",
+        r_data_table_max_row("JXQL_ZHANGHUGAIYAO") -1,
+        '<td>&nbsp;</td><td>&nbsp;</td>'
+    ))%>
+
+参数说明:
+1. 解析配置文件中的数据源名称；
+2. 格式化后的金额列名；
+3. 格式化后的金额列的值；
+4. 第一个tr样式；
+5. 隔行tr样式；
+6. 子节点样式；
+7. 父节点样式；
+8. 区分父节点与子节点判断条件，邮件下发类区域码为1，账单类的区域码请看对应数据格式说明的区域码，一般是%100==0；
+9. 最少填充行数,案例中的r_data_table_max_row方法是计算当前数据源有多少列，多个数据源用","号隔开，记得最后要减1把列名那一行去掉；
+10. 如果数据不够最少填充行数时，填充的空行代码。【效果图:
+
+参考： `\bill\trunk\src\湖南全量账单`
+
+
+## 表格填充---有大项及无大项特殊显示及子节点的第一行特殊显示
+使用样例:
+
+    <% r_echo(l_plus_multiple_fill_table_cond("数据源名称",
+        '<tr><th>$费用项目$</th><td>$金额$</td></tr>',
+        '<tr><th>$费用项目$</th><td>$金额$</td></tr>',
+        '<tr><th>其中：$费用项目$</th><td>$金额$</td></tr>',
+        '<tr><th>&nbsp;&nbsp;&nbsp;&nbsp;$费用项目$</th><td>$金额$</td></tr>',
+        "tonumber(\"$区域码$\",10)%100 == 0",
+        1,
+        1)) 
+    %>
+
+参数说明:
+1. 解析配置文件中的数据源名称；
+2. 无小项的大项样式；
+3. 有小项的大项样式；
+4. 小项第一行样式；
+5. 大项第一行样式；
+6. 区分父节点与子节点判断条件，邮件下发类区域码为1，账单类的区域码请看对应数据格式说明的区域码，一般是%100==0；
+7. 把当前数据源切为多少部分；
+8. 当前取的是第几部分。
+
+效果：
+
+参考： `\bill\trunk\src\湖南和账单`
