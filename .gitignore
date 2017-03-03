@@ -1,5 +1,4 @@
-electron/node_modules/*
-electron/main/tConfig.json
+electron/*
 reactjs/node_modules/*
 socket-game/node_modules/*
 node_modules/*
